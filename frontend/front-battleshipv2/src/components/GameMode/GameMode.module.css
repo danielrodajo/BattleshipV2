@@ -1,0 +1,29 @@
+:root {
+    --text-shadow: #501368;
+  }
+
+.GameMode {
+    width: 25rem;
+    height: 500px;
+}
+
+.Title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: rgb(242, 216, 252);
+    text-shadow: 2px 0 var(--text-shadow), -2px 0 var(--text-shadow), 0 2px var(--text-shadow), 0 -2px var(--text-shadow),
+             1px 1px var(--text-shadow), -1px -1px var(--text-shadow), 1px -1px var(--text-shadow), -1px 1px var(--text-shadow);
+    letter-spacing: 2.5px;
+}
+
+.PlayBtn {
+    font-size: 2rem;
+    text-transform: uppercase;
+    border: none;
+    user-select: none;
+}
+
+.PlayBtn:hover {
+    cursor: pointer;
+    
+}

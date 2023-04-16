@@ -1,0 +1,60 @@
+.formLabel {
+  font-size: 0.9rem;
+  user-select: none;
+  text-transform: capitalize;
+}
+
+.focusedContainer {
+  border-color: rgb(117, 13, 121) !important;
+}
+
+.errorContainer {
+  border-color: rgb(197, 24, 38) !important;
+}
+
+.inputIcon {
+  color: rgb(160, 160, 160) !important;
+  display: inline !important;
+  width: 20px;
+  margin-right: 0.5rem;
+}
+
+.errorIcon {
+  color: rgb(197, 24, 38) !important;
+  display: inline !important;
+  width: 20px;
+  margin-right: 0.5rem;
+}
+
+.focusedContainer svg {
+  color: black !important;
+}
+
+.inputIconCont {
+  transition: border-color 0.4s linear;
+  padding-bottom: 0.5rem;
+  width: 370px;
+  border-bottom: 2px solid #d8d8d8;
+  user-select: none;
+}
+
+.inputIconCont svg {
+    transition: color 0.4s linear;
+}
+
+.formInput {
+  display: inline !important;
+  background-color: transparent !important;
+  border: none !important;
+  border-radius: 0;
+  width: 80%;
+}
+
+.formInput::placeholder {
+  color: rgb(160, 160, 160);
+  opacity: 1;
+}
+
+.formInput:focus {
+  outline: none;
+}

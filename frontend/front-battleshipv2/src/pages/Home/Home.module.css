@@ -1,0 +1,33 @@
+.home {
+  width: 80% !important;
+  box-shadow: 0 0 0 13px rgb(111, 121, 167);
+  border-radius: 5px;
+  border: 0;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  letter-spacing: 2.5px;
+  color: rgb(205, 210, 252);
+  -webkit-text-stroke: 0.2px rgb(19, 19, 19);
+  text-shadow: 1px 1px 2px black;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+.logo {
+  width: 80px;
+  margin-left: 10px;
+  display: inline-block !important;
+  vertical-align: middle !important;
+}
+
+.topbar {
+  background-color: rgb(240, 243, 250);
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border-bottom: 1px solid #cdcdcd;
+}

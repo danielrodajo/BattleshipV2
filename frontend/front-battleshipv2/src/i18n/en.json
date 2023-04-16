@@ -1,0 +1,108 @@
+{
+    "user": "user",
+    "language": {
+        "es": "Spanish",
+        "en": "English",
+        "altes": "Spanish Language",
+        "alten": "English Language"
+    },
+    "navbar": {
+        "myGames": "my games",
+        "play": "play",
+        "ranking": "ranking"
+    },
+    "login": {
+        "title": "login",
+        "inputemail": "Email",
+        "placeholderemail": "Type your email",
+        "inputpwd": "Password",
+        "placeholderpwd": "Type your password",
+        "forgotpwd": "forgot password?",
+        "button": "login",
+        "options1": "sign up using",
+        "options2": "or sign up using",
+        "signup": "sign up"
+    },
+    "signup": {
+        "title": "sign up",
+        "inputname": "name",
+        "placeholdername": "Type your name",
+        "inputfirstsur": "first surname",
+        "placeholderfirstsur": "Type your first surname",
+        "inputsecondsur": "second surname",
+        "placeholdersecondsur": "Type your second surname",
+        "inputemail": "email",
+        "placeholderemail": "Type your email",
+        "inputrepeatemail": "repeat email",
+        "placeholderrepeatemail": "Repeat your email",
+        "inputpwd": "password",
+        "placeholderpwd": "Type your password",
+        "inputrepeatpwd": "repeat password",
+        "placeholderrepeatpwd": "Repeat your password",
+        "button": "sign up",
+        "return": "Return To Sign In Page",
+        "returnbtn": "sign in",
+        "registersuccess": "User successfully registered"
+    },
+    "validations": {
+        "required": "This field is required",
+        "pattern": "Field is invalid",
+        "notequals": "Fields are not equals",
+        "invalidemail": "invalid email address",
+        "pwdnotequals": "Passwords are not equals",
+        "emailnotequals": "Mails are not equals"
+    },
+    "selectGame": {
+        "searching": "searching game",
+        "online": {
+            "text": "online",
+            "features": {
+                "points": "You will get points",
+                "vsplayers": "You will play against other players online",
+                "limitround": "You will have a round time limit",
+                "sizetable": "You will play on a 10x10 board"
+            },
+            "btn": "play"
+        },
+        "offline": {
+            "text": "offline",
+            "features": {
+                "points": "You won't get any points",
+                "vsplayers": "You will play against the machine",
+                "limitround": "You will not have a round time limit",
+                "sizetable": "You will be able to customize your games"
+            },
+            "btn": "create game"
+        }
+    },
+    "prepareBoard": {
+        "loading": "Loading data",
+        "title": "Prepare your board",
+        "waiting": "Waiting to start game",
+        "yourFleet": "Your fleet",
+        "randomBtn": "Place fleet randomly",
+        "randomError": "Could not generate fleet with this configuration",
+        "btn": "Play",
+        "createGameError": "Could not create game"
+    },
+    "myGames": {
+        "title": "My games",
+        "notFoundGames": "Could not retrieve your games",
+        "noGames": "You have not played any games",
+        "result": "result",
+        "opponent": "opponent",
+        "date": "date",
+        "points": "points earned",
+        "actions": {
+        "title": "actions",
+        "see": "see",
+        "access": "access"
+        }
+    },
+    "ships": {
+        "carrier": "carrier",
+        "battleship": "battleship",
+        "submarine": "submarine",
+        "destroyer": "destroyer"
+    }
+}

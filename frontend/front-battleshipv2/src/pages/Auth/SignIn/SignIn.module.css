@@ -1,0 +1,74 @@
+.SignIn {
+  position: relative;
+  margin: auto;
+  width: 470.5px;
+  height: 735px;
+  box-shadow: 3px 3px 10px 3px rgba(70, 70, 70, 0.5);
+}
+
+.languages {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin-top: 20px;
+  margin-right: 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+  row-gap: 2px;
+}
+
+.SignIn * {
+  user-select: none;
+}
+
+.fgpwd {
+  text-align: end;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgb(110, 110, 110);
+}
+
+.inputIconCont {
+  padding-bottom: 0.5rem;
+  width: 370px;
+  border-bottom: 2px solid #d8d8d8 !important;
+  user-select: none;
+}
+
+@property --myColor1 {
+  syntax: '<color>';
+  initial-value: rgba(0, 255, 252, 1);
+  inherits: false;
+}
+
+@property --myColor2 {
+  syntax: '<color>';
+  initial-value: rgba(255, 0, 232, 1);
+  inherits: false;
+}
+
+.submitbtn {
+  transition: --myColor1 0.4s, --myColor2 0.4s;
+  text-transform: uppercase;
+  color: white;
+  border-radius: 30px;
+  width: 370px;
+  border: none;
+  padding: 0.6rem;
+  background: rgb(0, 255, 252);
+  background: linear-gradient(90deg, var(--myColor1), var(--myColor2));
+}
+
+.submitbtn:hover {
+  --myColor1: rgba(255, 0, 232, 1);
+  --myColor2: rgba(0, 255, 252, 1);
+}
+
+.grayText {
+  color: rgb(121, 121, 121);
+}
+
+.imgOauth {
+  cursor: pointer;
+}

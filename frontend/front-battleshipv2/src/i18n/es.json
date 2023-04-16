@@ -1,0 +1,108 @@
+{
+    "user": "usuario",
+    "language": {
+        "es": "Español",
+        "en": "Inglés",
+        "altes": "Idioma Español",
+        "alten": "Idioma Inglés"
+    },
+    "navbar": {
+        "myGames": "mis partidas",
+        "play": "jugar",
+        "ranking": "clasificación"
+    },
+    "login": {
+        "title": "iniciar sesión",
+        "inputemail": "Email",
+        "placeholderemail": "Introduce tu email",
+        "inputpwd": "Contraseña",
+        "placeholderpwd": "Introduce tu contraseña",
+        "forgotpwd": "¿olvidaste tu contraseña?",
+        "button": "entrar",
+        "options1": "registrarse usando",
+        "options2": "o registrarse usando",
+        "signup": "regístrate"
+    },
+    "signup": {
+        "title": "crear cuenta",
+        "inputname": "nombre",
+        "placeholdername": "Introduce tu nombre",
+        "inputfirstsur": "primer apellido",
+        "placeholderfirstsur": "Introduce tu primer apellido",
+        "inputsecondsur": "segundo apellido",
+        "placeholdersecondsur": "Introduce tu segundo apellido",
+        "inputemail": "email",
+        "placeholderemail": "Introduce tu email",
+        "inputrepeatemail": "repetir email",
+        "placeholderrepeatemail": "Repite tu email",
+        "inputpwd": "contraseña",
+        "placeholderpwd": "Introduce tu contraseña",
+        "inputrepeatpwd": "repetir contraseña",
+        "placeholderrepeatpwd": "Repite tu contraseña",
+        "button": "crear cuenta",
+        "return": "volver a la página de inicio de sesión",
+        "returnbtn": "iniciar sesión",
+        "registersuccess": "Usuario registrado correctamente"
+    },
+    "validations": {
+        "required": "Este campo es obligatorio",
+        "pattern": "Formato incorrecto",
+        "notequals": "Los campos no son iguales",
+        "invalidemail": "formato de email incorrecto",
+        "pwdnotequals": "Las contraseñas no son iguales",
+        "emailnotequals": "Los emails no son iguales"
+    },
+    "selectGame": {
+        "searching": "buscando partida",
+        "online": {
+            "text": "en línea",
+            "features": {
+                "points": "Obtendrás puntos",
+                "vsplayers": "Jugarás contra otros jugadores en línea",
+                "limitround": "Tendrás tiempo límite de ronda",
+                "sizetable": "Jugarás en un tablero de 10x10"
+            },
+            "btn": "jugar"
+        },
+        "offline": {
+            "text": "solitario",
+            "features": {
+                "points": "No obtendrás puntos",
+                "vsplayers": "Jugarás contra la máquina",
+                "limitround": "No tendrás tiempo límite de ronda",
+                "sizetable": "Podrás personalizar tus partidas"
+            },
+            "btn": "crear partida"
+        }
+    },
+    "prepareBoard": {
+        "loading": "Cargando datos",
+        "title": "Prepara tu tablero",
+        "waiting": "Esperando a iniciar partida",
+        "yourFleet": "Tu flota",
+        "randomBtn": "colocar flota aleatoriamente",
+        "randomError": "No se pudo generar la flota con esta configuración",
+        "btn": "Jugar",
+        "createGameError": "No se pudo crear la partida"
+    },
+    "myGames": {
+        "title": "mis partidas",
+        "notFoundGames": "No se pudo recuperar tus partidas",
+        "noGames": "No has jugado ninguna partida",
+        "result": "resultado",
+        "opponent": "oponente",
+        "date": "fecha",
+        "points": "puntos obtenidos",
+        "actions": {
+            "title": "acciones",
+            "see": "ver",
+            "access": "entrar"
+        }
+    },
+    "ships": {
+        "carrier": "portaaviones",
+        "battleship": "acorazado",
+        "submarine": "submarino",
+        "destroyer": "destuctor"
+    }
+}

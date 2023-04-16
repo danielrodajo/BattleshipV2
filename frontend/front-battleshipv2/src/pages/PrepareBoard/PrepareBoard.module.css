@@ -1,0 +1,33 @@
+.PrepareBoard {
+}
+
+.Wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+
+.RandomButton {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.4rem 0;
+  background-color: #6500ff;
+}
+
+.RandomButton:hover {
+  cursor: pointer;
+}
+
+.DisableRandomButton {
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.4rem 0;
+  background-color: #ac74ff;
+
+}

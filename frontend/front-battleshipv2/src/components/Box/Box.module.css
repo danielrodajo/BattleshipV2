@@ -1,0 +1,130 @@
+.Box {
+  border-radius: 3px;
+  padding-bottom: 100%;
+  position: relative;
+}
+
+.BoxShipCr::before,
+.BoxShipCr::after,
+.BoxShipBs::before,
+.BoxShipBs::after,
+.BoxShipSm::before,
+.BoxShipSm::after,
+.BoxShipDt::before,
+.BoxShipDt::after,
+.BoxShipHitted::before,
+.BoxShipHitted::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 4px;
+  border-radius: 5px;
+  transform-origin: center center;
+}
+
+.BoxShipCr::before,
+.BoxShipBs::before,
+.BoxShipSm::before,
+.BoxShipDt::before,
+.BoxShipHitted::before {
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.BoxShipCr::after,
+.BoxShipBs::after,
+.BoxShipSm::after,
+.BoxShipDt::after,
+.BoxShipHitted::after {
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+
+.BoxShipCr::after,
+.BoxShipCr::before {
+  background-color: rgb(37, 37, 37);
+}
+.BoxShipBs::after,
+.BoxShipBs::before {
+  background-color: rgb(113, 9, 145);
+}
+.BoxShipSm::after,
+.BoxShipSm::before {
+  background-color: rgb(14, 146, 20);
+}
+.BoxShipDt::after,
+.BoxShipDt::before {
+  background-color: rgb(68, 70, 211);
+}
+
+.BoxShipHitted::before,
+.BoxShipHitted::after {
+  background-color: red;
+}
+
+
+.boxAnimation::before {
+  animation: growbefore 0.6s ease;
+}
+
+.boxAnimation::after {
+  animation: growafter 0.6s ease;
+}
+
+@keyframes growbefore {
+  0% {
+      transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+  50% {
+      transform: translate(-50%, -50%) rotate(45deg) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+}
+
+@keyframes growafter {
+  0% {
+      transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  }
+  50% {
+      transform: translate(-50%, -50%) rotate(-45deg) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+  }
+}
+
+.clicked {
+  background-color: rgb(156, 237, 250) !important;
+}
+
+.opponent {
+  background-color: rgb(224, 224, 224);
+}
+
+.opponent:hover {
+  background-color: rgb(158, 158, 158);
+  cursor: pointer;
+}
+
+.opponentDisabled {
+  background-color: rgb(224, 224, 224);
+}
+
+.opponentDisabled:hover {
+  cursor: not-allowed !important;
+}
+
+.opponentClicked {
+  background-color: rgb(197, 197, 197) !important;
+}
+
+.opponentClicked:hover {
+  cursor: not-allowed !important;
+}
+
+.user {
+  background-color: rgb(190, 245, 253);
+}

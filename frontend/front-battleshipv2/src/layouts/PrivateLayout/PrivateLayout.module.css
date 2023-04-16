@@ -1,0 +1,12 @@
+.Layout {
+    min-height: 100vh;
+    z-index: 1;
+}
+
+.body {
+    width: 85%;
+}
+
+.WhiteContainer {
+    min-height: 92.4vh;
+}
