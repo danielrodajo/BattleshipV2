@@ -32,15 +32,15 @@ build/
 ### VS Code ###
 .vscode/
 
-frontend/front-battleshipv2/node_modules
-frontend/front-battleshipv2/.pnp
+frontend/front-battleship/node_modules
+frontend/front-battleship/.pnp
 .pnp.js
 
 # testing
-frontend/front-battleshipv2/coverage
+frontend/front-battleship/coverage
 
 # production
-frontend/front-battleshipv2/build
+frontend/front-battleship/build
 
 # misc
 .DS_Store
