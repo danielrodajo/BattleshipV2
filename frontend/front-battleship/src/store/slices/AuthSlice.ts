@@ -56,6 +56,7 @@ export const authSignUp = createAsyncThunk(
         secondsurname: payload.secondsurname,
         email: payload.email,
         password: payload.password,
+        nickname: payload.nickname
       });
       return response.data;
     } catch (error: any) {
@@ -113,9 +114,10 @@ export const authSlice = createSlice({
         state.signUpError = undefined;
       })
       .addCase(authSignUp.fulfilled, (state, action) => {
+        console.log(action.payload);
         if (action.payload?.status === 409) {
           state.status = 'failed';
-          state.signUpError = 'Ya existe un usuario con este email';
+          state.signUpError = action.payload.data;
         } else {
           state.status = 'succeeded';
         }
@@ -137,6 +139,7 @@ export const authSlice = createSlice({
           secondsurname: action.payload.secondsurname,
           email: action.payload.email,
           id: action.payload.id,
+          nickname: action.payload.nickname
         };
         state.isLoggedIn = true;
       })

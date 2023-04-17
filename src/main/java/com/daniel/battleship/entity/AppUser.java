@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.daniel.battleship.enums.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -43,9 +44,13 @@ public class AppUser implements UserDetails {
 	private String secondsurname;
 	
 	@Column(unique = true)
+	private String nickname;
+	
+	@Column(unique = true)
 	private String email;
 
 	@Column
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	private String password;
 	
 	@Enumerated(EnumType.STRING)

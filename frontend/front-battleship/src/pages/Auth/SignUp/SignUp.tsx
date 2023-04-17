@@ -18,6 +18,7 @@ import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
 import { useTranslation } from 'react-i18next';
 import spanish from '../../../assets/spanish.png';
 import english from '../../../assets/english.png';
+import { formatError } from '../../../utils/Utils';
 
 interface SignUpProps {}
 
@@ -50,7 +51,13 @@ const SignUp: FC<SignUpProps> = () => {
       navigate(PATH_SIGNIN);
     } else if (status === 'failed') {
       dispatch(hideSpinner());
-      toast.error(signUpError, {
+      let errorMsg = '';
+      if (signUpError === 'nickname') {
+        errorMsg = 'already_exists_nickname';
+      } else if (signUpError === 'email') {
+        errorMsg = 'already_exists_email';
+      }
+      toast.error(formatError(errorMsg), {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -81,6 +88,7 @@ const SignUp: FC<SignUpProps> = () => {
         secondsurname: data.secondSurname,
         email: data.email,
         password: data.pwd,
+        nickname: data.nickname
       })
     );
   };
@@ -118,7 +126,6 @@ const SignUp: FC<SignUpProps> = () => {
                   register={register}
                   errors={errors}
                   autocomplete='given-name'
-                  icon={CiUser}
                 ></AuthInput>
               </div>
             </div>
@@ -151,6 +158,20 @@ const SignUp: FC<SignUpProps> = () => {
             </div>
           </div>
           <div className='row mt-5'>
+            <div className='col-4'>
+              <div className=''>
+                <AuthInput
+                  id='nickname'
+                  type='text'
+                  placeholder={t('signup.placeholdernick')}
+                  label={t('signup.inputnick')}
+                  required
+                  register={register}
+                  errors={errors}
+                  icon={CiUser}
+                ></AuthInput>
+              </div>
+            </div>
             <div className='col-4'>
               <div className='emailGroup'>
                 <AuthInput

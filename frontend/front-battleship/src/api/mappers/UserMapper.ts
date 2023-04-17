@@ -7,5 +7,6 @@ export function mapUserDataToUserDomain(dto: any): UserDomain {
     name: dto.name,
     firstsurname: dto.firstsurname,
     secondsurname: dto.secondsurname,
+    nickname: dto.nickname
   };
 }

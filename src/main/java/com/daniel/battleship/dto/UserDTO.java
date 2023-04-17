@@ -19,6 +19,7 @@ public class UserDTO {
 	private String name;
 	private String firstsurname;
 	private String secondsurname;
+	private String nickname;
 	private String email;
 	
 }

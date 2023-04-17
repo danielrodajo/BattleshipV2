@@ -4,4 +4,5 @@ export interface UserDomain {
   firstsurname: string;
   secondsurname: string | undefined;
   email: string;
+  nickname: string;
 }

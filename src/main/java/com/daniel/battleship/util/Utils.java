@@ -33,6 +33,7 @@ public class Utils {
 		user.setFirstsurname(null);
 		user.setSecondsurname(null);
 		user.setId(null);
+		user.setEmail(null);
 		return user;
 	}
 }

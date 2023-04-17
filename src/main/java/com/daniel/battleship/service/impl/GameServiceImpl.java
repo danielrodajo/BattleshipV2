@@ -131,7 +131,7 @@ public class GameServiceImpl implements GameService {
 			opponentBoard.setBoxes(
 					opponentBoard.getBoxes().stream().filter(box -> box.getTouched()).collect(Collectors.toList()));
 		}
-		opponentBoard.setOwner(AppUser.builder().name(opponentBoard.getOwner().getName()).build());
+		opponentBoard.setOwner(AppUser.builder().nickname(opponentBoard.getOwner().getNickname()).build());
 
 	}
 

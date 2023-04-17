@@ -79,6 +79,168 @@ public abstract class RecordMapper extends BeforeMappingMapper implements BaseMa
 
         return recordDTO;
     }
+    protected ShipDTO shipToShipDTO(Ship ship) {
+        ShipDTO target = getMappedInstace( ship, ShipDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( ship == null ) {
+            return null;
+        }
+
+        ShipDTO shipDTO = new ShipDTO();
+
+        shipDTO.setId( ship.getId() );
+        shipDTO.setShipType( ship.getShipType() );
+
+        return shipDTO;
+    }
+
+    protected BoxDTO boxToBoxDTO(Box box) {
+        BoxDTO target = getMappedInstace( box, BoxDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( box == null ) {
+            return null;
+        }
+
+        BoxDTO boxDTO = new BoxDTO();
+
+        boxDTO.setId( box.getId() );
+        boxDTO.setShip( shipToShipDTO( box.getShip() ) );
+        boxDTO.setTouched( box.getTouched() );
+        boxDTO.setX( box.getX() );
+        boxDTO.setY( box.getY() );
+
+        return boxDTO;
+    }
+
+    protected List<BoxDTO> boxListToBoxDTOList(List<Box> list) {
+        List<BoxDTO> target = getMappedInstace( list, List.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( list == null ) {
+            return null;
+        }
+
+        List<BoxDTO> list1 = new ArrayList<BoxDTO>( list.size() );
+        for ( Box box : list ) {
+            list1.add( boxToBoxDTO( box ) );
+        }
+
+        return list1;
+    }
+
+    protected EmptyBoxDTO emptyBoxToEmptyBoxDTO(EmptyBox emptyBox) {
+        EmptyBoxDTO target = getMappedInstace( emptyBox, EmptyBoxDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( emptyBox == null ) {
+            return null;
+        }
+
+        EmptyBoxDTO emptyBoxDTO = new EmptyBoxDTO();
+
+        emptyBoxDTO.setId( emptyBox.getId() );
+        emptyBoxDTO.setX( emptyBox.getX() );
+        emptyBoxDTO.setY( emptyBox.getY() );
+
+        return emptyBoxDTO;
+    }
+
+    protected List<EmptyBoxDTO> emptyBoxListToEmptyBoxDTOList(List<EmptyBox> list) {
+        List<EmptyBoxDTO> target = getMappedInstace( list, List.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( list == null ) {
+            return null;
+        }
+
+        List<EmptyBoxDTO> list1 = new ArrayList<EmptyBoxDTO>( list.size() );
+        for ( EmptyBox emptyBox : list ) {
+            list1.add( emptyBoxToEmptyBoxDTO( emptyBox ) );
+        }
+
+        return list1;
+    }
+
+    protected UserDTO appUserToUserDTO(AppUser appUser) {
+        UserDTO target = getMappedInstace( appUser, UserDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( appUser == null ) {
+            return null;
+        }
+
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setEmail( appUser.getEmail() );
+        userDTO.setFirstsurname( appUser.getFirstsurname() );
+        userDTO.setId( appUser.getId() );
+        userDTO.setName( appUser.getName() );
+        userDTO.setNickname( appUser.getNickname() );
+        userDTO.setSecondsurname( appUser.getSecondsurname() );
+
+        return userDTO;
+    }
+
+    protected BoardDTO boardToBoardDTO(Board board) {
+        BoardDTO target = getMappedInstace( board, BoardDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( board == null ) {
+            return null;
+        }
+
+        BoardDTO boardDTO = new BoardDTO();
+
+        boardDTO.setBoxes( boxListToBoxDTOList( board.getBoxes() ) );
+        boardDTO.setCode( board.getCode() );
+        boardDTO.setEmptyBoxes( emptyBoxListToEmptyBoxDTOList( board.getEmptyBoxes() ) );
+        boardDTO.setHeight( board.getHeight() );
+        boardDTO.setId( board.getId() );
+        boardDTO.setOwner( appUserToUserDTO( board.getOwner() ) );
+        boardDTO.setState( board.getState() );
+        boardDTO.setWidth( board.getWidth() );
+
+        return boardDTO;
+    }
+
+    protected GameDTO gameToGameDTO(Game game) {
+        GameDTO target = getMappedInstace( game, GameDTO.class );
+        if ( target != null ) {
+            return target;
+        }
+
+        if ( game == null ) {
+            return null;
+        }
+
+        GameDTO gameDTO = new GameDTO();
+
+        gameDTO.setBoard1( boardToBoardDTO( game.getBoard1() ) );
+        gameDTO.setBoard2( boardToBoardDTO( game.getBoard2() ) );
+        gameDTO.setCode( game.getCode() );
+        gameDTO.setCreatedAt( game.getCreatedAt() );
+        gameDTO.setId( game.getId() );
+        gameDTO.setState( game.getState() );
+        gameDTO.setTurn( game.getTurn() );
+
+        return gameDTO;
+    }
 
     protected Ship shipDTOToShip(ShipDTO shipDTO) {
         Ship target = getMappedInstace( shipDTO, Ship.class );
@@ -190,6 +352,7 @@ public abstract class RecordMapper extends BeforeMappingMapper implements BaseMa
         appUser.setFirstsurname( userDTO.getFirstsurname() );
         appUser.setId( userDTO.getId() );
         appUser.setName( userDTO.getName() );
+        appUser.setNickname( userDTO.getNickname() );
         appUser.setSecondsurname( userDTO.getSecondsurname() );
 
         return appUser;
@@ -242,165 +405,4 @@ public abstract class RecordMapper extends BeforeMappingMapper implements BaseMa
         return game;
     }
 
-    protected ShipDTO shipToShipDTO(Ship ship) {
-        ShipDTO target = getMappedInstace( ship, ShipDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( ship == null ) {
-            return null;
-        }
-
-        ShipDTO shipDTO = new ShipDTO();
-
-        shipDTO.setId( ship.getId() );
-        shipDTO.setShipType( ship.getShipType() );
-
-        return shipDTO;
-    }
-
-    protected BoxDTO boxToBoxDTO(Box box) {
-        BoxDTO target = getMappedInstace( box, BoxDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( box == null ) {
-            return null;
-        }
-
-        BoxDTO boxDTO = new BoxDTO();
-
-        boxDTO.setId( box.getId() );
-        boxDTO.setShip( shipToShipDTO( box.getShip() ) );
-        boxDTO.setTouched( box.getTouched() );
-        boxDTO.setX( box.getX() );
-        boxDTO.setY( box.getY() );
-
-        return boxDTO;
-    }
-
-    protected List<BoxDTO> boxListToBoxDTOList(List<Box> list) {
-        List<BoxDTO> target = getMappedInstace( list, List.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( list == null ) {
-            return null;
-        }
-
-        List<BoxDTO> list1 = new ArrayList<BoxDTO>( list.size() );
-        for ( Box box : list ) {
-            list1.add( boxToBoxDTO( box ) );
-        }
-
-        return list1;
-    }
-
-    protected EmptyBoxDTO emptyBoxToEmptyBoxDTO(EmptyBox emptyBox) {
-        EmptyBoxDTO target = getMappedInstace( emptyBox, EmptyBoxDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( emptyBox == null ) {
-            return null;
-        }
-
-        EmptyBoxDTO emptyBoxDTO = new EmptyBoxDTO();
-
-        emptyBoxDTO.setId( emptyBox.getId() );
-        emptyBoxDTO.setX( emptyBox.getX() );
-        emptyBoxDTO.setY( emptyBox.getY() );
-
-        return emptyBoxDTO;
-    }
-
-    protected List<EmptyBoxDTO> emptyBoxListToEmptyBoxDTOList(List<EmptyBox> list) {
-        List<EmptyBoxDTO> target = getMappedInstace( list, List.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( list == null ) {
-            return null;
-        }
-
-        List<EmptyBoxDTO> list1 = new ArrayList<EmptyBoxDTO>( list.size() );
-        for ( EmptyBox emptyBox : list ) {
-            list1.add( emptyBoxToEmptyBoxDTO( emptyBox ) );
-        }
-
-        return list1;
-    }
-
-    protected UserDTO appUserToUserDTO(AppUser appUser) {
-        UserDTO target = getMappedInstace( appUser, UserDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( appUser == null ) {
-            return null;
-        }
-
-        UserDTO userDTO = new UserDTO();
-
-        userDTO.setEmail( appUser.getEmail() );
-        userDTO.setFirstsurname( appUser.getFirstsurname() );
-        userDTO.setId( appUser.getId() );
-        userDTO.setName( appUser.getName() );
-        userDTO.setSecondsurname( appUser.getSecondsurname() );
-
-        return userDTO;
-    }
-
-    protected BoardDTO boardToBoardDTO(Board board) {
-        BoardDTO target = getMappedInstace( board, BoardDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( board == null ) {
-            return null;
-        }
-
-        BoardDTO boardDTO = new BoardDTO();
-
-        boardDTO.setBoxes( boxListToBoxDTOList( board.getBoxes() ) );
-        boardDTO.setCode( board.getCode() );
-        boardDTO.setEmptyBoxes( emptyBoxListToEmptyBoxDTOList( board.getEmptyBoxes() ) );
-        boardDTO.setHeight( board.getHeight() );
-        boardDTO.setId( board.getId() );
-        boardDTO.setOwner( appUserToUserDTO( board.getOwner() ) );
-        boardDTO.setState( board.getState() );
-        boardDTO.setWidth( board.getWidth() );
-
-        return boardDTO;
-    }
-
-    protected GameDTO gameToGameDTO(Game game) {
-        GameDTO target = getMappedInstace( game, GameDTO.class );
-        if ( target != null ) {
-            return target;
-        }
-
-        if ( game == null ) {
-            return null;
-        }
-
-        GameDTO gameDTO = new GameDTO();
-
-        gameDTO.setBoard1( boardToBoardDTO( game.getBoard1() ) );
-        gameDTO.setBoard2( boardToBoardDTO( game.getBoard2() ) );
-        gameDTO.setCode( game.getCode() );
-        gameDTO.setCreatedAt( game.getCreatedAt() );
-        gameDTO.setId( game.getId() );
-        gameDTO.setState( game.getState() );
-        gameDTO.setTurn( game.getTurn() );
-
-        return gameDTO;
-    }
 }

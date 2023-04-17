@@ -31,6 +31,8 @@
         "placeholderfirstsur": "Introduce tu primer apellido",
         "inputsecondsur": "segundo apellido",
         "placeholdersecondsur": "Introduce tu segundo apellido",
+        "inputnick": "apodo",
+        "placeholdernick": "Introduce tu apodo",
         "inputemail": "email",
         "placeholderemail": "Introduce tu email",
         "inputrepeatemail": "repetir email",

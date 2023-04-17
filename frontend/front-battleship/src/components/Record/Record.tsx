@@ -4,11 +4,14 @@ import { RecordData } from '../../api/data/RecordData';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { selectUserData } from '../../store/slices/AuthSlice';
 import { useTranslation } from 'react-i18next';
+import { Coordinates } from '../../services/FleetGenerator';
+import { letters } from '../../utils/Constants';
 
 interface RecordProps {
   records: RecordData[];
   modified: boolean;
   setHistory: (x: string, y: number, owner?: string) => void;
+  focus: Coordinates | null;
 }
 
 const Record: FC<RecordProps> = (props) => {
@@ -21,11 +24,11 @@ const Record: FC<RecordProps> = (props) => {
         <div className={`${styles.RecordChildBox}`}>
         {props.records.map((r, i) => (
           <span
-            onClick={() => props.setHistory(r.x, r.y, r.player?.name)}
+            onClick={() => props.setHistory(r.x, r.y, r.player?.nickname)}
             className={`${
-              r.player?.email !== user!.email && 'bg-secondary text-light'
-            } ${styles.RecordSpan} ${r.type === 'BOX' && styles.RecordHits} d-inline-block me-2 my-1 border p-1`}
-            key={`${r.x}-${r.y}-${r.player?.email}`}
+              r.player?.nickname !== user!.nickname && 'bg-secondary text-light'
+            } ${styles.RecordSpan} ${r.type === 'BOX' && styles.RecordHits} ${(props.focus && props.focus.x === letters.indexOf(r.x) && props.focus.y === (r.y-1) && props.focus.owner === r.player?.nickname) && styles.FocusRecord} d-inline-block me-2 my-1 border p-1`}
+            key={`${r.x}-${r.y}-${r.player?.nickname}`}
           >
             {i+1} - {r.x} {r.y}
           </span>

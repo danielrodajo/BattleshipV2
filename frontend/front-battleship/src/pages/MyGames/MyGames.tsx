@@ -76,7 +76,7 @@ const MyGames: FC<MyGamesProps> = () => {
             games.map((game) => (
               <tr key={game.id + '-tr'}>
                 <th>{game.board1.state}</th>
-                <td>{game.board2.owner.email}</td>
+                <td>{game.board2.owner.nickname}</td>
                 <td>{formatDate(game.createdAt)}</td>
                 <td>0</td>
                 <td>

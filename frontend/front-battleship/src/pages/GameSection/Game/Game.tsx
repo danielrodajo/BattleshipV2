@@ -123,18 +123,6 @@ const Game: FC<GameProps> = () => {
     dispatch(addGameRecord(newRecord));
   };
 
-  const setHistory = (xData: string, yData: number, owner?: string) => {
-    const x = letters.indexOf(xData);
-    const y = yData - 1;
-    if (owner) {
-      sethighLightCoordinates({
-        x,
-        y,
-        owner,
-      });
-    }
-  };
-
   React.useEffect(() => {
     if (code) {
       dispatch(
@@ -279,6 +267,27 @@ const Game: FC<GameProps> = () => {
     webSocket.sendMessage('/app/api/v1/ws/game/room', { x, y });
   }
 
+  const setHistory = (xData: string, yData: number, owner?: string) => {
+    const x = letters.indexOf(xData);
+    const y = yData - 1;
+    if (owner) {
+      if (
+        highLightCoordinates &&
+        highLightCoordinates.x === x &&
+        highLightCoordinates.y === y &&
+        highLightCoordinates.owner === owner
+      ) {
+        sethighLightCoordinates(null);
+      } else {
+        sethighLightCoordinates({
+          x,
+          y,
+          owner,
+        });
+      }
+    }
+  };
+
   const getHighlight = (owner: string): Coordinates | undefined => {
     console.log(highLightCoordinates?.owner);
     console.log(owner);
@@ -343,11 +352,11 @@ const Game: FC<GameProps> = () => {
             <div className='col-5 border-end pe-5'>
               <GameSection
                 fleet={myFleet}
-                playerName={game.board1.owner.name}
+                playerName={game.board1.owner.nickname}
                 isOpponent={false}
                 size={game.board1.width}
                 disable={!isMyTurn || false}
-                highLightBox={getHighlight(game.board1.owner.name)}
+                highLightBox={getHighlight(game.board1.owner.nickname)}
               />
             </div>
             <div className='col-5 ps-5'>
@@ -355,11 +364,11 @@ const Game: FC<GameProps> = () => {
                 online={opponentAlive}
                 onClick={sendMessage}
                 fleet={opponentFleet}
-                playerName={game.board2.owner.name}
+                playerName={game.board2.owner.nickname}
                 isOpponent={true}
                 disable={isMyTurn || false}
                 size={game.board2.width}
-                highLightBox={getHighlight(game.board2.owner.name)}
+                highLightBox={getHighlight(game.board2.owner.nickname)}
               />
             </div>
             <div className='col-2 ps-5'>
@@ -367,6 +376,7 @@ const Game: FC<GameProps> = () => {
                 setHistory={setHistory}
                 records={records}
                 modified={false}
+                focus={highLightCoordinates}
               />
             </div>
           </div>

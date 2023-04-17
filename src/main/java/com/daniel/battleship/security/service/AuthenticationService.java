@@ -22,9 +22,11 @@ import com.daniel.battleship.security.dto.RegisterRequest;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class AuthenticationService {
 
 	private final UserRepository repository;
@@ -33,11 +35,17 @@ public class AuthenticationService {
 	private final AuthenticationManager authenticationManager;
 
 	public AuthenticationResponse register(RegisterRequest request) {
-		if (repository.existsAppUserByEmail(request.getEmail())) {
-			throw new KeyAlreadyExistsException("Ya existe un usuario con este email");
+		if (repository.existsByEmail(request.getEmail())) {
+			log.error("Ya existe un usuario con este email");
+			throw new KeyAlreadyExistsException("email");
+		}
+		if (repository.existsByNickname(request.getNickname())) {
+			log.error("Ya existe un usuario con este apodo");
+			throw new KeyAlreadyExistsException("nickname");
 		}
 		var user = AppUser.builder().name(request.getName()).firstsurname(request.getFirstsurname())
 				.secondsurname(request.getSecondsurname()).email(request.getEmail())
+				.nickname(request.getNickname())
 				.password(passwordEncoder.encode(request.getPassword())).role(Role.USER).build();
 		String refreshToken = jwtService.generateRefreshToken(user);
 		user.setRefreshToken(refreshToken);

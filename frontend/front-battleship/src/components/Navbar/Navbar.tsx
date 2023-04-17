@@ -71,7 +71,7 @@ const Navbar: FC<NavbarProps> = () => {
           {user && (
             <li
               className={`nav-item d-flex justify-content-center align-items-center me-2 ${styles.Name}`}
-            >{`${user.name}`}</li>
+            >{`${user.nickname}`}</li>
           )}
           <li className={`nav-item ${styles.languages} mx-2`}>
             <img alt={t('language.altes')!} width={20} className='lngButton' src={spanish} onClick={() => changeLanguageHandler('es')}/>

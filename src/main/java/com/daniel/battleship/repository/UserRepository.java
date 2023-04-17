@@ -8,7 +8,8 @@ import com.daniel.battleship.entity.AppUser;
 
 public interface UserRepository extends JpaRepository<AppUser, Long> {
 
-	boolean existsAppUserByEmail(String email);
+	boolean existsByEmail(String email);
+	boolean existsByNickname(String nickname);
 	Optional<AppUser> findByEmail(String email);
 	Optional<AppUser> findByRefreshToken(String refreshToken);
 }
