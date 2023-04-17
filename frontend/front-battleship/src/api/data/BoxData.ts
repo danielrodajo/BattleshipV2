@@ -3,4 +3,5 @@ export interface BoxData {
     touched: boolean;
     x: number;
     y: number;
+    hightLight?: boolean;
 }

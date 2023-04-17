@@ -61,7 +61,7 @@ const SignUp: FC<SignUpProps> = () => {
         theme: 'light',
       });
     }
-  }, [status, dispatch, navigate, signUpError]);
+  }, [status, dispatch, navigate, signUpError, t]);
 
   const {
     register,

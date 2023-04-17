@@ -104,5 +104,18 @@
         "battleship": "acorazado",
         "submarine": "submarino",
         "destroyer": "destuctor"
+    },
+    "game": {
+        "title": "partida",
+        "end-game": "partida finalizada",
+        "win": "Victoria",
+        "lose": "Derrota",
+        "playing": "Partida",
+        "your-turn": "tu turno",
+        "opponent-turn": "turno del oponente"
+    },
+    "record": {
+        "title": "historial",
+        "btn": "Restaurar"
     }
 }

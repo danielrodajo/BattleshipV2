@@ -7,6 +7,10 @@
     width: 85%;
 }
 
+.fullbody {
+    width: 100%;
+}
+
 .WhiteContainer {
     min-height: 92.4vh;
 }

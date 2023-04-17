@@ -50,7 +50,7 @@ const MyGames: FC<MyGamesProps> = () => {
           theme: 'light',
         });
       });
-  }, []);
+  }, [t, dispatch]);
 
   return (
     <div className={styles.MyGames}>

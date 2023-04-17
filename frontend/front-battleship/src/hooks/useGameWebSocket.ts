@@ -1,25 +1,12 @@
 import SockJS from 'sockjs-client';
-import { selectAuthToken } from '../store/slices/AuthSlice';
-import { useAppSelector } from './reduxHooks';
 import React from 'react';
 import { CompatClient, Stomp } from '@stomp/stompjs';
-import { ShipData } from '../api/data/ShipData';
-import { EmptyBoxDomain } from '../api/domain/EmptyBoxDomain';
-import { mapBoxShipsDomainToData } from '../api/mappers/BoxShipMapper';
-import { GameDomain } from '../api/domain/GameDomain';
-import { BoxDomain } from '../api/domain/BoxDomain';
 import { toast } from 'react-toastify';
-
-interface Finished {
-  first: BoxDomain;
-  second: boolean;
-}
 
 const useGameWebSocket = () => {
   const [stompClient, setStompClient] = React.useState<CompatClient>();
   const [connected, setConnected] = React.useState(false);
   const [sending, setSending] = React.useState(false);
-  const token = useAppSelector(selectAuthToken);
   const [currentMessage, setCurrentMessage] = React.useState<[string, string]>();
 
   function connect(url: string, topics: string[], connectData?: any) {
@@ -28,7 +15,7 @@ const useGameWebSocket = () => {
     setStompClient(client);
     client.connect(
       connectData,
-      function (frame: any) {
+      function () {
         let sessionURL = client.ws._transport.url;
         sessionURL = sessionURL.replace(url, '');
         sessionURL = sessionURL.replace('/websocket', '');
@@ -56,6 +43,7 @@ const useGameWebSocket = () => {
         console.error(err);
       }
     );
+    client.debug = () => {};
   }
  
   function sendMessage(url: string, payload?: any) {

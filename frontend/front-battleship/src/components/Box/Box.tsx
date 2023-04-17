@@ -13,6 +13,7 @@ interface BoxProps {
   onClick?: (x: number, y: number) => void;
   x: number;
   y: number;
+  highlight?: boolean;
 }
 
 const Box: FC<BoxProps> = (props) => {
@@ -29,12 +30,6 @@ const Box: FC<BoxProps> = (props) => {
 
   const handlerClicker = () => {
     if (!clicked && props.isOpponent && props.disable) {
-      /* console.log(props.boxData);
-      if (props.boxData) {
-        console.log('animacion');
-        props.boxData[0].touched = true;
-        setAnimated(true);
-      } */
       setAnimated(true);
       props.onClick!(props.x, props.y);
       setClicked(true);
@@ -72,7 +67,7 @@ const Box: FC<BoxProps> = (props) => {
             ? styles.opponent
             : styles.opponentDisabled
           : styles.user
-      }`}
+      } ${props.highlight && styles.HighLight}`}
     ></div>
   );
 };

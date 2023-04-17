@@ -55,31 +55,4 @@ client.interceptors.response.use(
   }
 );
 
-/*
-
-const AxiosInterceptor = (children: any) => {
-  useEffect(() => {
-    const interceptor = client.interceptors.request.use(
-      (config) => {
-        const token = appReduxStore.getState().authState.token;
-        if (token) {
-          config.headers['Authorization'] = 'Bearer ' + token;
-        }
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-
-    return () => client.interceptors.response.eject(interceptor);
-  }, []);
-  return children.children;
-};
-
-export default client;
-export { AxiosInterceptor };
-
-*/
-
 export default client;

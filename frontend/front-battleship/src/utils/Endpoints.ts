@@ -11,6 +11,8 @@ export const ENDPOINT_GAME_SEARCHING = '/game/searching';
 export const ENDPOINT_GAME_WAITING = '/game/waitingGame';
 export const ENDPOINT_GET_CURRENT_GAME = '/game/getCurrentGameByCode';
 
+export const ENDPOINT_GET_GAME_RECORDS = '/record/getGameRecords';
+
 export const ENDPOINT_INIT_BOARD = '/board/initBoard';
 export const ENDPOINT_GET_BOARD_BY_CODE = '/board/getBoardByCode';
 export const ENDPOINT_GET_BOARD_BY_GAME = '/board/getBoardByGame';

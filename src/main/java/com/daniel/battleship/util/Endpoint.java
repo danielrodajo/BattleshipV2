@@ -35,6 +35,12 @@ public class Endpoint {
 	}
 
 	@NoArgsConstructor(access = AccessLevel.NONE)
+	public class Record {
+		public static final String ROOT = "/record";
+		public static final String GET_GAME_RECORDS = "/getGameRecords";
+	}
+
+	@NoArgsConstructor(access = AccessLevel.NONE)
 	public class User {
 		public static final String ROOT = "/user";
 	}

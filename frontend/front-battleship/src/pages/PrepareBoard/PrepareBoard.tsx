@@ -7,7 +7,7 @@ import {
   ENDPOINT_GET_BOARD_BY_CODE,
   ENDPOINT_INIT_BOARD,
 } from '../../utils/Endpoints';
-import { BoardDomain, BoardState } from '../../api/domain/BoardDomain';
+import { BoardDomain } from '../../api/domain/BoardDomain';
 import {
   PATH_GAME,
   PATH_HOME,
@@ -113,13 +113,6 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
         });
         dispatch(hideSpinner());
       });
-  };
-
-  const checkStateValid = (): boolean => {
-    if (board) {
-      return board.state === BoardState[BoardState.CREATED];
-    }
-    return false;
   };
 
   const generateRandomFleet = () => {

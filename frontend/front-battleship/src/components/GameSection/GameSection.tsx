@@ -3,6 +3,7 @@ import styles from './GameSection.module.css';
 import Board from '../Board/Board';
 import { FleetData } from '../../pages/GameSection/Game/Game';
 import { MdOutlineSignalWifiConnectedNoInternet4 } from 'react-icons/md';
+import { Coordinates } from '../../services/FleetGenerator';
 
 interface GameSectionProps {
   playerName: string;
@@ -12,9 +13,11 @@ interface GameSectionProps {
   disable: boolean;
   onClick?: (x: number, y: number) => void;
   online?: boolean[] | null;
+  highLightBox?: Coordinates;
 }
 
 const GameSection: FC<GameSectionProps> = (props) => {
+  console.log(props.highLightBox);
   return (
     <div className={styles.GameSection}>
       {props.online && props.online.length > 3 && (
@@ -37,6 +40,7 @@ const GameSection: FC<GameSectionProps> = (props) => {
         fleet={props.fleet}
         isOpponent={props.isOpponent}
         size={props.size}
+        highLightBox={props.highLightBox}
       />
     </div>
   );

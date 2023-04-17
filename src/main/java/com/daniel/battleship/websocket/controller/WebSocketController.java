@@ -29,7 +29,7 @@ import com.daniel.battleship.mapper.EmptyBoxMapper;
 import com.daniel.battleship.service.BoxService;
 import com.daniel.battleship.service.EmptyBoxService;
 import com.daniel.battleship.service.GameService;
-import com.daniel.battleship.service.HistoryService;
+import com.daniel.battleship.service.RecordService;
 import com.daniel.battleship.service.PlayerService;
 import com.daniel.battleship.util.Constants;
 import com.daniel.battleship.websocket.dto.BoxCoordinates;
@@ -52,7 +52,7 @@ public class WebSocketController {
 	private final BoxMapper boxMapper;
 	private final EmptyBoxMapper emptyBoxMapper;
 	private Map<String, Entry<String, String>> data = new HashMap<>();
-	private final HistoryService historyService;
+	private final RecordService recordService;
 	private final PlayerService playerService;
 
 	@MessageMapping(Constants.SECURED_GAME_OPPONENT_ALIVE)
@@ -161,7 +161,7 @@ public class WebSocketController {
 				throw new IllegalArgumentException("La celda ya esta marcada");
 			}
 			boxService.hitBox(hitBox);
-			historyService.registerHistory(user, game, hitBox);
+			recordService.registerRecord(user, game, hitBox);
 			if (checkGameFinished(boardOpponent)) {
 				game = gameService.finishGame(game, myBoard);
 			} else {
@@ -177,7 +177,7 @@ public class WebSocketController {
 			}
 			EmptyBox newBox = EmptyBox.builder().x(coordinates.getX()).y(coordinates.getY()).build();
 			newBox = emptyBoxService.save(newBox);
-			historyService.registerHistory(user, game, newBox);
+			recordService.registerRecord(user, game, newBox);
 			
 			boardOpponent.getEmptyBoxes().add(newBox);
 			gameService.nextTurn(game);

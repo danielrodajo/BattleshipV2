@@ -3,25 +3,53 @@ import styles from './Game.module.css';
 import GameSection from '../../../components/GameSection/GameSection';
 import { useNavigate, useParams } from 'react-router-dom';
 import { GameDomain, GameState } from '../../../api/domain/GameDomain';
-import client from '../../../api/client';
-import { ENDPOINT_GET_CURRENT_GAME } from '../../../utils/Endpoints';
 import { ShipData } from '../../../api/data/ShipData';
-import { mapBoxShipsDomainToData } from '../../../api/mappers/BoxShipMapper';
-import { PATH_HOME } from '../../../utils/Routes';
-import { useAppSelector } from '../../../hooks/reduxHooks';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { selectAuthToken } from '../../../store/slices/AuthSlice';
 import { BoxDomain } from '../../../api/domain/BoxDomain';
 import { EmptyBoxDomain } from '../../../api/domain/EmptyBoxDomain';
 import { toast } from 'react-toastify';
 import { Rings } from 'react-loader-spinner';
 import useGameWebSocket from '../../../hooks/useGameWebSocket';
+import History from '../../../components/Record/Record';
+import { RecordData } from '../../../api/data/RecordData';
+import {
+  WS_ERROR,
+  WS_FINISH,
+  WS_HITTED,
+  WS_MISSED,
+  WS_OP_ALIVE,
+  WS_TURN,
+  WS_TURN_MISSED,
+  letters,
+} from '../../../utils/Constants';
+import {
+  addGameRecord,
+  fetchGameData,
+  fetchGameRecordsData,
+  hitMissed,
+  hitMyBox,
+  hitOpponentMissed,
+  hitOpponentBox,
+  selectGame,
+  selectGameFinishedStatus,
+  selectGameIsMyTurn,
+  selectGameMyFleet,
+  selectGameOpponentFleet,
+  selectGameRecords,
+  updateFinishedStatus,
+  updateIsMyTurn,
+  selectGameLoading,
+  selectGameError,
+} from '../../../store/slices/GameSlice';
+import { BoardState } from '../../../api/domain/BoardDomain';
+import { useTranslation } from 'react-i18next';
+import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
+import { formatError } from '../../../utils/Utils';
+import { PATH_HOME } from '../../../utils/Routes';
+import { Coordinates } from '../../../services/FleetGenerator';
 
 interface GameProps {}
-
-interface Finished {
-  first: BoxDomain;
-  second: boolean;
-}
 
 export interface FleetData {
   ships: ShipData[];
@@ -29,34 +57,33 @@ export interface FleetData {
 }
 
 const Game: FC<GameProps> = () => {
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+  const loading = useAppSelector(selectGameLoading);
+  const error = useAppSelector(selectGameError);
   const webSocket = useGameWebSocket();
-  const [game, setGame] = React.useState<GameDomain>();
-  const [myFleet, setMyFleet] = React.useState<FleetData>();
-  const [opponentFleet, setOpponentFleet] = React.useState<FleetData>();
+  const game = useAppSelector(selectGame);
+  const myFleet = useAppSelector(selectGameMyFleet);
+  const opponentFleet = useAppSelector(selectGameOpponentFleet);
   const { code } = useParams();
   const token = useAppSelector(selectAuthToken);
-  const [isMyTurn, setMyTurn] = React.useState<boolean | null>(false);
-  const [finishedStatus, setFinishedStatus] = React.useState<any>(null);
+  const isMyTurn = useAppSelector(selectGameIsMyTurn);
+  const finishedStatus = useAppSelector(selectGameFinishedStatus);
+  const [highLightCoordinates, sethighLightCoordinates] =
+    React.useState<Coordinates | null>(null);
   const [opponentAlive, setOpponentAlive] = React.useState<boolean[] | null>(
     null
   );
+  const records = useAppSelector(selectGameRecords);
   const navigate = useNavigate();
-
-  const determineTurn = (game: GameDomain): boolean => {
-    if (game) {
-      setMyTurn(game.turn === game.board1.id);
-    }
-    return false;
-  };
-
   const topics = [
-    '/user/queue/hitted',
-    '/user/queue/turn',
-    '/user/queue/turn-missed',
-    '/user/queue/missed',
-    '/user/queue/error',
-    '/user/queue/finish',
-    '/user/queue/opponent-alive',
+    WS_HITTED,
+    WS_MISSED,
+    WS_TURN,
+    WS_TURN_MISSED,
+    WS_ERROR,
+    WS_FINISH,
+    WS_OP_ALIVE,
   ];
 
   const gameFinished = (localGame: GameDomain | null): boolean => {
@@ -66,39 +93,71 @@ const Game: FC<GameProps> = () => {
     }
     return false;
   };
-/* 
-  const handlePing = React.useCallback(
-    debounce((stompClient) => {
-      // Envía el ping al servidor
-      stompClient.send('/ping');
 
-      // Maneja la respuesta
-      stompClient.subscribe('/pong', (response) => {
-        const { body } = response;
-        const result = JSON.parse(body);
+  const createHistory = (
+    box: BoxDomain | null,
+    empty: EmptyBoxDomain | null,
+    isOpponent: boolean
+  ) => {
+    let x = 0;
+    let y = 0;
+    let type = '';
+    if (box) {
+      x = box.x;
+      y = box.y;
+      type = 'BOX';
+    } else if (empty) {
+      x = empty.x;
+      y = empty.y;
+      type = 'EMPTY';
+    } else {
+      return;
+    }
+    const newRecord: RecordData = {
+      x: letters[x],
+      y: y + 1,
+      createdAt: new Date(),
+      player: isOpponent ? game!.board2.owner : game!.board1.owner,
+      type,
+    };
+    dispatch(addGameRecord(newRecord));
+  };
 
-        if (result.status === 'fail') {
-          // Actualiza el estado o la variable de conteo de pings fallidos
-          // Si se han recibido 3 pings fallidos, llama a la función que actualiza el estado del componente
-        }
+  const setHistory = (xData: string, yData: number, owner?: string) => {
+    const x = letters.indexOf(xData);
+    const y = yData - 1;
+    if (owner) {
+      sethighLightCoordinates({
+        x,
+        y,
+        owner,
       });
-    }, 1000), // Espera 1 segundo antes de ejecutar la función debounce
-    []
-  ); */
+    }
+  };
 
   React.useEffect(() => {
-    let intervalId: NodeJS.Timer;
-    if (webSocket.connected) {
-      setTimeout(() => {
-        /* intervalId = setInterval(() => {
-          webSocket.sendMessage('/app/api/v1/ws/game/opponent-alive');
-        }, 3000); */
-      }, 4000);
+    if (code) {
+      dispatch(
+        fetchGameData({
+          data: code,
+          showFinished: false,
+        })
+      ).then(() =>
+        dispatch(fetchGameRecordsData(code)).then(() =>
+          webSocket.connect(
+            `${process.env.REACT_APP_API_URL}/ws/game/room/`,
+            topics,
+            { 'x-auth-token': token, 'game-code': code }
+          )
+        )
+      );
     }
+  }, []);
+
+  React.useEffect(() => {
     return () => {
       if (webSocket.connected) {
         webSocket.disconnect();
-        clearInterval(intervalId);
       }
     };
   }, [webSocket.connected]);
@@ -106,95 +165,57 @@ const Game: FC<GameProps> = () => {
   React.useEffect(() => {
     if (webSocket.currentMessage) {
       switch (webSocket.currentMessage[0]) {
-        case '/user/queue/hitted':
+        case WS_HITTED:
           {
-            setMyTurn(false);
+            dispatch(updateIsMyTurn(false));
             const box: BoxDomain = JSON.parse(webSocket.currentMessage[1]);
-            const ship: ShipData = mapBoxShipsDomainToData([box])[0];
-            const shipAux = opponentFleet?.ships.find((s) => s.id === ship.id);
-            if (shipAux) {
-              shipAux.boxes = shipAux.boxes.concat(ship.boxes);
-              setOpponentFleet(opponentFleet);
-            } else {
-              opponentFleet?.ships.push(ship);
-              setOpponentFleet(opponentFleet);
-            }
+            dispatch(hitOpponentBox(box));
+            createHistory(box, null, false);
           }
           break;
-        case '/user/queue/turn':
+        case WS_TURN:
           {
-            setMyTurn(true);
+            dispatch(updateIsMyTurn(true));
             const box: BoxDomain = JSON.parse(webSocket.currentMessage[1]);
-            const ship: ShipData = mapBoxShipsDomainToData([box])[0];
-            const shipAux = myFleet?.ships.find((s) => s.id === ship.id);
-            if (shipAux) {
-              const box = shipAux.boxes.find((b) => b.id === ship.boxes[0].id);
-              if (box) {
-                box.touched = true;
-                setMyFleet(myFleet);
-              }
-            }
+            dispatch(hitMyBox(box));
+            createHistory(box, null, true);
           }
           break;
-        case '/user/queue/turn-missed':
+        case WS_TURN_MISSED:
           {
-            setMyTurn(true);
+            dispatch(updateIsMyTurn(true));
             const emptyBox: EmptyBoxDomain = JSON.parse(
               webSocket.currentMessage[1]
             );
-            myFleet?.emptyBoxes.push(emptyBox);
-            setMyFleet(myFleet);
+            dispatch(hitMissed(emptyBox));
+            createHistory(null, emptyBox, true);
           }
           break;
-        case '/user/queue/missed':
+        case WS_MISSED:
           {
-            setMyTurn(false);
+            dispatch(updateIsMyTurn(false));
             const emptyBox: EmptyBoxDomain = JSON.parse(
               webSocket.currentMessage[1]
             );
-            opponentFleet?.emptyBoxes.push(emptyBox);
-            setOpponentFleet(opponentFleet);
+            dispatch(hitOpponentMissed(emptyBox));
+            createHistory(null, emptyBox, false);
           }
           break;
-        case '/user/queue/finish':
-          {
-            const finished: Finished = JSON.parse(webSocket.currentMessage[1]);
-            setMyTurn(null);
-            if (webSocket.connected) {
-              webSocket.disconnect();
-            }
-            client
-              .get<GameDomain>(ENDPOINT_GET_CURRENT_GAME, {
-                params: { code: code },
+        case WS_FINISH:
+          dispatch(updateIsMyTurn(false));
+          if (webSocket.connected) {
+            webSocket.disconnect();
+          }
+          if (code) {
+            dispatch(
+              fetchGameData({
+                data: code,
+                showFinished: true,
               })
-              .then((response) => {
-                setGame(response.data);
-                setFinishedStatus(finished.second ? 'Victoria' : 'Derrota');
-                setMyFleet({
-                  ships: mapBoxShipsDomainToData(response.data.board1.boxes),
-                  emptyBoxes: response.data.board1.emptyBoxes,
-                });
-                setOpponentFleet({
-                  ships: mapBoxShipsDomainToData(response.data.board2.boxes),
-                  emptyBoxes: response.data.board2.emptyBoxes,
-                });
-              })
-              .catch((err) => {
-                console.error(err);
-                toast.error('Error inesperado', {
-                  position: 'top-right',
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  pauseOnHover: true,
-                  draggable: true,
-                  progress: undefined,
-                  theme: 'light',
-                });
-              });
+            ).then(() => dispatch(fetchGameRecordsData(code)));
           }
           break;
-        case '/user/queue/opponent-alive':
+        case WS_OP_ALIVE:
           {
             const response = webSocket.currentMessage[1] === 'true';
             if (response) {
@@ -209,74 +230,80 @@ const Game: FC<GameProps> = () => {
             }
           }
           break;
-        case '/user/queue/error':
-          {
-            console.log('ERROR');
-            console.log(webSocket.currentMessage[1]);
-            toast.error(webSocket.currentMessage[1], {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light',
-            });
-          }
+        case WS_ERROR:
+          console.log(webSocket.currentMessage);
+          toast.error(webSocket.currentMessage[1], {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          });
           break;
       }
     }
   }, [webSocket.currentMessage]);
 
   React.useEffect(() => {
-    client
-      .get<GameDomain>(ENDPOINT_GET_CURRENT_GAME, {
-        params: { code: code },
-      })
-      .then((response) => {
-        setGame(response.data);
-        if (gameFinished(response.data)) {
-          setMyTurn(null);
-        } else {
-          determineTurn(response.data);
-          webSocket.connect(
-            `${process.env.REACT_APP_API_URL}/ws/game/room/`,
-            topics,
-            { 'x-auth-token': token, 'game-code': response.data.code }
-          );
-        }
-        setMyFleet({
-          ships: mapBoxShipsDomainToData(response.data.board1.boxes),
-          emptyBoxes: response.data.board1.emptyBoxes,
-        });
-        setOpponentFleet({
-          ships: mapBoxShipsDomainToData(response.data.board2.boxes),
-          emptyBoxes: response.data.board2.emptyBoxes,
-        });
-      })
-      .catch((err) => {
-        console.error(err);
+    if (loading) {
+      dispatch(showSpinner());
+    } else {
+      dispatch(hideSpinner());
+    }
+  }, [loading]);
+
+  React.useEffect(() => {
+    if (error) {
+      if (error.origin === 'fetchGameData') {
         navigate(PATH_HOME);
-      });
-  }, []);
+      } else {
+        console.error(error.data);
+        toast.error(formatError(error.origin), {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        });
+      }
+    }
+  }, [error]);
 
   function sendMessage(x: number, y: number) {
     webSocket.sendMessage('/app/api/v1/ws/game/room', { x, y });
   }
+
+  const getHighlight = (owner: string): Coordinates | undefined => {
+    console.log(highLightCoordinates?.owner);
+    console.log(owner);
+    if (highLightCoordinates?.owner && highLightCoordinates?.owner === owner)
+      return highLightCoordinates;
+  };
 
   return game && myFleet && opponentFleet ? (
     <div className={styles.Game}>
       {finishedStatus && (
         <div
           className={styles.FinishedContainer}
-          onClick={() => setFinishedStatus(null)}
+          onClick={() => dispatch(updateFinishedStatus(null))}
         >
-          {[...finishedStatus].map((l, i) => (
+          {[
+            ...(finishedStatus === BoardState[BoardState.WIN]
+              ? t('game.win')
+              : t('game.lose')),
+          ].map((l, i) => (
             <span
               key={`${l}-${i}`}
               className={`${styles.FinishedText} ${
-                finishedStatus === 'Victoria' ? styles.text1 : styles.text2
+                finishedStatus === BoardState[BoardState.WIN]
+                  ? styles.text1
+                  : styles.text2
               }`}
             >
               {l}
@@ -288,7 +315,7 @@ const Game: FC<GameProps> = () => {
       <div className='row title user-select-none mx-3 mb-3'>
         <div className='col-4'></div>
         <div className='col-4'>
-          {isMyTurn === null ? 'Partida finalizada' : 'Partida'}
+          {isMyTurn === null ? t('game.end-game') : t('game.title')}
         </div>
         <div className={`col-4 text-end ${styles.TurnText}`}>
           {(webSocket.sending ||
@@ -306,22 +333,24 @@ const Game: FC<GameProps> = () => {
               ariaLabel='rings-loading'
             />
           )}
-          {isMyTurn !== null && (isMyTurn ? 'Tu turno' : 'Turno del oponente')}
+          {isMyTurn !== null &&
+            (isMyTurn ? t('game.your-turn') : t('game.opponent-turn'))}
         </div>
       </div>
       <div className={styles.Board}>
-        <div className='container'>
+        <div className='px-5'>
           <div className='row'>
-            <div className='col-6 border-end pe-5'>
+            <div className='col-5 border-end pe-5'>
               <GameSection
                 fleet={myFleet}
                 playerName={game.board1.owner.name}
                 isOpponent={false}
                 size={game.board1.width}
                 disable={!isMyTurn || false}
+                highLightBox={getHighlight(game.board1.owner.name)}
               />
             </div>
-            <div className='col-6 ps-5'>
+            <div className='col-5 ps-5'>
               <GameSection
                 online={opponentAlive}
                 onClick={sendMessage}
@@ -330,6 +359,14 @@ const Game: FC<GameProps> = () => {
                 isOpponent={true}
                 disable={isMyTurn || false}
                 size={game.board2.width}
+                highLightBox={getHighlight(game.board2.owner.name)}
+              />
+            </div>
+            <div className='col-2 ps-5'>
+              <History
+                setHistory={setHistory}
+                records={records}
+                modified={false}
               />
             </div>
           </div>

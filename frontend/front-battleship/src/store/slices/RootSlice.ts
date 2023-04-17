@@ -7,7 +7,7 @@ const rootReducer = () => {
   return combineReducers({
     authState: authReducer,
     spinnerState: spinnerReducer,
-    gameSlice: gameReducer
+    gameState: gameReducer
   });
 };
 

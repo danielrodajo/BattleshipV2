@@ -13,9 +13,10 @@ interface Celdas {
   celdas: Coordinates[];
 }
 
-interface Coordinates {
+export interface Coordinates {
   x: number;
   y: number;
+  owner?: string;
 }
 
 const FleetGenerator = (size: number): ShipData[] => {

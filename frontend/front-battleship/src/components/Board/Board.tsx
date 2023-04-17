@@ -2,11 +2,11 @@ import React, { FC } from 'react';
 import styles from './Board.module.css';
 import Box from '../Box/Box';
 import { letters } from '../../utils/Constants';
-import { ShipData } from '../../api/data/ShipData';
 import { BoxData } from '../../api/data/BoxData';
 import { ShipType } from '../../api/domain/ShipDomain';
 import { EmptyBoxDomain } from '../../api/domain/EmptyBoxDomain';
 import { FleetData } from '../../pages/GameSection/Game/Game';
+import { Coordinates } from '../../services/FleetGenerator';
 
 interface BoardProps {
   isOpponent: boolean;
@@ -14,6 +14,7 @@ interface BoardProps {
   fleet: FleetData;
   disable?: boolean;
   onClick?: (x: number, y: number) => void;
+  highLightBox?: Coordinates;
 }
 
 const Board: FC<BoardProps> = (props) => {
@@ -86,6 +87,7 @@ const Board: FC<BoardProps> = (props) => {
                   isOpponent={props.isOpponent}
                   disable={props.disable}
                   onClick={props.onClick}
+                  highlight={props.highLightBox && props.highLightBox.x === x && props.highLightBox.y === y}
                   x={x}
                   y={y}
                 />

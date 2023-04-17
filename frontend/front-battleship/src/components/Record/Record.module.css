@@ -1,0 +1,63 @@
+.Record {
+  box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+    rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px,
+    rgba(240, 46, 170, 0.05) 25px 25px;
+
+  height: 680px !important;
+}
+
+.Title {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.RecordBox {
+  height: 560px;
+  overflow: auto;
+}
+
+.RecordChildBox {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Anchura del scrollbar */
+.RecordBox::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Estilo del scrollbar */
+.RecordBox::-webkit-scrollbar-track {
+  background-color: #f1f1f1;
+}
+
+/* Estilo del thumb (scrollbar) */
+.RecordBox::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+}
+
+/* Hover en el thumb (scrollbar) */
+.RecordBox::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+.RecordHits {
+  box-shadow: inset 0 0 15px rgba(212, 0, 0, 0.5);
+}
+
+.RecordSpan {
+  text-align: center;
+}
+
+.RecordSpan:hover {
+  cursor: pointer;
+  box-shadow: inset 0 0 15px blue;
+}
+
+.RecordColumn {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: fit-content(100%);
+}

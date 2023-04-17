@@ -104,5 +104,18 @@
         "battleship": "battleship",
         "submarine": "submarine",
         "destroyer": "destroyer"
+    },
+    "game": {
+        "title": "game",
+        "end-game": "game over",
+        "win": "victory",
+        "lose": "defeat",
+        "playing": "Playing",
+        "your-turn": "Your turn",
+        "opponent-turn": "Opponent's turn"
+    },
+    "record": {
+        "title": "history",
+        "btn": "Restore"
     }
 }
