@@ -99,6 +99,12 @@
             "title": "acciones",
             "see": "ver",
             "access": "entrar"
+        },
+        "gameStates": {
+            "win": "victoria",
+            "lose": "derrota",
+            "created": "creada",
+            "in_progress": "jugando"
         }
     },
     "ships": {

@@ -75,7 +75,7 @@ const MyGames: FC<MyGamesProps> = () => {
           ) : (
             games.map((game) => (
               <tr key={game.id + '-tr'}>
-                <th>{game.board1.state}</th>
+                <th className='text-uppercase'>{t('myGames.gameStates.'+game.board1.state.toLowerCase())}</th>
                 <td>{game.board2.owner.nickname}</td>
                 <td>{formatDate(game.createdAt)}</td>
                 <td>0</td>

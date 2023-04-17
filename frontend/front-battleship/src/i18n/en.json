@@ -96,9 +96,15 @@
         "date": "date",
         "points": "points earned",
         "actions": {
-        "title": "actions",
-        "see": "see",
-        "access": "access"
+            "title": "actions",
+            "see": "see",
+            "access": "access"
+        },
+        "gameStates": {
+            "win": "victory",
+            "lose": "defeat",
+            "created": "created",
+            "in_progress": "playing"
         }
     },
     "ships": {

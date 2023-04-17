@@ -6,6 +6,10 @@
   height: 680px !important;
 }
 
+.Record * {
+  user-select: none;
+}
+
 .Title {
   text-align: center;
   text-transform: uppercase;
