@@ -66,6 +66,16 @@
             },
             "btn": "jugar"
         },
+        "friends": {
+            "text": "invitar",
+            "features": {
+                "points": "No obtendrás puntos",
+                "vsplayers": "Enviarás una invitación de juego",
+                "limitround": "No tendrás tiempo límite de ronda",
+                "sizetable": "Podrás personalizar tus partidas"
+            },
+            "btn": "crear partida"
+        },
         "offline": {
             "text": "solitario",
             "features": {

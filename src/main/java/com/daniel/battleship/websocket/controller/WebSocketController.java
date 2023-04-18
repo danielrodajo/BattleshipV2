@@ -72,7 +72,7 @@ public class WebSocketController {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			BoxCoordinates coordinates = mapper.readValue(coordinatesString, BoxCoordinates.class);
-			Pair<Object, Boolean> hitResult = hitBoxOpponent(user.getName(), opponentData.getKey(), opponentData.getValue().getValue(),
+			Pair<Object, Boolean> hitResult = hitBoxOpponent(opponentData.getKey(), opponentData.getValue().getValue(),
 					coordinates);
 			if (hitResult == null) {
 				simpMessagingTemplate.convertAndSendToUser(user.getName(), Constants.WS_ERROR_RESPONSE, "ERROR");
@@ -136,7 +136,7 @@ public class WebSocketController {
 	}
 
 	@Transactional
-	public Pair<Object, Boolean> hitBoxOpponent(String name, String opponentName, String gameCode, BoxCoordinates coordinates) {
+	public Pair<Object, Boolean> hitBoxOpponent(String opponentName, String gameCode, BoxCoordinates coordinates) {
 		Game game = gameService.getGameByCode(gameCode);
 		Board myBoard = null;
 		Board boardOpponent = null;
@@ -155,7 +155,7 @@ public class WebSocketController {
 				.filter(box -> box.getX().equals(coordinates.getX()) && box.getY().equals(coordinates.getY()))
 				.findFirst().orElse(null);
 
-		AppUser user = playerService.getByEmail(name);
+		AppUser user = playerService.getByEmail(opponentName);
 		if (hitBox != null) {
 			if (hitBox.getTouched()) {
 				throw new IllegalArgumentException("La celda ya esta marcada");

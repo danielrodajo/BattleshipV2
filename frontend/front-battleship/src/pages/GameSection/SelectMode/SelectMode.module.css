@@ -4,6 +4,12 @@
     text-transform: uppercase;
 }
 
+.SelectGameContainer {
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
 
 .TextSpinner span{
     position: relative;

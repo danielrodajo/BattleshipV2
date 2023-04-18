@@ -17,7 +17,6 @@ interface GameSectionProps {
 }
 
 const GameSection: FC<GameSectionProps> = (props) => {
-  console.log(props.highLightBox);
   return (
     <div className={styles.GameSection}>
       {props.online && props.online.length > 3 && (

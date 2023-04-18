@@ -80,6 +80,12 @@ const SelectMode: FC<SelectModeProps> = () => {
     t('selectGame.offline.features.limitround'),
     t('selectGame.offline.features.sizetable'),
   ];
+  const friendsText = [
+    t('selectGame.friends.features.points'),
+    t('selectGame.friends.features.vsplayers'),
+    t('selectGame.friends.features.limitround'),
+    t('selectGame.friends.features.sizetable'),
+  ];
 
   return (
     <div className={`${styles.SelectMode} container h-100`}>
@@ -108,8 +114,16 @@ const SelectMode: FC<SelectModeProps> = () => {
           </div>
         </div>
       ) : (
-        <div className='h-100 row'>
-          <div className='col-6 d-flex justify-content-center align-items-center'>
+        <div className={styles.SelectGameContainer}>
+        <div className='d-flex justify-content-center align-items-center'>
+          <GameMode
+            title={t('selectGame.friends.text')}
+            bodyLines={friendsText}
+            playButton={t('selectGame.friends.btn')}
+            handlePlay={() => console.log('friends')}
+          />
+        </div>
+          <div className='d-flex justify-content-center align-items-center'>
             <GameMode
               title={t('selectGame.online.text')}
               bodyLines={onlineText}
@@ -117,7 +131,7 @@ const SelectMode: FC<SelectModeProps> = () => {
               handlePlay={searchOnline}
             />
           </div>
-          <div className='col-6 d-flex justify-content-center align-items-center'>
+          <div className='d-flex justify-content-center align-items-center'>
             <GameMode
               title={t('selectGame.offline.text')}
               bodyLines={offlineText}

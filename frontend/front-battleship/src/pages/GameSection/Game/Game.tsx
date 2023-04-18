@@ -117,7 +117,7 @@ const Game: FC<GameProps> = () => {
       x: letters[x],
       y: y + 1,
       createdAt: new Date(),
-      player: isOpponent ? game!.board2.owner : game!.board1.owner,
+      player: isOpponent ? game!.board1.owner : game!.board2.owner,
       type,
     };
     dispatch(addGameRecord(newRecord));
@@ -219,7 +219,6 @@ const Game: FC<GameProps> = () => {
           }
           break;
         case WS_ERROR:
-          console.log(webSocket.currentMessage);
           toast.error(webSocket.currentMessage[1], {
             position: 'top-right',
             autoClose: 5000,
@@ -289,8 +288,6 @@ const Game: FC<GameProps> = () => {
   };
 
   const getHighlight = (owner: string): Coordinates | undefined => {
-    console.log(highLightCoordinates?.owner);
-    console.log(owner);
     if (highLightCoordinates?.owner && highLightCoordinates?.owner === owner)
       return highLightCoordinates;
   };

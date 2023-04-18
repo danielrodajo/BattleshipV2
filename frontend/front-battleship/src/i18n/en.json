@@ -66,13 +66,23 @@
             },
             "btn": "play"
         },
+        "friends": {
+            "text": "invite",
+            "features": {
+                "points": "You won't earn points",
+                "vsplayers": "You will send a game invitation",
+                "limitround": "You will not have a round time limit",
+                "sizetable": "Customize your games"
+            },
+            "btn": "create game"
+        },
         "offline": {
             "text": "offline",
             "features": {
-                "points": "You won't get any points",
+                "points": "You won't earn points",
                 "vsplayers": "You will play against the machine",
                 "limitround": "You will not have a round time limit",
-                "sizetable": "You will be able to customize your games"
+                "sizetable": "Customize your games"
             },
             "btn": "create game"
         }
