@@ -12,7 +12,7 @@ import {
   PATH_GAME,
   PATH_PREPARE_BOARD,
   passParameters,
-} from '../../utils/Routes';
+} from '../../Routes';
 import { useTranslation } from 'react-i18next';
 
 interface MyGamesProps {}

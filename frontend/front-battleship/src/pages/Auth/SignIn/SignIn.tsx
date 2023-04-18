@@ -14,7 +14,7 @@ import {
 } from '../../../store/slices/AuthSlice';
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
-import { PATH_SIGNUP } from '../../../utils/Routes';
+import { PATH_SIGNUP } from '../../../Routes';
 import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
 import { toast } from 'react-toastify';
 import { getUserData } from '../../../store/slices/AuthSlice';

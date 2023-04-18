@@ -9,7 +9,6 @@ interface GameModeProps {
 }
 
 const GameMode: FC<GameModeProps> = (props) => {
-
   return (
     <div className={`card ${styles.GameMode}`}>
       <div
@@ -28,11 +27,13 @@ const GameMode: FC<GameModeProps> = (props) => {
           </ul>
         )}
       </div>
-      <div
-        className={`card-footer text-center py-2 ${styles.PlayBtn}`}
-        onClick={props.handlePlay}
-      >
-        {props.playButton}
+      <div className={styles.wrapper}>
+        <div
+          className={`card-footer text-center py-2 ${styles.PlayBtn} ${styles.wave}`}
+          onClick={props.handlePlay}
+        >
+          <span className={styles.textPlayBtn}>{props.playButton}</span>
+        </div>
       </div>
     </div>
   );

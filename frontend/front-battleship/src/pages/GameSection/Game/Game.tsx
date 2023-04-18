@@ -46,7 +46,7 @@ import { BoardState } from '../../../api/domain/BoardDomain';
 import { useTranslation } from 'react-i18next';
 import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
 import { formatError } from '../../../utils/Utils';
-import { PATH_HOME } from '../../../utils/Routes';
+import { PATH_HOME } from '../../../Routes';
 import { Coordinates } from '../../../services/FleetGenerator';
 
 interface GameProps {}

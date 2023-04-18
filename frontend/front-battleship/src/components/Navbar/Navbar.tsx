@@ -9,7 +9,7 @@ import {
   PATH_HOME,
   PATH_GAME_MODE,
   PATH_MY_GAMES,
-} from '../../utils/Routes';
+} from '../../Routes';
 import { signOut, selectUserData } from '../../store/slices/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { useTranslation } from 'react-i18next';

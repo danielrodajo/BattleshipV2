@@ -6,33 +6,44 @@ import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useAppSelector } from '../../../hooks/reduxHooks';
 import { selectAuthToken } from '../../../store/slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
-import { PATH_PREPARE_BOARD, passParameters } from '../../../utils/Routes';
+import {
+  PATH_CUSTOMIZE_GAME,
+  PATH_PREPARE_BOARD,
+  passParameters,
+} from '../../../Routes';
 import client from '../../../api/client';
 import {
   ENDPOINT_GAME_SEARCHING,
   ENDPOINT_GET_BOARD_BY_GAME,
 } from '../../../utils/Endpoints';
 import { useTranslation } from 'react-i18next';
+import SearchingGame from '../../../components/SearchingGame/SearchingGame';
 
 interface SelectModeProps {}
 
 const SelectMode: FC<SelectModeProps> = () => {
   const { t } = useTranslation();
   const [searching, setSearching] = React.useState(false);
-  const [sse, setSse] = React.useState<EventSourcePolyfill>();
+  const [sse, setSse] = React.useState<EventSourcePolyfill | null>();
   const token = useAppSelector(selectAuthToken);
   const navigate = useNavigate();
 
   React.useEffect(() => {
     return () => {
-      if (sse) {
-        setSearching(false);
-        sse.close();
-      }
+      disconnect();
     };
   }, [sse]);
 
+  const disconnect = () => {
+    if (sse) {
+      setSearching(false);
+      sse.close();
+      setSse(null);
+    }
+  };
+
   const searchOnline = () => {
+    setSearching(true);
     const eventSource = new EventSourcePolyfill(
       `${process.env.REACT_APP_API_URL}${ENDPOINT_GAME_SEARCHING}`,
       {
@@ -42,7 +53,6 @@ const SelectMode: FC<SelectModeProps> = () => {
       }
     );
 
-    setSearching(true);
     setSse(eventSource);
 
     eventSource.onmessage = (e) => console.log(e);
@@ -60,12 +70,6 @@ const SelectMode: FC<SelectModeProps> = () => {
       setSearching(false);
       eventSource.close();
     };
-  };
-
-  const addSpan = (text: any) => {
-    return [...text].map((letter, i) => (
-      <span key={`${letter}-${i}`}>{letter}</span>
-    ));
   };
 
   const onlineText = [
@@ -89,58 +93,35 @@ const SelectMode: FC<SelectModeProps> = () => {
 
   return (
     <div className={`${styles.SelectMode} container h-100`}>
-      {/*       <button onClick={handleSSE}>SSE</button> */}
-      {searching ? (
-        <div className=' h-100 d-flex justify-content-center align-items-center'>
-          <div className='container'>
-            <div className='row'>
-              <div className={`col-12 text-center ${styles.TextSpinner}`}>
-                {addSpan(t('selectGame.searching'))}
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-12 d-flex justify-content-center align-items-center'>
-                <ThreeDots
-                  height='80'
-                  width='80'
-                  radius='9'
-                  color='#6e30b4'
-                  ariaLabel='three-dots-loading'
-                  wrapperStyle={{}}
-                  visible={true}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className={styles.SelectGameContainer}>
+      <SearchingGame searching={searching} disconnect={disconnect} />
+      <div
+        className={`${styles.SelectGameContainer} ${!searching && styles.show}`}
+      >
         <div className='d-flex justify-content-center align-items-center'>
           <GameMode
             title={t('selectGame.friends.text')}
             bodyLines={friendsText}
             playButton={t('selectGame.friends.btn')}
-            handlePlay={() => console.log('friends')}
+            handlePlay={() => navigate(PATH_CUSTOMIZE_GAME)}
           />
         </div>
-          <div className='d-flex justify-content-center align-items-center'>
-            <GameMode
-              title={t('selectGame.online.text')}
-              bodyLines={onlineText}
-              playButton={t('selectGame.online.btn')}
-              handlePlay={searchOnline}
-            />
-          </div>
-          <div className='d-flex justify-content-center align-items-center'>
-            <GameMode
-              title={t('selectGame.offline.text')}
-              bodyLines={offlineText}
-              playButton={t('selectGame.offline.btn')}
-              handlePlay={() => console.log('OFFLINE')}
-            />
-          </div>
+        <div className='d-flex justify-content-center align-items-center'>
+          <GameMode
+            title={t('selectGame.online.text')}
+            bodyLines={onlineText}
+            playButton={t('selectGame.online.btn')}
+            handlePlay={() =>searchOnline()}
+          />
         </div>
-      )}
+        <div className='d-flex justify-content-center align-items-center'>
+          <GameMode
+            title={t('selectGame.offline.text')}
+            bodyLines={offlineText}
+            playButton={t('selectGame.offline.btn')}
+            handlePlay={() => console.log('OFFLINE')}
+          />
+        </div>
+      </div>
     </div>
   );
 };

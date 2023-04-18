@@ -1,34 +1,83 @@
 :root {
-    --text-shadow: #501368;
-  }
+  --text-shadow: #501368;
+}
 
 .GameMode {
-    width: 25rem;
-    height: 500px;
-    transition: box-shadow 0.4s;
+  width: 25rem;
+  height: 500px;
+  transition: box-shadow 0.4s;
 }
 
-.GameMode:hover {
-   box-shadow: 0px 0px 10px rgb(133, 133, 133);
-}
-
-.Title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: rgb(242, 216, 252);
-    text-shadow: 2px 0 var(--text-shadow), -2px 0 var(--text-shadow), 0 2px var(--text-shadow), 0 -2px var(--text-shadow),
-             1px 1px var(--text-shadow), -1px -1px var(--text-shadow), 1px -1px var(--text-shadow), -1px 1px var(--text-shadow);
-    letter-spacing: 2.5px;
-}
-
-.PlayBtn {
-    font-size: 2rem;
-    text-transform: uppercase;
-    border: none;
+.GameMode * {
     user-select: none;
 }
 
+.GameMode:hover {
+  box-shadow: 0px 0px 10px rgb(133, 133, 133);
+}
+
+.Title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(242, 216, 252);
+  text-shadow: 2px 0 var(--text-shadow), -2px 0 var(--text-shadow),
+    0 2px var(--text-shadow), 0 -2px var(--text-shadow),
+    1px 1px var(--text-shadow), -1px -1px var(--text-shadow),
+    1px -1px var(--text-shadow), -1px 1px var(--text-shadow);
+  letter-spacing: 2.5px;
+}
+
+.PlayBtn {
+  font-size: 2rem;
+  text-transform: uppercase;
+  border: none;
+  user-select: none;
+  position: relative;
+  transition: all 1.5s;
+}
+
 .PlayBtn:hover {
-    cursor: pointer;
-    
+  cursor: pointer;
+}
+.GameMode:hover .textPlayBtn {
+  font-size: 2.3rem !important;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #fff, 0 0 50px #fff, 0 0 60px #fff, 0 0 70px #fff, 0 0 80px #fff;;
+}
+
+.wave {
+  text-decoration: none;
+  overflow: hidden;
+  z-index: 0;
+}
+.textPlayBtn {
+  position: relative;
+  z-index: 10;
+  transition: all 1s;
+}
+
+.wave:before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 150px;
+  background-color: #58d5eb;
+  top: -150px;
+  left: -150%;
+  animation: wave 5s infinite linear;
+  transition: all 1s;
+}
+
+.GameMode:hover .wave:before {
+  left: 60%;
+}
+
+@keyframes wave {
+  0% {
+    transform: translate(-50%) rotate(-180deg);
+  }
+
+  100% {
+    transform: translate(-50%) rotate(360deg);
+  }
 }

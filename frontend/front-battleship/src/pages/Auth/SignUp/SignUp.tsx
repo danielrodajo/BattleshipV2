@@ -12,7 +12,7 @@ import {
 } from '../../../store/slices/AuthSlice';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import { useNavigate } from 'react-router-dom';
-import { PATH_SIGNIN } from '../../../utils/Routes';
+import { PATH_SIGNIN } from '../../../Routes';
 import { toast } from 'react-toastify';
 import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
 import { useTranslation } from 'react-i18next';

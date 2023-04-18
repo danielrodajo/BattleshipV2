@@ -4,6 +4,50 @@
     rgba(240, 46, 170, 0.05) 25px 25px;
 
   height: 680px !important;
+  animation: grow 0.3s ease-out;
+}
+
+@keyframes grow {
+  0% {
+    transform: translate(9%, 3%);
+    box-shadow: none;
+
+  }
+  20% {
+    transform: translate(7.2%, 2.4%);
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px;
+    
+  }
+  40% {
+    transform: translate(5.4%, 1.8%);
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px;
+    
+  }
+  60% {
+    transform: translate(3.6%, 1.2%);
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+      rgba(240, 46, 170, 0.2) 15px 15px;
+    
+  }
+  80% {
+    transform: translate(1.8%, 0.6%);
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+      rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px;
+    
+  }
+  100% {
+    transform: translate(0%, 0%);
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px,
+      rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px,
+      rgba(240, 46, 170, 0.05) 25px 25px;
+    
+  }
+/*   from {
+    transform: translate(9%, 3%);
+  }
+  to {
+    transform: translate(0%, 0%);
+  } */
 }
 
 .Record * {

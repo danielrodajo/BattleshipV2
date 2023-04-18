@@ -12,7 +12,7 @@ import {
   PATH_GAME,
   PATH_HOME,
   passParameters,
-} from '../../utils/Routes';
+} from '../../Routes';
 import carrier from '../../assets/carrier.png';
 import Ship from '../../components/Ship/Ship';
 import Board from '../../components/Board/Board';
