@@ -15,7 +15,7 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Override
 	public AppUser save(AppUser player) {
 		return this.userRepository.save(player);
@@ -51,5 +51,11 @@ public class PlayerServiceImpl implements PlayerService {
 	public AppUser getByEmail(String email) {
 		return this.userRepository.findByEmail(email).orElseThrow();
 	}
-	
+
+	@Override
+	public AppUser addPoints(Long points, AppUser user) {
+		user.setPoints(user.getPoints() + points);
+		return this.update(user);
+	}
+
 }

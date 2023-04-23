@@ -55,7 +55,6 @@ const useGameWebSocket = () => {
     if (stompClient) {
       stompClient.disconnect();
       stompClient.deactivate();
-      console.log('Disconnected');
     }
     setConnected(false);
   }

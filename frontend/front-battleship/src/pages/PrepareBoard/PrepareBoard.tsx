@@ -26,8 +26,10 @@ import {
   mapBoxShipsDomainToData,
 } from '../../api/mappers/BoxShipMapper';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { selectAuthToken } from '../../store/slices/AuthSlice';
+import { refreshToken, selectAuthRefreshToken, selectAuthToken } from '../../store/slices/AuthSlice';
 import { useTranslation } from 'react-i18next';
+import { parseJwt } from '../../utils/Utils';
+import { fetchRefreshToken } from '../../api/requests/authAPI';
 
 interface PrepareBoardProps {}
 
@@ -39,6 +41,7 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
   const [fleet, setFleet] = React.useState<ShipData[]>([]);
   const [waiting, setWaiting] = React.useState(false);
   const token = useAppSelector(selectAuthToken);
+  const rToken = useAppSelector(selectAuthRefreshToken);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -59,12 +62,19 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
       });
   }, [code, navigate]);
 
-  const waitForGame = (code: string) => {
+  const waitForGame = async (code: string) => {
+    const decodedJwt = parseJwt(token!);
+    let auxToken = token;
+    if (decodedJwt.exp * 1000 < Date.now()) {
+      const response = await fetchRefreshToken(rToken!);
+      auxToken = response?.token;
+      dispatch(refreshToken(response));
+    }
     const eventSource = new EventSourcePolyfill(
       `${process.env.REACT_APP_API_URL}${ENDPOINT_GAME_WAITING}?boardCode=${code}`,
       {
         headers: {
-          Authorization: `Bearer ${token!}`,
+          Authorization: `Bearer ${auxToken}`,
         },
       }
     );

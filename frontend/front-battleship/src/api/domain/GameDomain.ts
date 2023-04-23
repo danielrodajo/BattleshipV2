@@ -7,6 +7,7 @@ export interface GameDomain {
   board2: BoardDomain;
   turn: number;
   state: GameState;
+  points: number;
   createdAt: Date;
 }
 

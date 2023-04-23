@@ -13,14 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(Include.NON_NULL)
-public class UserDTO {
+public class RankingDTO {
 
-	private Long id;
-	private String name;
-	private String firstsurname;
-	private String secondsurname;
 	private String nickname;
-	private String email;
 	private Long points;
+	private Integer games;
 	
 }

@@ -8,17 +8,14 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';
 import { formatDate } from '../../utils/Utils';
 import { Link } from 'react-router-dom';
-import {
-  PATH_GAME,
-  PATH_PREPARE_BOARD,
-  passParameters,
-} from '../../Routes';
+import { PATH_GAME, PATH_PREPARE_BOARD, passParameters } from '../../Routes';
 import { useTranslation } from 'react-i18next';
+import { BoardState } from '../../api/domain/BoardDomain';
 
 interface MyGamesProps {}
 
 const MyGames: FC<MyGamesProps> = () => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const [games, setGames] = React.useState<GameDomain[]>([]);
   const dispatch = useAppDispatch();
 
@@ -52,17 +49,42 @@ const MyGames: FC<MyGamesProps> = () => {
       });
   }, [t, dispatch]);
 
+  const getPointsText = (game: GameDomain) => {
+    let result;
+    if (game.points) {
+      result =
+        game.board1.state === BoardState[BoardState.WIN]
+          ? game.points
+          : game.points * -1;
+    } else if (game.board1.state === BoardState[BoardState.IN_PROGRESS]) {
+      result = '';
+    } else {
+      result = 0;
+    }
+    return result;
+  };
+
   return (
     <div className={styles.MyGames}>
       <p className='title'>{t('myGames.title')}</p>
       <table className={`${styles.Score} table table-striped`}>
         <thead>
           <tr>
-            <th scope='col' className='text-capitalize'>{t('myGames.result')}</th>
-            <th scope='col' className='text-capitalize'>{t('myGames.opponent')}</th>
-            <th scope='col' className='text-capitalize'>{t('myGames.date')}</th>
-            <th scope='col' className='text-capitalize'>{t('myGames.points')}</th>
-            <th scope='col' className='text-capitalize'>{t('myGames.actions.title')}</th>
+            <th scope='col' className='text-capitalize'>
+              {t('myGames.result')}
+            </th>
+            <th scope='col' className='text-capitalize'>
+              {t('myGames.opponent')}
+            </th>
+            <th scope='col' className='text-capitalize'>
+              {t('myGames.date')}
+            </th>
+            <th scope='col' className='text-capitalize'>
+              {t('myGames.points')}
+            </th>
+            <th scope='col' className='text-capitalize'>
+              {t('myGames.actions.title')}
+            </th>
           </tr>
         </thead>
         <tbody className=''>
@@ -75,13 +97,15 @@ const MyGames: FC<MyGamesProps> = () => {
           ) : (
             games.map((game) => (
               <tr key={game.id + '-tr'}>
-                <th className='text-uppercase'>{t('myGames.gameStates.'+game.board1.state.toLowerCase())}</th>
+                <th className='text-uppercase'>
+                  {t('myGames.gameStates.' + game.board1.state.toLowerCase())}
+                </th>
                 <td>{game.board2.owner.nickname}</td>
                 <td>{formatDate(game.createdAt)}</td>
-                <td>0</td>
+                <td className='text-capitalize'>{getPointsText(game)}</td>
                 <td>
                   <Link
-                  className='text-uppercase'
+                    className='text-uppercase'
                     to={
                       +GameState[game.state] === GameState.CREATED
                         ? passParameters(PATH_PREPARE_BOARD, game.board1.code)

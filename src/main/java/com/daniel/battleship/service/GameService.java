@@ -20,5 +20,6 @@ public interface GameService extends BaseService<Game, Long> {
 	Game getCurrentGame(String code);
 	Game nextTurn(Game game);
 	Game finishGame(Game game, Board winner);
+	List<Game> getUserGames(String userEmail);
 
 }

@@ -7,6 +7,8 @@ import {
   ENDPOINT_USER_DATA,
 } from '../../utils/Endpoints';
 import { UserDomain } from '../../api/domain/UserDomain';
+import { fetchRefreshToken, fetchSignIn } from '../../api/requests/authAPI';
+import { fetchUserPoints } from '../../api/requests/userAPI';
 
 export interface AuthState {
   isLoggedIn: boolean;
@@ -31,16 +33,7 @@ const initialState: AuthState = {
 export const authSignIn = createAsyncThunk(
   'auth/signin',
   async (payload: any) => {
-    let response;
-    try {
-      response = await client.post(ENDPOINT_SIGNIN, {
-        email: payload.username,
-        password: payload.password,
-      });
-      return response.data;
-    } catch (error: any) {
-      if (error.response.status === 401) return error.response;
-    }
+    const response = await fetchSignIn(payload.username, payload.password);
     return response;
   }
 );
@@ -56,36 +49,59 @@ export const authSignUp = createAsyncThunk(
         secondsurname: payload.secondsurname,
         email: payload.email,
         password: payload.password,
-        nickname: payload.nickname
+        nickname: payload.nickname,
       });
       return response.data;
     } catch (error: any) {
       if (error.response.status === 409) return error.response;
+      throw Error(error);
     }
-    return response;
   }
 );
+
 export const getUserData = createAsyncThunk('auth/userdata', async () => {
   const response = await client.get(ENDPOINT_USER_DATA);
   return response.data;
 });
 
+export const updateUserPoints = createAsyncThunk(
+  'gameSlice/updateUserPoints',
+  async () => {
+    const response = await fetchUserPoints();
+    return response;
+  }
+);
+
+export const renewRefreshToken = createAsyncThunk(
+  'gameSlice/renewRefreshToken',
+  async (rToken: string) => {
+    const response = await fetchRefreshToken(rToken);
+    return response;
+  }
+);
+
+function reset(state: any) {
+  state.isLoggedIn = false;
+  state.token = undefined;
+  state.refreshToken = undefined;
+  state.status = undefined;
+  state.signInError = undefined;
+  state.signUpError = undefined;
+  state.user = undefined;
+}
+
 export const authSlice = createSlice({
   name: 'authSlice',
   initialState,
   reducers: {
-    signOut: (state) => {
-      state.isLoggedIn = false;
-      state.token = undefined;
-      state.refreshToken = undefined;
-      state.status = undefined;
-      state.signInError = undefined;
-      state.signUpError = undefined;
-      state.user = undefined;
-    },
+    signOut: reset,
     refreshToken: (state, action) => {
       state.token = action.payload.token;
       state.refreshToken = action.payload.refreshToken;
+    },
+    addUserPoints: (state, action) => {
+      state.user!.points += action.payload;
+      return;
     },
   },
   extraReducers(builder) {
@@ -138,17 +154,45 @@ export const authSlice = createSlice({
           secondsurname: action.payload.secondsurname,
           email: action.payload.email,
           id: action.payload.id,
-          nickname: action.payload.nickname
+          nickname: action.payload.nickname,
+          points: action.payload.points,
         };
         state.isLoggedIn = true;
       })
       .addCase(getUserData.rejected, (state) => {
         state.status = 'failed';
+      })
+      .addCase(updateUserPoints.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(updateUserPoints.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user!.points = action.payload;
+        return;
+      })
+      .addCase(updateUserPoints.rejected, (state) => {
+        state.status = 'failed';
+      })
+      .addCase(renewRefreshToken.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(renewRefreshToken.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.status = 'succeeded';
+          state.refreshToken = action.payload.refreshToken;
+          state.token = action.payload.token;
+        } else {
+          reset(state);
+        }
+        return;
+      })
+      .addCase(renewRefreshToken.rejected, (state) => {
+        state.status = 'failed';
       });
   },
 });
 
-export const { signOut, refreshToken } = authSlice.actions;
+export const { signOut, refreshToken, addUserPoints } = authSlice.actions;
 export const selectUserData = (state: RootState) => state.authState.user;
 export const selectLoggedIn = (state: RootState) => state.authState.isLoggedIn;
 export const selectAuthToken = (state: RootState) => state.authState.token;

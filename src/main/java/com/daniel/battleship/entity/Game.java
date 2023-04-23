@@ -46,6 +46,9 @@ public class Game {
 	@Enumerated(EnumType.STRING)
 	private GameState state;
 	
+	@Column(nullable = true)
+	private Long points;
+	
 	@Column
 	private Date createdAt;
 

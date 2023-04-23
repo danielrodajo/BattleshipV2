@@ -12,7 +12,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
@@ -29,8 +28,8 @@ import com.daniel.battleship.mapper.EmptyBoxMapper;
 import com.daniel.battleship.service.BoxService;
 import com.daniel.battleship.service.EmptyBoxService;
 import com.daniel.battleship.service.GameService;
-import com.daniel.battleship.service.RecordService;
 import com.daniel.battleship.service.PlayerService;
+import com.daniel.battleship.service.RecordService;
 import com.daniel.battleship.util.Constants;
 import com.daniel.battleship.websocket.dto.BoxCoordinates;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -101,8 +100,8 @@ public class WebSocketController {
 	private void handleHittedBox(String opponentName, String playerName, String gameCode, Box hitResult) {
 		Game game = gameService.getGameByCode(gameCode);
 		if (game.getState().equals(GameState.FINALIZED)) {
-			simpMessagingTemplate.convertAndSendToUser(playerName, Constants.WS_FINISH_GAME_RESPONSE, Pair.of(hitResult, true));
-			simpMessagingTemplate.convertAndSendToUser(opponentName, Constants.WS_FINISH_GAME_RESPONSE, Pair.of(hitResult, false));
+			simpMessagingTemplate.convertAndSendToUser(playerName, Constants.WS_FINISH_GAME_RESPONSE, game.getPoints());
+			simpMessagingTemplate.convertAndSendToUser(opponentName, Constants.WS_FINISH_GAME_RESPONSE, game.getPoints() * -1);
 		} else {
 			simpMessagingTemplate.convertAndSendToUser(playerName, Constants.WS_HITTED_RESPONSE,
 					boxMapper.toDTO(hitResult));
@@ -189,67 +188,4 @@ public class WebSocketController {
 		long untouchedBoxes = board.getBoxes().stream().filter(box -> !box.getTouched()).count();
 		return untouchedBoxes == 0;
 	}
-
-//	@Transactional
-//	private Pair<Object, Boolean> hitBoxOpponent(String opponentName, String gameCode, BoxCoordinates coordinates) {
-//		try {
-//			Game game = gameService.getGameByCode(gameCode);
-//			Board myBoard = null;
-//			Board boardOpponent = null;
-//			if (game.getBoard1().getOwner().getEmail().equals(opponentName)) {
-//				myBoard = game.getBoard2();
-//				boardOpponent = game.getBoard1();
-//			} else if (game.getBoard2().getOwner().getEmail().equals(opponentName)) {
-//				myBoard = game.getBoard1();
-//				boardOpponent = game.getBoard2();
-//			} else {
-//				throw new IllegalArgumentException("No existe la partida");
-//			}
-//
-//			List<Box> filterBox = boardOpponent.getBoxes().stream()
-//					.filter(box -> box.getX().equals(coordinates.getX()) && box.getY().equals(coordinates.getY()))
-//					.collect(Collectors.toList());
-//			Object response = null;
-//			log.info("Nº celdas recuperadas: {}", filterBox.size());
-//			boolean hittedBox = filterBox.size() == 1;
-//			if (hittedBox) {
-//				Box box = filterBox.get(0);
-//				response = boxService.hitBox(box);
-//			} else {
-//				List<EmptyBox> filterEmptyBox = boardOpponent.getEmptyBoxes().stream()
-//						.filter(box -> box.getX().equals(coordinates.getX()) && box.getY().equals(coordinates.getY()))
-//						.collect(Collectors.toList());
-//				if (!filterEmptyBox.isEmpty()) {
-//					log.error("Nº celdas recuperadas vacias: {}", filterEmptyBox.size());
-//					throw new IllegalArgumentException("La celda ya esta marcada");
-//				}
-//				EmptyBox newBox = EmptyBox.builder().x(coordinates.getX()).y(coordinates.getY()).build();
-//				Board boardBBDD = boardService.hitEmptyBox(boardOpponent, newBox);
-//				filterEmptyBox = boardBBDD.getEmptyBoxes().stream()
-//						.filter(box -> box.getX().equals(coordinates.getX()) && box.getY().equals(coordinates.getY()))
-//						.collect(Collectors.toList());
-//				if (filterEmptyBox.size() != 1) {
-//					log.error("Nº celdas recuperadas vacias: {}", filterEmptyBox.size());
-//					throw new IllegalArgumentException("Ha surgido un error inesperado");
-//				}
-//				response = filterEmptyBox.get(0);
-//			}
-//			if (hittedBox) {
-//				var result = boardOpponent.getBoxes().stream().filter(box -> !box.getTouched())
-//						.collect(Collectors.toList());
-//
-//				if (result.size() == 1) {
-//					game = gameService.finishGame(game, myBoard);
-//				}
-//
-//			}
-//			if (game.getState().equals(GameState.IN_PROGRESS))
-//				gameService.nextTurn(game);
-//
-//			return Pair.of(response, hittedBox);
-//		} catch (Exception e) {
-//			log.error(e);
-//			return null;
-//		}
-//	}
 }

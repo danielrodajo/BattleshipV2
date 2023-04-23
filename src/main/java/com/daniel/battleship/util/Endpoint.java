@@ -43,6 +43,8 @@ public class Endpoint {
 	@NoArgsConstructor(access = AccessLevel.NONE)
 	public class User {
 		public static final String ROOT = "/user";
+		public static final String GET_USERS_SCORE = "/getRanking";
+		public static final String GET_USER_POINTS = "/points";
 	}
 
 }

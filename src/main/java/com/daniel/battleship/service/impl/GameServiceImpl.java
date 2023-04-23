@@ -67,14 +67,7 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public List<Game> getMyGames() {
-		List<Game> games = this.gameRepository.findByBoard1OwnerEmail(Utils.getCurrentUsername());
-		List<Game> games2 = this.gameRepository.findByBoard2OwnerEmail(Utils.getCurrentUsername());
-		games2.forEach(g -> {
-			var auxBoard = g.getBoard1();
-			g.setBoard1(g.getBoard2());
-			g.setBoard2(auxBoard);
-		});
-		games.addAll(games2);
+		var games =  this.getUserGames(Utils.getCurrentUsername());
 		games.forEach(game -> {
 			game.getBoard1().setBoxes(null);
 			game.getBoard1().setEmptyBoxes(null);
@@ -164,8 +157,32 @@ public class GameServiceImpl implements GameService {
 		} else {
 			throw new IllegalArgumentException("La mesa no corresponde con la partida");
 		}
+		game = this.calculateAndUpdatePoints(game);
 		game.setState(GameState.FINALIZED);
 		return this.update(game);
+	}
+
+	private Game calculateAndUpdatePoints(Game game) {
+		Long points = Utils.calculatePoints(game);
+		var winnerBoard = game.getBoard1().getState().equals(BoardState.WIN) ? game.getBoard1() : game.getBoard2();
+		var looserBoard = game.getBoard1().getState().equals(BoardState.WIN) ? game.getBoard2() : game.getBoard1();
+		playerService.addPoints(points, winnerBoard.getOwner());
+		playerService.addPoints(points * -1, looserBoard.getOwner());
+		game.setPoints(points);
+		return game;
+	}
+
+	@Override
+	public List<Game> getUserGames(String email) {
+		List<Game> games = this.gameRepository.findByBoard1OwnerEmail(email);
+		List<Game> games2 = this.gameRepository.findByBoard2OwnerEmail(email);
+		games2.forEach(g -> {
+			var auxBoard = g.getBoard1();
+			g.setBoard1(g.getBoard2());
+			g.setBoard2(auxBoard);
+		});
+		games.addAll(games2);
+		return games;
 	}
 
 }

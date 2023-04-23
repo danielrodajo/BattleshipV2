@@ -70,27 +70,6 @@
   grid-template-columns: 1fr 1fr;
 }
 
-/* Anchura del scrollbar */
-.RecordBox::-webkit-scrollbar {
-  width: 8px;
-}
-
-/* Estilo del scrollbar */
-.RecordBox::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
-}
-
-/* Estilo del thumb (scrollbar) */
-.RecordBox::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 10px;
-}
-
-/* Hover en el thumb (scrollbar) */
-.RecordBox::-webkit-scrollbar-thumb:hover {
-  background-color: #555;
-}
-
 .RecordHits {
   box-shadow: inset 0 0 15px rgba(212, 0, 0, 0.5);
 }

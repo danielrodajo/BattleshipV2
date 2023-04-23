@@ -5,4 +5,5 @@ export interface UserDomain {
   secondsurname: string | undefined;
   email: string;
   nickname: string;
+  points: number;
 }

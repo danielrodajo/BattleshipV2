@@ -48,6 +48,9 @@ public class AppUser implements UserDetails {
 	
 	@Column(unique = true)
 	private String email;
+	
+	@Column(nullable = false)
+	private long points;
 
 	@Column
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

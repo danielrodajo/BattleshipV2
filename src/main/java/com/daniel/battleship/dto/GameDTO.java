@@ -24,6 +24,7 @@ public class GameDTO {
 	private BoardDTO board2;	
 	private Long turn;
 	private GameState state;
+	private Long points;
 	private Date createdAt;
 	
 }

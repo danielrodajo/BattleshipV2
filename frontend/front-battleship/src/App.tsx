@@ -7,6 +7,7 @@ import {
   selectAuthRefreshToken,
   selectAuthToken,
   signOut,
+  updateUserPoints,
 } from './store/slices/AuthSlice';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
@@ -16,6 +17,9 @@ import React from 'react';
 import client from './api/client';
 import { ENDPOINT_REFRESH_TOKEN } from './utils/Endpoints';
 import 'react-toastify/dist/ReactToastify.css';
+import { fetchRefreshToken } from './api/requests/authAPI';
+import { fetchUserPoints } from './api/requests/userAPI';
+import { parseJwt } from './utils/Utils';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -23,28 +27,23 @@ function App() {
   const rToken = useAppSelector(selectAuthRefreshToken);
   const showSpinner = useAppSelector(selectShowSpinner);
 
-  const parseJwt = (token: string) => {
-    try {
-      return JSON.parse(window.atob(token.split('.')[1]));
-    } catch (e) {
-      return null;
-    }
-  };
-
   React.useEffect(() => {
+    async function refresh() {
+      const result = await fetchRefreshToken(rToken!);
+        if (result) {
+          dispatch(refreshToken(result));
+        } else {
+          dispatch(signOut());
+        }
+    }
+
     if (token) {
       const decodedJwt = parseJwt(token);
 
       if (decodedJwt.exp * 1000 < Date.now()) {
-        client
-          .post(ENDPOINT_REFRESH_TOKEN, {
-            token: rToken,
-          })
-          .then((result) => dispatch(refreshToken(result.data)))
-          .catch((err) => {
-            console.error(err);
-            dispatch(signOut());
-          });
+        refresh();
+      } else {
+        dispatch(updateUserPoints());
       }
     }
   }, []);

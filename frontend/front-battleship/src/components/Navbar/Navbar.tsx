@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { MdLogout } from 'react-icons/md';
 import { ImUser } from 'react-icons/im';
+import { GiLaurelsTrophy } from 'react-icons/gi';
 import {
   PATH_RANKING,
   PATH_HOME,
@@ -25,7 +26,6 @@ const Navbar: FC<NavbarProps> = () => {
     dispatch(signOut());
   };
   const user = useAppSelector(selectUserData);
-  
 
   const changeLanguageHandler = (lang: string) => {
     i18n.changeLanguage(lang);
@@ -46,21 +46,21 @@ const Navbar: FC<NavbarProps> = () => {
           <li className='nav-item'>
             <span className='nav-link mx-3'>
               <Link to={PATH_MY_GAMES} className='linkStyle'>
-              {t('navbar.myGames')}
+                {t('navbar.myGames')}
               </Link>
             </span>
           </li>
           <li className='nav-item'>
             <span className='nav-link mx-3'>
               <Link to={PATH_GAME_MODE} className='linkStyle'>
-              {t('navbar.play')}
+                {t('navbar.play')}
               </Link>
             </span>
           </li>
           <li className='nav-item'>
             <span className='nav-link mx-3'>
               <Link to={PATH_RANKING} className='linkStyle'>
-              {t('navbar.ranking')}
+                {t('navbar.ranking')}
               </Link>
             </span>
           </li>
@@ -69,13 +69,31 @@ const Navbar: FC<NavbarProps> = () => {
       <div className='collapse navbar-collapse justify-content-end'>
         <ul className='navbar-nav'>
           {user && (
-            <li
-              className={`nav-item d-flex justify-content-center align-items-center me-2 ${styles.Name}`}
-            >{`${user.nickname}`}</li>
+            <>
+              <li className='nav-item d-flex justify-content-center align-items-center me-3'>
+                <span className={`me-2 ${styles.Name}`}>{user.points}</span>
+                <GiLaurelsTrophy />
+              </li>
+              <li
+                className={`nav-item d-flex justify-content-center align-items-center me-2 ${styles.Name}`}
+              >{`${user.nickname}`}</li>
+            </>
           )}
           <li className={`nav-item ${styles.languages} mx-2`}>
-            <img alt={t('language.altes')!} width={20} className='lngButton' src={spanish} onClick={() => changeLanguageHandler('es')}/>
-            <img alt={t('language.alten')!} width={20} className='lngButton' src={english} onClick={() => changeLanguageHandler('en')}/>
+            <img
+              alt={t('language.altes')!}
+              width={20}
+              className='lngButton'
+              src={spanish}
+              onClick={() => changeLanguageHandler('es')}
+            />
+            <img
+              alt={t('language.alten')!}
+              width={20}
+              className='lngButton'
+              src={english}
+              onClick={() => changeLanguageHandler('en')}
+            />
           </li>
           <li className='nav-item'>
             <span className='nav-link' role='button'>

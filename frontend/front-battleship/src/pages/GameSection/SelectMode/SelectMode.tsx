@@ -1,10 +1,14 @@
 import React, { FC } from 'react';
 import styles from './SelectMode.module.css';
 import GameMode from '../../../components/GameMode/GameMode';
-import { ThreeDots } from 'react-loader-spinner';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { useAppSelector } from '../../../hooks/reduxHooks';
-import { selectAuthToken } from '../../../store/slices/AuthSlice';
+import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
+import {
+  refreshToken,
+  renewRefreshToken,
+  selectAuthRefreshToken,
+  selectAuthToken,
+} from '../../../store/slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import {
   PATH_CUSTOMIZE_GAME,
@@ -18,13 +22,17 @@ import {
 } from '../../../utils/Endpoints';
 import { useTranslation } from 'react-i18next';
 import SearchingGame from '../../../components/SearchingGame/SearchingGame';
+import { parseJwt } from '../../../utils/Utils';
+import { fetchRefreshToken } from '../../../api/requests/authAPI';
 
 interface SelectModeProps {}
 
 const SelectMode: FC<SelectModeProps> = () => {
+  const dispatch = useAppDispatch();
+  const rToken = useAppSelector(selectAuthRefreshToken);
   const { t } = useTranslation();
   const [searching, setSearching] = React.useState(false);
-  const [sse, setSse] = React.useState<EventSourcePolyfill | null>();
+  const [sse, setSse] = React.useState<any>();
   const token = useAppSelector(selectAuthToken);
   const navigate = useNavigate();
 
@@ -42,19 +50,25 @@ const SelectMode: FC<SelectModeProps> = () => {
     }
   };
 
-  const searchOnline = () => {
+  const searchOnline = async () => {
     setSearching(true);
+    const decodedJwt = parseJwt(token!);
+    let auxToken = token;
+    if (decodedJwt.exp * 1000 < Date.now()) {
+      const response = await fetchRefreshToken(rToken!);
+      auxToken = response?.token;
+      dispatch(refreshToken(response));
+    }
+
     const eventSource = new EventSourcePolyfill(
       `${process.env.REACT_APP_API_URL}${ENDPOINT_GAME_SEARCHING}`,
       {
         headers: {
-          Authorization: `Bearer ${token!}`,
+          Authorization: `Bearer ${auxToken}`,
         },
       }
     );
-
     setSse(eventSource);
-
     eventSource.onmessage = (e) => console.log(e);
     eventSource.addEventListener('game', async (e: any) => {
       eventSource.close();
@@ -64,11 +78,10 @@ const SelectMode: FC<SelectModeProps> = () => {
       setSearching(false);
       navigate(passParameters(PATH_PREPARE_BOARD, response.data.code));
     });
-    eventSource.onerror = (e) => {
-      // error log here
-      console.error(e);
-      setSearching(false);
+    eventSource.onerror = async (e: any) => {
+      console.log(e);
       eventSource.close();
+      setSearching(false);
     };
   };
 
@@ -110,7 +123,7 @@ const SelectMode: FC<SelectModeProps> = () => {
             title={t('selectGame.online.text')}
             bodyLines={onlineText}
             playButton={t('selectGame.online.btn')}
-            handlePlay={() =>searchOnline()}
+            handlePlay={() => searchOnline()}
           />
         </div>
         <div className='d-flex justify-content-center align-items-center'>

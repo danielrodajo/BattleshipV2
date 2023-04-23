@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { RootState } from '../store/store';
 import { refreshToken, signOut } from '../store/slices/AuthSlice';
-import { ENDPOINT_REFRESH_TOKEN } from '../utils/Endpoints';
+import { fetchRefreshToken } from './requests/authAPI';
 
 let store: any;
 
@@ -42,10 +42,8 @@ client.interceptors.response.use(
     const originalRequest = error.config;
     if (error.response.status === 403 && !originalRequest._retry) {
       originalRequest._retry = true;
-      const result = await client.post(ENDPOINT_REFRESH_TOKEN, {
-        token: state().authState.refreshToken,
-      });
-      store.dispatch(refreshToken(result.data));
+      const result = await fetchRefreshToken(state().authState.refreshToken!);
+      store.dispatch(refreshToken(result));
       return client(originalRequest);
     }
     else if (error.response.status === 401) {
