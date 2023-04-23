@@ -56,10 +56,10 @@ const MyGames: FC<MyGamesProps> = () => {
         game.board1.state === BoardState[BoardState.WIN]
           ? game.points
           : game.points * -1;
-    } else if (game.board1.state === BoardState[BoardState.IN_PROGRESS]) {
+    } else if (game.board1.state !== BoardState[BoardState.LOSE] && game.board1.state !== BoardState[BoardState.WIN]) {
       result = '';
     } else {
-      result = 0;
+      result = 'Sin puntos';
     }
     return result;
   };
