@@ -18,7 +18,7 @@ export const appReduxStore = configureStore({
   // Implementar Thunk por defecto
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
-  }).concat(logger),
+  })//.concat(logger),
 });
 
 export type AppDispatch = typeof appReduxStore.dispatch;

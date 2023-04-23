@@ -1,0 +1,25 @@
+.Board * {
+    user-select: none !important;
+  }
+  
+  .Wrapper {
+    display: grid;
+    column-gap: 2px;
+    row-gap: 2px;
+  }
+  
+  
+  .WrapperVertical {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 2px;
+    row-gap: 2px;
+  }
+  
+  .WrapperParent {
+    display: grid;
+    grid-template-columns: fit-content(100%) 1fr;
+    column-gap: 2px;
+    row-gap: 2px;
+  }
+  

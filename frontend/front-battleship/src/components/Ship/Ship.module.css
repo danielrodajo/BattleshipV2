@@ -1,1 +1,15 @@
 .Ship {}
+
+.Ship * {
+    user-select: none;
+}
+
+.ShipImg {
+    transition: all 0.5s;
+    border: 3px dashed #999;
+    cursor: move;
+}
+
+.ShipImg:hover {
+    border-color: black;
+}

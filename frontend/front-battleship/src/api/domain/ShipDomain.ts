@@ -4,10 +4,10 @@ export interface ShipDomain {
 }
 
 export enum ShipType {
-  CARRIER = 5,
-  BATTLESHIP = 4,
-  SUBMARINE = 3,
-  DESTROYER = 2,
+  CARRIER,
+  BATTLESHIP,
+  SUBMARINE,
+  DESTROYER,
 }
 
 export function getShipType(name: string): ShipType {

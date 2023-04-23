@@ -12,7 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import {
   PATH_CUSTOMIZE_GAME,
-  PATH_PREPARE_BOARD,
+  PATH_PREPARE_GAME,
   passParameters,
 } from '../../../Routes';
 import client from '../../../api/client';
@@ -76,7 +76,7 @@ const SelectMode: FC<SelectModeProps> = () => {
         params: { id: e.data },
       });
       setSearching(false);
-      navigate(passParameters(PATH_PREPARE_BOARD, response.data.code));
+      navigate(passParameters(PATH_PREPARE_GAME, response.data.code));
     });
     eventSource.onerror = async (e: any) => {
       console.log(e);

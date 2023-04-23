@@ -95,7 +95,12 @@
         "randomBtn": "colocar flota aleatoriamente",
         "randomError": "No se pudo generar la flota con esta configuración",
         "btn": "Jugar",
-        "createGameError": "No se pudo crear la partida"
+        "createGameError": "No se pudo crear la partida",
+        "positionShip": {
+            "outOfBounds": "El barco se sale de los limites",
+            "adjacent": "Los barcos no pueden colindar",
+            "maxShipType": "Sin más barcos de este tipo"
+        }
     },
     "myGames": {
         "title": "mis partidas",
@@ -121,7 +126,7 @@
         "carrier": "portaaviones",
         "battleship": "acorazado",
         "submarine": "submarino",
-        "destroyer": "destuctor"
+        "destroyer": "destructor"
     },
     "game": {
         "title": "partida",
@@ -135,5 +140,8 @@
     "record": {
         "title": "historial",
         "btn": "Restaurar"
+    },
+    "error": {
+        "generic": "Se ha producido un error imprevisto"
     }
 }

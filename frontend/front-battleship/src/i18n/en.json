@@ -95,7 +95,12 @@
         "randomBtn": "Place fleet randomly",
         "randomError": "Could not generate fleet with this configuration",
         "btn": "Play",
-        "createGameError": "Could not create game"
+        "createGameError": "Could not create game",
+        "positionShip": {
+            "outOfBounds": "The ship is going out of bounds",
+            "adjacent": "The ships cannot be adjacent",
+            "maxShipType": "No more ships of this type"
+        }
     },
     "myGames": {
         "title": "My games",
@@ -135,5 +140,8 @@
     "record": {
         "title": "history",
         "btn": "Restore"
+    },
+    "error": {
+        "generic": "An unexpected error has occurred"
     }
 }

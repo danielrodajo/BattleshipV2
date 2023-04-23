@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';
 import { formatDate } from '../../utils/Utils';
 import { Link } from 'react-router-dom';
-import { PATH_GAME, PATH_PREPARE_BOARD, passParameters } from '../../Routes';
+import { PATH_GAME, PATH_PREPARE_GAME, passParameters } from '../../Routes';
 import { useTranslation } from 'react-i18next';
 import { BoardState } from '../../api/domain/BoardDomain';
 
@@ -108,7 +108,7 @@ const MyGames: FC<MyGamesProps> = () => {
                     className='text-uppercase'
                     to={
                       +GameState[game.state] === GameState.CREATED
-                        ? passParameters(PATH_PREPARE_BOARD, game.board1.code)
+                        ? passParameters(PATH_PREPARE_GAME, game.board1.code)
                         : passParameters(PATH_GAME, game.code)
                     }
                   >

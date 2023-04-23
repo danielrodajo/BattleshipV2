@@ -1,4 +1,5 @@
-.PrepareBoard {
+.PrepareGame * {
+  user-select: none;
 }
 
 .Wrapper {
@@ -6,6 +7,28 @@
   grid-template-columns: repeat(2, 1fr);
 }
 
+.FleetTitle {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.YourFleetTitle {
+  text-transform: capitalize;
+  font-size: 1.5rem;
+}
+
+.RotateBtn {
+  cursor: pointer;
+  font-size: 1.6rem;
+  transition: transform 0.5s ease;
+  transform: rotate(0deg);
+}
+.RotateBtnR:hover {
+  transform: rotate(180deg);
+}
+.RotateBtnL:hover {
+  transform: rotate(-180deg);
+}
 
 .RandomButton {
   color: white;

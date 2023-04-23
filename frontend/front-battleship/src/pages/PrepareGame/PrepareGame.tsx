@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from './PrepareBoard.module.css';
+import styles from './PrepareGame.module.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import client from '../../api/client';
 import {
@@ -8,11 +8,7 @@ import {
   ENDPOINT_INIT_BOARD,
 } from '../../utils/Endpoints';
 import { BoardDomain } from '../../api/domain/BoardDomain';
-import {
-  PATH_GAME,
-  PATH_HOME,
-  passParameters,
-} from '../../Routes';
+import { PATH_GAME, PATH_HOME, passParameters } from '../../Routes';
 import carrier from '../../assets/carrier.png';
 import Ship from '../../components/Ship/Ship';
 import Board from '../../components/Board/Board';
@@ -26,22 +22,34 @@ import {
   mapBoxShipsDomainToData,
 } from '../../api/mappers/BoxShipMapper';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { refreshToken, selectAuthRefreshToken, selectAuthToken } from '../../store/slices/AuthSlice';
+import {
+  refreshToken,
+  selectAuthRefreshToken,
+  selectAuthToken,
+} from '../../store/slices/AuthSlice';
 import { useTranslation } from 'react-i18next';
 import { parseJwt } from '../../utils/Utils';
 import { fetchRefreshToken } from '../../api/requests/authAPI';
+import PrepareBoard from '../../components/PrepareBoard/PrepareBoard';
+import { ShipType } from '../../api/domain/ShipDomain';
+import {
+  replaceFleet,
+  selectPrepareGameFleet,
+  moveDirection,
+} from '../../store/slices/PrepareGameSlice';
+import { GrRotateLeft, GrRotateRight } from 'react-icons/gr';
 
 interface PrepareBoardProps {}
 
-const PrepareBoard: FC<PrepareBoardProps> = () => {
-  const {t} = useTranslation();
+const PrepareGame: FC<PrepareBoardProps> = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { code } = useParams();
   const [board, setBoard] = React.useState<BoardDomain>();
-  const [fleet, setFleet] = React.useState<ShipData[]>([]);
   const [waiting, setWaiting] = React.useState(false);
   const token = useAppSelector(selectAuthToken);
   const rToken = useAppSelector(selectAuthRefreshToken);
+  const fleet = useAppSelector(selectPrepareGameFleet);
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -54,7 +62,7 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
     getBoard()
       .then((response) => {
         setBoard(response.data);
-        setFleet(mapBoxShipsDomainToData(response.data.boxes));
+        dispatch(replaceFleet(mapBoxShipsDomainToData(response.data.boxes)));
       })
       .catch((err) => {
         console.error(err);
@@ -130,7 +138,7 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
     setTimeout(function () {
       const result = FleetGenerator(board!.width);
       if (result.length > 0) {
-        setFleet(result);
+        dispatch(replaceFleet(result));
       } else {
         toast.error(t('prepareBoard.randomError'), {
           position: 'top-right',
@@ -148,42 +156,78 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
   };
 
   return (
-    <div className={styles.PrepareBoard}>
+    <div className={styles.PrepareGame}>
       <p className='title'>
-        {!waiting
-          ? t('prepareBoard.title')
-          : t('prepareBoard.waiting')}
+        {!waiting ? t('prepareBoard.title') : t('prepareBoard.waiting')}
       </p>
       {board ? (
         <div className='container'>
           <div className='row justify-content-center align-items-center'>
             <div className='col-5'>
               <div className='row'>
-                <div className='col-12 text-center mb-5'>{t('prepareBoard.yourFleet')}</div>
+                <div className={`col-12 mb-5 ${styles.FleetTitle}`}>
+                  <div className='d-flex justify-content-center align-items-center'>
+                    <GrRotateLeft
+                      className={`${styles.RotateBtn} ${styles.RotateBtnL}`}
+                      onClick={() => dispatch(moveDirection(-100))}
+                    />
+                  </div>
+                  <div className='d-flex justify-content-center align-items-center'>
+                    <span className={styles.YourFleetTitle}>
+                      {t('prepareBoard.yourFleet')}
+                    </span>
+                  </div>
+                  <div className='d-flex justify-content-center align-items-center'>
+                    <GrRotateRight
+                      className={`${styles.RotateBtn} ${styles.RotateBtnR}`}
+                      onClick={() => dispatch(moveDirection(100))}
+                    />
+                  </div>
+                </div>
               </div>
-              <div className={styles.Wrapper}>
-                <Ship name={t('ships.carrier')} img={carrier} amount={1} />
-                <Ship name={t('ships.battleship')} img={carrier} amount={2} />
-                <Ship name={t('ships.submarine')} img={carrier} amount={3} />
-                <Ship name={t('ships.destroyer')} img={carrier} amount={4} />
+              <div
+                className={styles.Wrapper}
+                onWheel={(e) => dispatch(moveDirection(e.deltaY))}
+              >
+                <Ship
+                  size={board!.width}
+                  type={ShipType.CARRIER}
+                  img={carrier}
+                  amount={1}
+                />
+                <Ship
+                  size={board!.width}
+                  type={ShipType.BATTLESHIP}
+                  img={carrier}
+                  amount={2}
+                />
+                <Ship
+                  size={board!.width}
+                  type={ShipType.SUBMARINE}
+                  img={carrier}
+                  amount={3}
+                />
+                <Ship
+                  size={board!.width}
+                  type={ShipType.DESTROYER}
+                  img={carrier}
+                  amount={4}
+                />
               </div>
             </div>
             <div className='col-1'></div>
             <div className='col-6'>
-              <Board
-                isOpponent={false}
+              <PrepareBoard
                 size={board.width}
                 fleet={{
                   ships: fleet,
-                  emptyBoxes: []
+                  emptyBoxes: [],
                 }}
               />
               <div className=' ms-4 my-3'>
                 <button
                   className={`${
-                    !waiting
-                      ? styles.RandomButton
-                      : styles.DisableRandomButton
+                    !waiting ? styles.RandomButton : styles.DisableRandomButton
                   } w-100 rounded ms-1`}
                   onClick={generateRandomFleet}
                   disabled={waiting}
@@ -194,7 +238,10 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
             </div>
           </div>
           <div className='row'>
-            <button disabled={waiting || fleet.length !== 10} onClick={sendData}>
+            <button
+              disabled={waiting || fleet.length !== 10}
+              onClick={sendData}
+            >
               {t('prepareBoard.btn')}
             </button>
           </div>
@@ -206,4 +253,4 @@ const PrepareBoard: FC<PrepareBoardProps> = () => {
   );
 };
 
-export default PrepareBoard;
+export default PrepareGame;

@@ -4,7 +4,7 @@ import PublicLayout from './layouts/PublicLayout/PublicLayout';
 import Home from './pages/Home/Home';
 import Game from './pages/GameSection/Game/Game';
 import SelectMode from './pages/GameSection/SelectMode/SelectMode';
-import PrepareBoard from './pages/PrepareBoard/PrepareBoard';
+import PrepareGame from './pages/PrepareGame/PrepareGame';
 import MyGames from './pages/MyGames/MyGames';
 import Ranking from './pages/Ranking/Ranking';
 import AuthSignIn from './pages/Auth/SignIn/SignIn';
@@ -18,7 +18,7 @@ export const PATH_RANKING = '/ranking';
 export const PATH_MY_GAMES = '/my-games';
 export const PATH_GAME_MODE = '/game-mode';
 export const PATH_GAME = '/game/:code';
-export const PATH_PREPARE_BOARD = '/game/board/:code';
+export const PATH_PREPARE_GAME = '/game/board/:code';
 export const PATH_CUSTOMIZE_GAME = '/customize-game';
 
 export const PATH_PUBLIC = '/public';
@@ -41,7 +41,7 @@ export default function Routes() {
             <Route path={PATH_GAME} element={<Game />} />
             <Route path={PATH_CUSTOMIZE_GAME} element={<CustomizeGame />} />
             <Route path={PATH_RANKING} element={<Ranking />} />
-            <Route path={PATH_PREPARE_BOARD} element={<PrepareBoard />} />
+            <Route path={PATH_PREPARE_GAME} element={<PrepareGame />} />
             <Route path='*' element={<Navigate to={PATH_HOME} />} />
           </Route>
   

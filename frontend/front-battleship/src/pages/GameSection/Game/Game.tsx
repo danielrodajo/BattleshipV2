@@ -112,12 +112,12 @@ const Game: FC<GameProps> = () => {
             const response = await fetchRefreshToken(rToken!);
             auxToken = response?.token;
             dispatch(refreshToken(response));
-            webSocket.connect(
-              `${process.env.REACT_APP_API_URL}/ws/game/room/`,
-              topics,
-              { 'x-auth-token': auxToken, 'game-code': code }
-            );
           }
+          webSocket.connect(
+            `${process.env.REACT_APP_API_URL}/ws/game/room/`,
+            topics,
+            { 'x-auth-token': auxToken, 'game-code': code }
+          );
         })
       );
     }
