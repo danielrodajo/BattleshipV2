@@ -1,6 +1,6 @@
 import { ENDPOINT_REFRESH_TOKEN, ENDPOINT_SIGNIN } from '../../utils/Endpoints';
 import client from '../client';
-import { AuthenticationResponse } from '../domain/requests/AuthenticationResponse';
+import { AuthenticationResponse } from '../domain/responses/AuthenticationResponse';
 
 export const fetchSignIn = async (
   user: string, password: string

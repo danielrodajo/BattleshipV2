@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import styles from './AuthInput.module.css';
+import styles from './CustomInput.module.css';
 import { UseFormRegister, FieldValues } from 'react-hook-form';
 import { IconType } from 'react-icons/lib';
 import { useTranslation } from 'react-i18next';
@@ -8,7 +8,7 @@ interface AuthInputProps {
   children?: React.ReactNode;
   id: string;
   type: string;
-  placeholder: string;
+  placeholder: string | null;
   required?: boolean;
   label: string;
   register: UseFormRegister<FieldValues>;
@@ -19,7 +19,7 @@ interface AuthInputProps {
   icon?: IconType;
 }
 
-const AuthInput: FC<AuthInputProps> = (props) => {
+const CustomInput: FC<AuthInputProps> = (props) => {
   const { t } = useTranslation();
   const [focused, setFocused] = React.useState(false);
   const inputEl: any = React.useRef(null);
@@ -78,7 +78,8 @@ const AuthInput: FC<AuthInputProps> = (props) => {
             required: props.required,
             validate: props.getValues
               ? (value) =>
-                  value === props.getValues(props.compareId) || errorCompareField(props.id)
+                  value === props.getValues(props.compareId) ||
+                  errorCompareField(props.id)
               : undefined,
             pattern:
               props.autocomplete === 'email'
@@ -94,11 +95,11 @@ const AuthInput: FC<AuthInputProps> = (props) => {
           id={props.id}
           name={props.id}
           type={props.type}
-          placeholder={props.placeholder}
+          placeholder={props.placeholder ? props.placeholder : ''}
           autoComplete={props.autocomplete ? props.autocomplete : 'off'}
           ref={(e) => {
             ref(e);
-            inputEl.current = e; // you can still assign to ref
+            inputEl.current = e;
           }}
         />
       </div>
@@ -114,4 +115,4 @@ const AuthInput: FC<AuthInputProps> = (props) => {
   );
 };
 
-export default AuthInput;
+export default CustomInput;

@@ -20,14 +20,19 @@ import 'react-toastify/dist/ReactToastify.css';
 import { fetchRefreshToken } from './api/requests/authAPI';
 import { fetchUserPoints } from './api/requests/userAPI';
 import { parseJwt } from './utils/Utils';
+import { selectI18nLang } from './store/slices/I18nSlice';
+import useLanguageHandler from './hooks/useLanguageHandler';
 
 function App() {
+  const {changeLanguage} = useLanguageHandler();
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectAuthToken);
   const rToken = useAppSelector(selectAuthRefreshToken);
   const showSpinner = useAppSelector(selectShowSpinner);
+  const lang = useAppSelector(selectI18nLang);
 
   React.useEffect(() => {
+    changeLanguage(lang);
     async function refresh() {
       const result = await fetchRefreshToken(rToken!);
         if (result) {

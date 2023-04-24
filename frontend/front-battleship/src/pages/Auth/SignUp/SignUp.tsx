@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import styles from './SignUp.module.css';
 import { Link } from 'react-router-dom';
-import AuthInput from '../../../components/AuthInput/AuthInput';
+import AuthInput from '../../../components/CustomInput/CustomInput';
 import { CiUser, CiLock, CiMail } from 'react-icons/ci';
 import { useForm, SubmitHandler, FieldValues } from 'react-hook-form';
 import {
@@ -19,15 +19,23 @@ import { useTranslation } from 'react-i18next';
 import spanish from '../../../assets/spanish.png';
 import english from '../../../assets/english.png';
 import { formatError } from '../../../utils/Utils';
+import useLanguageHandler from '../../../hooks/useLanguageHandler';
 
 interface SignUpProps {}
 
 const SignUp: FC<SignUpProps> = () => {
-  const { t, i18n } = useTranslation();
+  const { changeLanguage } = useLanguageHandler();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const status = useAppSelector(selectAuthStatus);
   const signUpError = useAppSelector(selectSignUpError);
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<FieldValues>();
 
   React.useEffect(() => {
     dispatch(signOut());
@@ -70,12 +78,6 @@ const SignUp: FC<SignUpProps> = () => {
     }
   }, [status, dispatch, navigate, signUpError, t]);
 
-  const {
-    register,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-  } = useForm<FieldValues>();
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (Object.keys(errors).length) {
       console.error(errors);
@@ -88,13 +90,9 @@ const SignUp: FC<SignUpProps> = () => {
         secondsurname: data.secondSurname,
         email: data.email,
         password: data.pwd,
-        nickname: data.nickname
+        nickname: data.nickname,
       })
     );
-  };
-
-  const changeLanguageHandler = (lang: string) => {
-    i18n.changeLanguage(lang);
   };
 
   return (
@@ -105,8 +103,20 @@ const SignUp: FC<SignUpProps> = () => {
             {t('signup.title')}
           </p>
           <div className={styles.languages}>
-            <img alt={t('language.altes')!} width={20} className='lngButton' src={spanish} onClick={() => changeLanguageHandler('es')}/>
-            <img alt={t('language.alten')!} width={20} className='lngButton' src={english} onClick={() => changeLanguageHandler('en')}/>
+            <img
+              alt={t('language.altes')!}
+              width={20}
+              className='lngButton'
+              src={spanish}
+              onClick={() => changeLanguage('es')}
+            />
+            <img
+              alt={t('language.alten')!}
+              width={20}
+              className='lngButton'
+              src={english}
+              onClick={() => changeLanguage('en')}
+            />
           </div>
         </div>
         <form

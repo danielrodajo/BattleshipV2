@@ -2,6 +2,7 @@ package com.daniel.battleship.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -9,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
+import com.daniel.battleship.dto.PrepareGameDTO;
 import com.daniel.battleship.entity.AppUser;
 import com.daniel.battleship.entity.Board;
 import com.daniel.battleship.entity.Game;
@@ -67,11 +69,15 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public List<Game> getMyGames() {
-		var games =  this.getUserGames(Utils.getCurrentUsername());
+		var games = this.getUserGames(Utils.getCurrentUsername());
+		// games = games.stream().filter(game ->
+		// !game.getState().equals(GameState.PREPARING)).collect(Collectors.toList());
 		games.forEach(game -> {
 			game.getBoard1().setBoxes(null);
 			game.getBoard1().setEmptyBoxes(null);
-			Utils.filterBoardData(game.getBoard2());
+			if (Objects.nonNull(game.getBoard2())) {
+				Utils.filterBoardData(game.getBoard2());
+			}
 		});
 		return games;
 	}
@@ -120,11 +126,13 @@ public class GameServiceImpl implements GameService {
 			throw new IllegalArgumentException("No tienes esta partida registrada");
 		}
 
-		if (!game.getState().equals(GameState.FINALIZED)) {
-			opponentBoard.setBoxes(
-					opponentBoard.getBoxes().stream().filter(box -> box.getTouched()).collect(Collectors.toList()));
+		if (Objects.nonNull(opponentBoard)) {
+			if (!game.getState().equals(GameState.FINALIZED)) {
+				opponentBoard.setBoxes(
+						opponentBoard.getBoxes().stream().filter(box -> box.getTouched()).collect(Collectors.toList()));
+			}
+			opponentBoard.setOwner(AppUser.builder().nickname(opponentBoard.getOwner().getNickname()).build());
 		}
-		opponentBoard.setOwner(AppUser.builder().nickname(opponentBoard.getOwner().getNickname()).build());
 
 	}
 
@@ -185,4 +193,26 @@ public class GameServiceImpl implements GameService {
 		return games;
 	}
 
+	@Override
+	public Game prepareGame(PrepareGameDTO dto) {
+		Game game = Game.builder().code(Utils.generateCode()).state(GameState.PREPARING)
+				.board1(Board.builder().code(Utils.generateCode()).width(dto.getSize()).height(dto.getSize())
+						.state(BoardState.PREPARING).owner(playerService.getUserData()).build())
+				.build();
+		return save(game);
+	}
+
+	@Override
+	public Game joinGame(String code) {
+		Game game = this.getGameByCode(code);
+		this.gameValidator.validateJoinGame(game);
+
+		game.setBoard2(Board.builder().code(Utils.generateCode()).width(game.getBoard1().getWidth())
+				.height(game.getBoard1().getHeight()).state(BoardState.CREATED).owner(playerService.getUserData())
+				.build());
+		game.getBoard1().setState(BoardState.CREATED);
+		game.setState(GameState.CREATED);
+
+		return this.update(game);
+	}
 }

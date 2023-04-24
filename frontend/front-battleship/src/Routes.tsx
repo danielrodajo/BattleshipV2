@@ -20,6 +20,7 @@ export const PATH_GAME_MODE = '/game-mode';
 export const PATH_GAME = '/game/:code';
 export const PATH_PREPARE_GAME = '/game/board/:code';
 export const PATH_CUSTOMIZE_GAME = '/customize-game';
+export const PATH_CUSTOMIZE_GAME_CODE = '/customize-game/:code';
 
 export const PATH_PUBLIC = '/public';
 export const PATH_SIGNIN = '/public/signin';
@@ -35,11 +36,12 @@ export default function Routes() {
               isLoggedIn ? <PrivateLayout /> : <Navigate to={PATH_PUBLIC} />
             }
           >
-            <Route index element={<Home />} />
+            <Route index element={<Navigate to={PATH_MY_GAMES} />} />
             <Route path={PATH_GAME_MODE} element={<SelectMode />} />
             <Route path={PATH_MY_GAMES} element={<MyGames />} />
             <Route path={PATH_GAME} element={<Game />} />
             <Route path={PATH_CUSTOMIZE_GAME} element={<CustomizeGame />} />
+            <Route path={PATH_CUSTOMIZE_GAME_CODE} element={<CustomizeGame />} />
             <Route path={PATH_RANKING} element={<Ranking />} />
             <Route path={PATH_PREPARE_GAME} element={<PrepareGame />} />
             <Route path='*' element={<Navigate to={PATH_HOME} />} />

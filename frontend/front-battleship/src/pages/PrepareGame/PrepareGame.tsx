@@ -239,6 +239,7 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
           </div>
           <div className='row'>
             <button
+             className={`botonJugar ${!(waiting || fleet.length !== 10) && 'botonJugarAnim'}`}
               disabled={waiting || fleet.length !== 10}
               onClick={sendData}
             >

@@ -5,9 +5,6 @@ import { BoxData } from '../../api/data/BoxData';
 import { ShipType } from '../../api/domain/ShipDomain';
 import { letters } from '../../utils/Constants';
 import PrepareBox from '../PrepareBox/PrepareBox';
-import { ShipData } from '../../api/data/ShipData';
-import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
-import { selectPrepareGameDraggingShip, setMouseOnBoard } from '../../store/slices/PrepareGameSlice';
 
 interface PrepareBoardProps {
   size: number;
@@ -15,8 +12,6 @@ interface PrepareBoardProps {
 }
 
 const PrepareBoard: FC<PrepareBoardProps> = (props) => {
-
-  const dispatch = useAppDispatch();
 
   const hasShip = (x: number, y: number): [BoxData, ShipType] | undefined => {
     let result: [BoxData, ShipType] | undefined = undefined;

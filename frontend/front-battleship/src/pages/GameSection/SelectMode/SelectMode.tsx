@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import {
   PATH_CUSTOMIZE_GAME,
+  PATH_CUSTOMIZE_GAME_CODE,
   PATH_PREPARE_GAME,
   passParameters,
 } from '../../../Routes';
@@ -114,7 +115,7 @@ const SelectMode: FC<SelectModeProps> = () => {
           <GameMode
             title={t('selectGame.friends.text')}
             bodyLines={friendsText}
-            playButton={t('selectGame.friends.btn')}
+            playButton={t('selectGame.online.btn')}
             handlePlay={() => navigate(PATH_CUSTOMIZE_GAME)}
           />
         </div>

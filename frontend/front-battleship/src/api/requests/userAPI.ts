@@ -1,6 +1,6 @@
 import { ENDPOINT_USERS_RANKING, ENDPOINT_USER_POINTS } from '../../utils/Endpoints';
 import client from '../client';
-import { RankingResponse } from '../domain/requests/RankingResponse';
+import { RankingResponse } from '../domain/responses/RankingResponse';
 
 export const fetchUsersRanking = async (): Promise<RankingResponse[]> => {
   const response = await client.get<RankingResponse[]>(ENDPOINT_USERS_RANKING);

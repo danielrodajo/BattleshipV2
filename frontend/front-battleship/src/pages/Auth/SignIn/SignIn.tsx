@@ -4,7 +4,7 @@ import { CiUser, CiLock } from 'react-icons/ci';
 import Facebook from '../../../assets/facebook.png';
 import Google from '../../../assets/google.png';
 import Twitter from '../../../assets/twitter.png';
-import AuthInput from '../../../components/AuthInput/AuthInput';
+import AuthInput from '../../../components/CustomInput/CustomInput';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import {
   authSignIn,
@@ -21,11 +21,13 @@ import { getUserData } from '../../../store/slices/AuthSlice';
 import { useTranslation } from 'react-i18next';
 import spanish from '../../../assets/spanish.png';
 import english from '../../../assets/english.png';
+import useLanguageHandler from '../../../hooks/useLanguageHandler';
 
 interface SignInProps {}
 
 const SignIn: FC<SignInProps> = () => {
-  const { t, i18n } = useTranslation();
+  const { changeLanguage } = useLanguageHandler();
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -63,21 +65,29 @@ const SignIn: FC<SignInProps> = () => {
     }
   }, [status, dispatch, signInError]);
 
-  const changeLanguageHandler = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
-
   return (
     <div className='vh-100 d-flex'>
       {status && status === 'loading' && <h4>CARGANDO...</h4>}
       <div className={`${styles.SignIn} bg-light rounded-3 p-5`}>
         <div>
           <p className='user-select-none text-center text-capitalize font-bold fw-bold fs-2 mb-5'>
-          {t('login.title')}
+            {t('login.title')}
           </p>
           <div className={styles.languages}>
-            <img alt={t('language.altes')!} width={20} className='lngButton' src={spanish} onClick={() => changeLanguageHandler('es')}/>
-            <img alt={t('language.alten')!} width={20} className='lngButton' src={english} onClick={() => changeLanguageHandler('en')}/>
+            <img
+              alt={t('language.altes')!}
+              width={20}
+              className='lngButton'
+              src={spanish}
+              onClick={() => changeLanguage('es')}
+            />
+            <img
+              alt={t('language.alten')!}
+              width={20}
+              className='lngButton'
+              src={english}
+              onClick={() => changeLanguage('en')}
+            />
           </div>
         </div>
         <form
@@ -108,15 +118,15 @@ const SignIn: FC<SignInProps> = () => {
               icon={CiLock}
             ></AuthInput>
             <p className={`${styles.fgpwd} mt-2 text-capitalize`}>
-            {t('login.forgotpwd')}
+              {t('login.forgotpwd')}
             </p>
           </div>
           <button className={`${styles.submitbtn} mt-3`} type='submit'>
-          {t('login.button')}
+            {t('login.button')}
           </button>
           <div className='mt-4 text-center '>
             <p className={`${styles.grayText} text-capitalize`}>
-            {t('login.options1')}
+              {t('login.options1')}
             </p>
             <img
               width={50}
@@ -142,11 +152,11 @@ const SignIn: FC<SignInProps> = () => {
           </div>
           <div className='mt-5 text-center '>
             <p className={`${styles.grayText} text-capitalize`}>
-            {t('login.options2')}
+              {t('login.options2')}
             </p>
             <p className='text-uppercase'>
               <Link to={PATH_SIGNUP} className='linkStyle'>
-              {t('login.signup')}
+                {t('login.signup')}
               </Link>
             </p>
           </div>

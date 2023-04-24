@@ -16,21 +16,19 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { useTranslation } from 'react-i18next';
 import spanish from '../../assets/spanish.png';
 import english from '../../assets/english.png';
+import { setLang } from '../../store/slices/I18nSlice';
+import useLanguageHandler from '../../hooks/useLanguageHandler';
 
 interface NavbarProps {}
 
 const Navbar: FC<NavbarProps> = () => {
-  const { t, i18n } = useTranslation();
+  const { changeLanguage } = useLanguageHandler();
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const signout = () => {
     dispatch(signOut());
   };
   const user = useAppSelector(selectUserData);
-
-  const changeLanguageHandler = (lang: string) => {
-    i18n.changeLanguage(lang);
-  };
-
   return (
     <nav
       className={`d-flex w-100 ${styles.Navbar} px-3 navbar navbar-expand-lg navbar-light text-capitalize`}
@@ -85,14 +83,14 @@ const Navbar: FC<NavbarProps> = () => {
               width={20}
               className='lngButton'
               src={spanish}
-              onClick={() => changeLanguageHandler('es')}
+              onClick={() => changeLanguage('es')}
             />
             <img
               alt={t('language.alten')!}
               width={20}
               className='lngButton'
               src={english}
-              onClick={() => changeLanguageHandler('en')}
+              onClick={() => changeLanguage('en')}
             />
           </li>
           <li className='nav-item'>

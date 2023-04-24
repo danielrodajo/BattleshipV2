@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.daniel.battleship.dto.RankingDTO;
 import com.daniel.battleship.dto.UserDTO;
 import com.daniel.battleship.entity.AppUser;
+import com.daniel.battleship.enums.GameState;
 import com.daniel.battleship.mapper.UserMapper;
 import com.daniel.battleship.service.GameService;
 import com.daniel.battleship.service.PlayerService;
@@ -46,8 +47,11 @@ public class UserController {
 	@ApiResponse(description = "Devuelve listado de usuarios en el ranking")
 	public ResponseEntity<List<RankingDTO>> getUsersRanking() {
 		List<AppUser> users = this.playerService.getAll();
-		List<RankingDTO> rankings = users.stream().map(u -> RankingDTO.builder().nickname(u.getNickname())
-				.points(u.getPoints()).games(gameService.getUserGames(u.getEmail()).size()).build())
+		List<RankingDTO> rankings = users.stream()
+				.map(u -> RankingDTO.builder().nickname(u.getNickname()).points(u.getPoints())
+						.games((int) gameService.getUserGames(u.getEmail()).stream()
+								.filter(g -> g.getState().equals(GameState.FINALIZED)).count())
+						.build())
 				.collect(Collectors.toList());
 		return ResponseEntity.ok(rankings);
 	}

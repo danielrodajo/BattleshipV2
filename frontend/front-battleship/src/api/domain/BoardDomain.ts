@@ -14,5 +14,5 @@ export interface BoardDomain {
 }
 
 export enum BoardState {
-  CREATED, IN_PROGRESS, WIN, LOSE
+  PREPARING, CREATED, IN_PROGRESS, WIN, LOSE
 }

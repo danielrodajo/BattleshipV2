@@ -1,15 +1,20 @@
 package com.daniel.battleship.validators;
 
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
 import com.daniel.battleship.entity.Game;
 import com.daniel.battleship.enums.GameState;
 import com.daniel.battleship.repository.GameRepository;
+import com.daniel.battleship.util.Utils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class GameValidator {
 	
 	private final GameRepository repository;
@@ -35,4 +40,19 @@ public class GameValidator {
 		return repository.existsById(game.getId());
 	}
 	
+	public void validateJoinGame(Game game) {
+		if (game.getBoard1().getOwner().getEmail().equals(Utils.getCurrentUsername())) {
+			throw new IllegalArgumentException("No puedes registrarte a tu propia partida");
+		}
+		
+		if (Objects.nonNull(game.getBoard2())) {
+			log.error("La partida con ID {} ya está vinculada al jugador {}", game.getId(), game.getBoard2().getOwner().getEmail());
+			throw new IllegalArgumentException("No te puedes registrar a esta partida");
+		}
+		
+		if (!game.getState().equals(GameState.PREPARING)) {
+			log.error("No se puede modificar la partida con ID {} porque se encuentra en estado {}", game.getId(), game.getState().toString());
+			throw new IllegalArgumentException("No te puedes registrar a una partida ya creada");
+		}
+	}
 }

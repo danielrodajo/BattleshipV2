@@ -8,7 +8,12 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';
 import { formatDate } from '../../utils/Utils';
 import { Link } from 'react-router-dom';
-import { PATH_GAME, PATH_PREPARE_GAME, passParameters } from '../../Routes';
+import {
+  PATH_CUSTOMIZE_GAME_CODE,
+  PATH_GAME,
+  PATH_PREPARE_GAME,
+  passParameters,
+} from '../../Routes';
 import { useTranslation } from 'react-i18next';
 import { BoardState } from '../../api/domain/BoardDomain';
 
@@ -47,7 +52,7 @@ const MyGames: FC<MyGamesProps> = () => {
           theme: 'light',
         });
       });
-  }, [t, dispatch]);
+  }, []);
 
   const getPointsText = (game: GameDomain) => {
     let result;
@@ -56,7 +61,10 @@ const MyGames: FC<MyGamesProps> = () => {
         game.board1.state === BoardState[BoardState.WIN]
           ? game.points
           : game.points * -1;
-    } else if (game.board1.state !== BoardState[BoardState.LOSE] && game.board1.state !== BoardState[BoardState.WIN]) {
+    } else if (
+      game.board1.state !== BoardState[BoardState.LOSE] &&
+      game.board1.state !== BoardState[BoardState.WIN]
+    ) {
       result = '';
     } else {
       result = 'Sin puntos';
@@ -100,7 +108,7 @@ const MyGames: FC<MyGamesProps> = () => {
                 <th className='text-uppercase'>
                   {t('myGames.gameStates.' + game.board1.state.toLowerCase())}
                 </th>
-                <td>{game.board2.owner.nickname}</td>
+                <td>{game.board2?.owner.nickname}</td>
                 <td>{formatDate(game.createdAt)}</td>
                 <td className='text-capitalize'>{getPointsText(game)}</td>
                 <td>
@@ -109,6 +117,8 @@ const MyGames: FC<MyGamesProps> = () => {
                     to={
                       +GameState[game.state] === GameState.CREATED
                         ? passParameters(PATH_PREPARE_GAME, game.board1.code)
+                        : +GameState[game.state] === GameState.PREPARING
+                        ? passParameters(PATH_CUSTOMIZE_GAME_CODE, game.code)
                         : passParameters(PATH_GAME, game.code)
                     }
                   >

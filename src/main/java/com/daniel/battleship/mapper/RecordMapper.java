@@ -210,11 +210,9 @@ public abstract class RecordMapper extends BeforeMappingMapper implements BaseMa
         boardDTO.setBoxes( boxListToBoxDTOList( board.getBoxes() ) );
         boardDTO.setCode( board.getCode() );
         boardDTO.setEmptyBoxes( emptyBoxListToEmptyBoxDTOList( board.getEmptyBoxes() ) );
-        boardDTO.setHeight( board.getHeight() );
         boardDTO.setId( board.getId() );
         boardDTO.setOwner( appUserToUserDTO( board.getOwner() ) );
         boardDTO.setState( board.getState() );
-        boardDTO.setWidth( board.getWidth() );
 
         return boardDTO;
     }

@@ -1,0 +1,7 @@
+.PreviewBoard {}
+
+.Wrapper {
+    display: grid;
+    column-gap: 2px;
+    row-gap: 2px;
+  }

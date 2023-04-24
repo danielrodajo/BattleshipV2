@@ -1,5 +1,5 @@
 package com.daniel.battleship.enums;
 
 public enum GameState {
-	CREATED, IN_PROGRESS, FINALIZED
+	PREPARING ,CREATED, IN_PROGRESS, FINALIZED
 }

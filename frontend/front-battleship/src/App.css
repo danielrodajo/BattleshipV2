@@ -116,3 +116,45 @@
 ::-webkit-scrollbar-thumb:hover {
   background-color: #555;
 }
+
+
+.botonJugar {
+  cursor: not-allowed;
+  background-color: #69a5c9;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+}
+
+.botonJugarAnim:hover {
+  background-color: #005c99;
+  animation: none;
+  transform: scale(1.03);
+  box-shadow: 0px 5px 0px 0px #0066a3;
+}
+
+.botonJugarAnim {
+  transition: all 1s;
+  background-color: #0077be !important;
+  box-shadow: 0px 3px 0px 0px #0066a3;
+  animation: pulse 2s infinite ease;
+  cursor: pointer !important;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0px 3px 0px 0px #0066a3;
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0px 5px 0px 0px #0066a3;
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0px 3px 0px 0px #0066a3;
+  }
+}

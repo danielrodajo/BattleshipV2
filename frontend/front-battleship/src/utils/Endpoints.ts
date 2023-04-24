@@ -12,6 +12,7 @@ export const ENDPOINT_GET_MY_GAMES = '/game/getMyGames';
 export const ENDPOINT_GAME_SEARCHING = '/game/searching';
 export const ENDPOINT_GAME_WAITING = '/game/waitingGame';
 export const ENDPOINT_GET_CURRENT_GAME = '/game/getCurrentGameByCode';
+export const ENDPOINT_PREPARE_GAME = '/game/prepareGame';
 
 export const ENDPOINT_GET_GAME_RECORDS = '/record/getGameRecords';
 

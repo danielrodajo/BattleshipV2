@@ -12,6 +12,7 @@ export interface GameDomain {
 }
 
 export enum GameState {
+  PREPARING,
   CREATED,
   IN_PROGRESS,
   FINALIZED,

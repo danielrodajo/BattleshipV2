@@ -1,1 +1,16 @@
 .CustomizeGame {}
+
+.Wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  row-gap: 10px;
+  column-gap: 20px;
+}
+
+.Barcostitle {
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: 700;
+  border-bottom: 1px solid #cdcdcd;
+  padding-bottom: 0.5rem;
+}

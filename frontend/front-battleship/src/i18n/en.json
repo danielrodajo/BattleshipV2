@@ -119,7 +119,8 @@
             "win": "victory",
             "lose": "defeat",
             "created": "created",
-            "in_progress": "playing"
+            "in_progress": "playing",
+            "preparing": "preparing"
         }
     },
     "ships": {
@@ -141,6 +142,16 @@
         "title": "history",
         "btn": "Restore"
     },
+    "customizeGame": {
+        "title": "customize game"
+    },
+    "ranking": {
+        "title": "ranking",
+        "position": "position",
+        "player": "player",
+        "games": "nº games",
+        "points": "points"
+        },
     "error": {
         "generic": "An unexpected error has occurred"
     }

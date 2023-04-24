@@ -8,7 +8,7 @@ const persistConfig = {
   key: 'root',
   storage,
   // Indicar que REDUCERS queremos persistir (de no indicarlo, guardará todos)
-  whitelist: ['authState'],
+  whitelist: ['authState', 'i18nState'],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer());
@@ -18,7 +18,7 @@ export const appReduxStore = configureStore({
   // Implementar Thunk por defecto
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false
-  })//.concat(logger),
+  }).concat(logger),
 });
 
 export type AppDispatch = typeof appReduxStore.dispatch;
