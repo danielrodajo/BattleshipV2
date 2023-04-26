@@ -70,8 +70,6 @@ public class GameServiceImpl implements GameService {
 	@Override
 	public List<Game> getMyGames() {
 		var games = this.getUserGames(Utils.getCurrentUsername());
-		// games = games.stream().filter(game ->
-		// !game.getState().equals(GameState.PREPARING)).collect(Collectors.toList());
 		games.forEach(game -> {
 			game.getBoard1().setBoxes(null);
 			game.getBoard1().setEmptyBoxes(null);
@@ -99,6 +97,7 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Game initGame(Game game) {
+		this.gameValidator.validateInitGame(game);
 		game.setState(GameState.IN_PROGRESS);
 		Random r = new Random();
 		int choice = r.nextInt(2);

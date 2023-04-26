@@ -1,4 +1,7 @@
 import moment from 'moment';
+import { ShipType } from '../api/domain/ShipDomain';
+import { BoxData } from '../api/data/BoxData';
+import { FleetData } from '../pages/GameSection/Game/Game';
 
 export const formatDate = (date: Date): string => {
   let formattedDate = moment(date).format('DD/MM/YYYY HH:mm:ss');
@@ -26,4 +29,19 @@ export const parseJwt = (token: string) => {
   } catch (e) {
     return null;
   }
+};
+
+// Busca si la flota tiene alguna casilla ocupada con esas coordenadas
+export const hasShip = (fleet: FleetData, x: number, y: number): [BoxData, ShipType] | undefined => {
+  let result: [BoxData, ShipType] | undefined = undefined;
+  if (fleet) {
+    fleet.ships.forEach((ship) => {
+      const filtered = ship.boxes.filter((box) => box.x === x && box.y === y);
+      if (filtered && filtered.length > 0) {
+        result = [filtered[0], ship.type];
+        return;
+      }
+    });
+  }
+  return result;
 };

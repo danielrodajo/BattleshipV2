@@ -111,7 +111,7 @@ const SelectMode: FC<SelectModeProps> = () => {
       <div
         className={`${styles.SelectGameContainer} ${!searching && styles.show}`}
       >
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className={styles.GameMode}>
           <GameMode
             title={t('selectGame.friends.text')}
             bodyLines={friendsText}
@@ -119,7 +119,7 @@ const SelectMode: FC<SelectModeProps> = () => {
             handlePlay={() => navigate(PATH_CUSTOMIZE_GAME)}
           />
         </div>
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className={styles.GameMode}>
           <GameMode
             title={t('selectGame.online.text')}
             bodyLines={onlineText}
@@ -127,7 +127,7 @@ const SelectMode: FC<SelectModeProps> = () => {
             handlePlay={() => searchOnline()}
           />
         </div>
-        <div className='d-flex justify-content-center align-items-center'>
+        <div className={styles.GameMode}>
           <GameMode
             title={t('selectGame.offline.text')}
             bodyLines={offlineText}

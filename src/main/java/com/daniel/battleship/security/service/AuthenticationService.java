@@ -82,7 +82,7 @@ public class AuthenticationService {
 		return null;
 	}
 	
-	public Principal authenticateThroughWebSocket(String jwt) {
+	public Principal authenticateThroughJwt(String jwt) {
 		if (jwtService.isTokenExpired(jwt)) {
 			throw new ExpiredJwtException(null, null, jwt);
 		}

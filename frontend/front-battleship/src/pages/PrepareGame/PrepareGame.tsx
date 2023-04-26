@@ -7,7 +7,7 @@ import {
   ENDPOINT_GET_BOARD_BY_CODE,
   ENDPOINT_INIT_BOARD,
 } from '../../utils/Endpoints';
-import { BoardDomain } from '../../api/domain/BoardDomain';
+import { BoardDomain, BoardState } from '../../api/domain/BoardDomain';
 import { PATH_GAME, PATH_HOME, passParameters } from '../../Routes';
 import carrier from '../../assets/carrier.png';
 import Ship from '../../components/Ship/Ship';
@@ -50,6 +50,7 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
   const token = useAppSelector(selectAuthToken);
   const rToken = useAppSelector(selectAuthRefreshToken);
   const fleet = useAppSelector(selectPrepareGameFleet);
+  const [sse, setSse] = React.useState<any>();
   const dispatch = useAppDispatch();
 
   React.useEffect(() => {
@@ -63,12 +64,29 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
       .then((response) => {
         setBoard(response.data);
         dispatch(replaceFleet(mapBoxShipsDomainToData(response.data.boxes)));
+        if (response.data.state === BoardState[BoardState.IN_PROGRESS]) {
+          waitForGame(response.data.code);
+        }
       })
       .catch((err) => {
         console.error(err);
         navigate(PATH_HOME);
       });
   }, [code, navigate]);
+
+  React.useEffect(() => {
+    return () => {
+      disconnect();
+    };
+  }, [sse]);
+
+  const disconnect = () => {
+    if (sse) {
+      setWaiting(false);
+      sse.close();
+      setSse(null);
+    }
+  };
 
   const waitForGame = async (code: string) => {
     const decodedJwt = parseJwt(token!);
@@ -88,6 +106,7 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
     );
 
     setWaiting(true);
+    setSse(eventSource);
 
     eventSource.onmessage = (e) => console.log(e);
     eventSource.addEventListener('game', async (e: any) => {
@@ -98,10 +117,6 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
     eventSource.onerror = (e) => {
       // error log here
       console.error(e);
-      setWaiting(false);
-      eventSource.close();
-    };
-    return () => {
       setWaiting(false);
       eventSource.close();
     };
@@ -239,7 +254,9 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
           </div>
           <div className='row'>
             <button
-             className={`botonJugar ${!(waiting || fleet.length !== 10) && 'botonJugarAnim'}`}
+              className={`botonJugar ${
+                !(waiting || fleet.length !== 10) && 'botonJugarAnim'
+              }`}
               disabled={waiting || fleet.length !== 10}
               onClick={sendData}
             >

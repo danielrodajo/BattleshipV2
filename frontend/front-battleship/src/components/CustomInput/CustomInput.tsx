@@ -51,6 +51,10 @@ const CustomInput: FC<AuthInputProps> = (props) => {
     return '';
   }
 
+  const inputStyle = {
+    width: props.icon ? '85%' : '100%',
+  };
+
   return (
     <>
       <label className={`${styles.formLabel} form-label`} htmlFor={props.id}>
@@ -92,6 +96,7 @@ const CustomInput: FC<AuthInputProps> = (props) => {
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           className={`${styles.formInput}`}
+          style={inputStyle}
           id={props.id}
           name={props.id}
           type={props.type}

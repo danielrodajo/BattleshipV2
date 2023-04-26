@@ -68,7 +68,7 @@ const SignIn: FC<SignInProps> = () => {
   return (
     <div className='vh-100 d-flex'>
       {status && status === 'loading' && <h4>CARGANDO...</h4>}
-      <div className={`${styles.SignIn} bg-light rounded-3 p-5`}>
+      <div className={`${styles.SignIn} bg-light p-5`}>
         <div>
           <p className='user-select-none text-center text-capitalize font-bold fw-bold fs-2 mb-5'>
             {t('login.title')}

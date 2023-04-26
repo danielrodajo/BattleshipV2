@@ -55,4 +55,15 @@ public class GameValidator {
 			throw new IllegalArgumentException("No te puedes registrar a una partida ya creada");
 		}
 	}
+
+	public void validateInitGame(Game game) {
+		if (!game.getState().equals(GameState.CREATED)) {
+			throw new IllegalArgumentException("No se puede inicializar esta partida");
+		}
+		
+		if (Objects.isNull(game.getBoard1()) || Objects.isNull(game.getBoard2())) {
+			throw new IllegalArgumentException("Faltan datos para empezar la partida");
+		}
+		
+	}
 }

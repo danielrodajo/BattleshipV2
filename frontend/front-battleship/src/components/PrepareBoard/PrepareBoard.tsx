@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
 import styles from './PrepareBoard.module.css';
 import { FleetData } from '../../pages/GameSection/Game/Game';
-import { BoxData } from '../../api/data/BoxData';
-import { ShipType } from '../../api/domain/ShipDomain';
 import { letters } from '../../utils/Constants';
 import PrepareBox from '../PrepareBox/PrepareBox';
+import { hasShip } from '../../utils/Utils';
 
 interface PrepareBoardProps {
   size: number;
@@ -12,20 +11,6 @@ interface PrepareBoardProps {
 }
 
 const PrepareBoard: FC<PrepareBoardProps> = (props) => {
-
-  const hasShip = (x: number, y: number): [BoxData, ShipType] | undefined => {
-    let result: [BoxData, ShipType] | undefined = undefined;
-    if (props.fleet) {
-      props.fleet.ships.forEach((ship) => {
-        const filtered = ship.boxes.filter((box) => box.x === x && box.y === y);
-        if (filtered && filtered.length > 0) {
-          result = [filtered[0], ship.type];
-          return;
-        }
-      });
-    }
-    return result;
-  };
 
   const columns = {
     gridTemplateColumns: 'repeat(' + props.size + ', 1fr)',
@@ -62,7 +47,7 @@ const PrepareBoard: FC<PrepareBoardProps> = (props) => {
               {Array.from(Array(props.size)).map((n, x) => (
                 <PrepareBox
                 size={props.size}
-                  boxData={hasShip(x, y)}
+                  boxData={hasShip(props.fleet, x, y)}
                   key={`${y}-${x}`}
                   x={x}
                   y={y}

@@ -3,9 +3,15 @@
     z-index: 1;
 }
 
-.body {
-    width: 85%;
-}
+@media (max-width: 500px) {
+    .body {
+      width: 100%;
+    }
+  }@media (min-width: 500px) {
+    .body {
+      width: 85%;
+    }
+  }
 
 .fullbody {
     width: 100%;

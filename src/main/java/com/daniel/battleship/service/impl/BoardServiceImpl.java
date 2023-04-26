@@ -38,11 +38,13 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	public Board save(Board board) {
+		validator.validateSaveBoard(board);
 		return repository.save(board);
 	}
 
 	@Override
 	public Board update(Board board) {
+		validator.validateUpdateBoard(board);
 		return repository.save(board);
 	}
 

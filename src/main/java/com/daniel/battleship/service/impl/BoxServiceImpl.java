@@ -51,28 +51,34 @@ public class BoxServiceImpl implements BoxService {
 
 	@Override
 	public List<Box> initBoxes(List<Box> boxes) {
+		// Agrupa las casillas por nave y cuenta el número de casillas por nave
 		Map<Ship, Long> ships = boxes.stream().collect(Collectors.groupingBy(b -> b.getShip(), Collectors.counting()));
-		
+
 		List<Box> result = new ArrayList<>();
 		for (Entry<Ship, Long> entry : ships.entrySet()) {
-			Ship ship = Ship.builder()
-					.id(entry.getKey().getId())
-					.lives(entry.getKey().getLives())
-					.shipType(entry.getKey().getShipType())
-					.build();
+			// Crea un nuevo objeto de nave con las mismas propiedades que la nave original
+			Ship ship = Ship.builder().id(entry.getKey().getId()).lives(entry.getKey().getLives())
+					.shipType(entry.getKey().getShipType()).build();
+			// Establece un ID falso para la nave que se utilizará en la filtración de las
+			// casillas
 			Long fakeId = ship.getId();
 			ship.setId(-1L);
+
+			// Guarda la nave en la base de datos y actualiza su ID con el ID recién
+			// generado
 			ship = shipService.save(ship);
 
+			// Filtra las casillas en función del ID falso y actualiza sus IDs de nave para
+			// que coincidan con la nave guardada en la base de datos
 			List<Box> filteredBoxes = boxes.stream().filter(box -> box.getShip().getId().equals(fakeId))
 					.collect(Collectors.toList());
-			
+
 			for (Box box : filteredBoxes) {
 				box.setShip(ship);
 				result.add(box);
 			}
 		}
-		
+
 		for (Box box : result) {
 			box = this.save(box);
 		}
@@ -84,7 +90,7 @@ public class BoxServiceImpl implements BoxService {
 	public Box hitBox(Box box) {
 		if (box.getTouched())
 			throw new IllegalArgumentException("La celda ya esta marcada");
-		
+
 		box.setTouched(true);
 		return this.update(box);
 	}

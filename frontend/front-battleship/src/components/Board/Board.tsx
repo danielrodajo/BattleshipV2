@@ -2,11 +2,10 @@ import React, { FC } from 'react';
 import styles from './Board.module.css';
 import Box from '../Box/Box';
 import { letters } from '../../utils/Constants';
-import { BoxData } from '../../api/data/BoxData';
-import { ShipType } from '../../api/domain/ShipDomain';
 import { EmptyBoxDomain } from '../../api/domain/EmptyBoxDomain';
 import { FleetData } from '../../pages/GameSection/Game/Game';
 import { Coordinates } from '../../services/FleetGenerator';
+import { hasShip } from '../../utils/Utils';
 
 interface BoardProps {
   isOpponent: boolean;
@@ -19,20 +18,6 @@ interface BoardProps {
 
 const Board: FC<BoardProps> = (props) => {
   const boardId = `${props.isOpponent ? 'B' : 'A'}-board`;
-
-  const hasShip = (x: number, y: number): [BoxData, ShipType] | undefined => {
-    let result: [BoxData, ShipType] | undefined = undefined;
-    if (props.fleet) {
-      props.fleet.ships.forEach((ship) => {
-        const filtered = ship.boxes.filter((box) => box.x === x && box.y === y);
-        if (filtered && filtered.length > 0) {
-          result = [filtered[0], ship.type];
-          return;
-        }
-      });
-    }
-    return result;
-  };
 
   const hasEmptyBox = (x: number, y: number): EmptyBoxDomain | undefined => {
     let result: EmptyBoxDomain | undefined = undefined;
@@ -81,7 +66,7 @@ const Board: FC<BoardProps> = (props) => {
             <React.Fragment key={`board-${y}`}>
               {Array.from(Array(props.size)).map((n, x) => (
                 <Box
-                  boxData={hasShip(x, y)}
+                  boxData={hasShip(props.fleet, x, y)}
                   emptyBoxData={hasEmptyBox(x, y)}
                   key={`${boardId}-${y}-${x}`}
                   isOpponent={props.isOpponent}

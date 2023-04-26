@@ -18,6 +18,7 @@ public class EmptyBoxServiceImpl implements EmptyBoxService {
 	
 	@Override
 	public EmptyBox save(EmptyBox item) {
+		
 		return repository.save(item);
 	}
 

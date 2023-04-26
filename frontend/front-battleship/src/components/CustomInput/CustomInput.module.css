@@ -47,7 +47,6 @@
   background-color: transparent !important;
   border: none !important;
   border-radius: 0;
-  width: 100%;
 }
 
 .formInput::placeholder {
@@ -57,4 +56,15 @@
 
 .formInput:focus {
   outline: none;
+}
+
+
+@media (max-width: 500px) {
+  .inputIconCont {
+    width: 100%;
+  }
+}@media (min-width: 500px) {
+  .inputIconCont {
+    width: 370px;
+  }
 }

@@ -5,8 +5,21 @@
 .SelectGameContainer {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
 }
 
   
+.GameMode {
+  display: flex;
+  align-items: center;
+}
   
+@media (max-width: 500px) {
+  .GameMode {
+    justify-content: inherit;
+  }
+}@media (min-width: 500px) {
+  .GameMode {
+    justify-content: center;
+  }
+}

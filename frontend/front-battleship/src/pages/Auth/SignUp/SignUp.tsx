@@ -97,7 +97,7 @@ const SignUp: FC<SignUpProps> = () => {
 
   return (
     <div className='vh-100 d-flex'>
-      <div className={`${styles.SignUp} bg-light rounded-3 p-5`}>
+      <div className={`${styles.SignUp} bg-light p-5`}>
         <div>
           <p className='user-select-none text-center text-capitalize font-bold fw-bold fs-2 mb-5'>
             {t('signup.title')}
@@ -125,7 +125,7 @@ const SignUp: FC<SignUpProps> = () => {
           autoComplete='on'
         >
           <div className='row'>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='nameGroup'>
                 <AuthInput
                   id='name'
@@ -139,7 +139,7 @@ const SignUp: FC<SignUpProps> = () => {
                 ></AuthInput>
               </div>
             </div>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='firstSurnameGroup'>
                 <AuthInput
                   id='firstSurname'
@@ -153,7 +153,7 @@ const SignUp: FC<SignUpProps> = () => {
                 ></AuthInput>
               </div>
             </div>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='secondSurnameGroup'>
                 <AuthInput
                   id='secondSurname'
@@ -167,8 +167,8 @@ const SignUp: FC<SignUpProps> = () => {
               </div>
             </div>
           </div>
-          <div className='row mt-5'>
-            <div className='col-4'>
+          <div className={`row ${styles.RowGroup}`}>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className=''>
                 <AuthInput
                   id='nickname'
@@ -182,7 +182,7 @@ const SignUp: FC<SignUpProps> = () => {
                 ></AuthInput>
               </div>
             </div>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='emailGroup'>
                 <AuthInput
                   id='email'
@@ -197,7 +197,7 @@ const SignUp: FC<SignUpProps> = () => {
                 ></AuthInput>
               </div>
             </div>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='repeatEmailGroup'>
                 <AuthInput
                   id='repeatEmail'
@@ -215,8 +215,8 @@ const SignUp: FC<SignUpProps> = () => {
               </div>
             </div>
           </div>
-          <div className='row mt-5'>
-            <div className='col-4'>
+          <div className={`row ${styles.RowGroup}`}>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='pwdGroup'>
                 <AuthInput
                   id='pwd'
@@ -231,7 +231,7 @@ const SignUp: FC<SignUpProps> = () => {
                 ></AuthInput>
               </div>
             </div>
-            <div className='col-4'>
+            <div className={`col-xl-4 col-md-6 ${styles.Group}`}>
               <div className='repeatPwdGroup'>
                 <AuthInput
                   id='repeatPwd'

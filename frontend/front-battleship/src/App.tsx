@@ -24,7 +24,7 @@ import { selectI18nLang } from './store/slices/I18nSlice';
 import useLanguageHandler from './hooks/useLanguageHandler';
 
 function App() {
-  const {changeLanguage} = useLanguageHandler();
+  const { changeLanguage } = useLanguageHandler();
   const dispatch = useAppDispatch();
   const token = useAppSelector(selectAuthToken);
   const rToken = useAppSelector(selectAuthRefreshToken);
@@ -35,11 +35,11 @@ function App() {
     changeLanguage(lang);
     async function refresh() {
       const result = await fetchRefreshToken(rToken!);
-        if (result) {
-          dispatch(refreshToken(result));
-        } else {
-          dispatch(signOut());
-        }
+      if (result) {
+        dispatch(refreshToken(result));
+      } else {
+        dispatch(signOut());
+      }
     }
 
     if (token) {

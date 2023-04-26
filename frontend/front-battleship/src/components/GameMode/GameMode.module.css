@@ -3,9 +3,18 @@
 }
 
 .GameMode {
-  width: 25rem;
-  height: 500px;
   transition: box-shadow 0.4s;
+}
+
+@media (max-width: 500px) {
+  .inputIconCont {
+    width: 100%;
+  }
+}@media (min-width: 500px) {
+  .inputIconCont {
+    width: 25rem;
+    height: 500px;
+  }
 }
 
 .GameMode * {

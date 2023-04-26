@@ -8,6 +8,12 @@
   user-select: none;
 }
 
+.ListNav {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(autofill, minmax(100px, 1fr));
+}
+
 .title {
   font-size: 1.8rem;
   font-weight: bold;
@@ -23,7 +29,7 @@
 
 .languages {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, autofill);
   column-gap: 15px;
   row-gap: 2px;
   align-items: center;
@@ -36,7 +42,7 @@
   vertical-align: middle !important;
 }
 
-.Navbar svg {
+svg {
     width: 30px;
     height: 30px;
 }
