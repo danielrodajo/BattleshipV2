@@ -8,10 +8,12 @@ import { fetchGame, prepareGame } from '../../api/requests/gameAPI';
 import { GameDomain } from '../../api/domain/GameDomain';
 import { useNavigate, useParams } from 'react-router-dom';
 import { PATH_HOME } from '../../Routes';
+import Modal from '../../components/Modal/Modal';
 
 interface CustomizeGameProps {}
 
 const CustomizeGame: FC<CustomizeGameProps> = () => {
+  const [isOpen, setIsOpen] = React.useState(true);
   const navigate = useNavigate();
   const [boardSize, setBoardSize] = React.useState(10);
   const [preparedGame, setPreparedGame] = React.useState<GameDomain>();
@@ -49,6 +51,7 @@ const CustomizeGame: FC<CustomizeGameProps> = () => {
 
   return (
     <div className='h-75'>
+    {isOpen && <Modal setIsOpen={setIsOpen} />}
       <p className='title'>{t('customizeGame.title')}</p>
       {preparedGame ? (
         <div className='d-flex justify-content-center align-items-center h-100'>

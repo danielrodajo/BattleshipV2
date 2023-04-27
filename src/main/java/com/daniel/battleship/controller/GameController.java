@@ -18,10 +18,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.daniel.battleship.dto.GameDTO;
+import com.daniel.battleship.dto.InvitationDTO;
 import com.daniel.battleship.dto.PrepareGameDTO;
 import com.daniel.battleship.entity.Game;
 import com.daniel.battleship.mapper.GameMapper;
+import com.daniel.battleship.mapper.InvitationMapper;
 import com.daniel.battleship.service.GameService;
+import com.daniel.battleship.service.InvitationService;
 import com.daniel.battleship.sse.service.SseService;
 import com.daniel.battleship.util.Endpoint;
 
@@ -40,6 +43,8 @@ public class GameController {
 
 	private final GameService gameService;
 	private final GameMapper mapper;
+	private final InvitationService invitationService;
+	private final InvitationMapper invitationMapper;
 
 	@Qualifier("queueService")
 	private final SseService queueService;
@@ -123,11 +128,12 @@ public class GameController {
 	}
 
 	@PostMapping("prepareGame")
-	@Operation(description = "Crear preparación de partida")
+	@Operation(description = "Crear preparación de partida y generar invitacion")
 	@ApiResponse(description = "Partida preparada")
-	public ResponseEntity<GameDTO> prepareGame(@RequestBody PrepareGameDTO dto) {
+	public ResponseEntity<InvitationDTO> prepareGame(@RequestBody PrepareGameDTO dto) {
 		Game game = this.gameService.prepareGame(dto);
-		return ResponseEntity.ok(mapper.toDTO(game));
+		var invitation = this.invitationService.createByGame(game);
+		return ResponseEntity.ok(invitationMapper.toDTO(invitation));
 	}
 	
 	@GetMapping("joinGame")

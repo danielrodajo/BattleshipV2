@@ -10,3 +10,16 @@
   row-gap: 2px;
   justify-content: end;
 }
+
+
+
+@media (min-width: 992px) {
+
+  .MyFleetBoard {
+    padding-right: 3rem!important;
+    border-right: 1px solid #dee2e6!important;
+  }
+  .EnemyFleetBoard {
+    padding-left: 3rem!important;
+  }
+}

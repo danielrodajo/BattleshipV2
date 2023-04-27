@@ -270,11 +270,11 @@ const Game: FC<GameProps> = () => {
       <div className={styles.Game}>
         <FinishGameMessage finishedStatus={finishedStatus} points={points} />
         <div className='row title user-select-none mx-3 mb-3'>
-          <div className='col-4'></div>
-          <div className='col-4'>
+          <div className='col-md-4'></div>
+          <div className='col-md-4'>
             {isMyTurn === null ? t('game.end-game') : t('game.title')}
           </div>
-          <div className={`col-4 text-end ${styles.TurnText}`}>
+          <div className={`col-md-4 text-end ${styles.TurnText}`}>
             {(webSocket.sending ||
               (!webSocket.connected && !gameFinished(game))) && (
               <Rings
@@ -299,7 +299,7 @@ const Game: FC<GameProps> = () => {
         <div>
           <div className='px-5'>
             <div className='row'>
-              <div className='col-5 border-end pe-5'>
+              <div className={`col-lg-6 col-xl-5 ${styles.MyFleetBoard}`}>
                 <GameSection
                   fleet={myFleet}
                   playerName={game.board1.owner.nickname}
@@ -308,8 +308,9 @@ const Game: FC<GameProps> = () => {
                   disable={!isMyTurn || false}
                   highLightBox={getHighlight(game.board1.owner.nickname)}
                 />
+                <div className='d-block d-xl-none mb-5'></div>
               </div>
-              <div className='col-5 ps-5'>
+              <div className={`col-lg-6 col-xl-5 ${styles.EnemyFleetBoard}`}>
                 <GameSection
                   online={opponentAlive}
                   onClick={sendMessage}
@@ -320,8 +321,9 @@ const Game: FC<GameProps> = () => {
                   size={game.board2.width}
                   highLightBox={getHighlight(game.board2.owner.nickname)}
                 />
+                <div className='d-block d-xl-none mb-5'></div>
               </div>
-              <div className='col-2 ps-5'>
+              <div className='col-xl-2 ps-5'>
                 <History
                   setHistory={setHistory}
                   records={records}
