@@ -26,5 +26,9 @@ public class GameDTO {
 	private GameState state;
 	private Long points;
 	private Date createdAt;
+	private int carriers;
+	private int battleships;
+	private int submarines;
+	private int destroyers;
 	
 }

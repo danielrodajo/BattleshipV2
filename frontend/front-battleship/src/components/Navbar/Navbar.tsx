@@ -28,6 +28,11 @@ const Navbar: FC<NavbarProps> = () => {
     dispatch(signOut());
   };
   const user = useAppSelector(selectUserData);
+
+  const background = {
+    backgroundColor: 'rgb(240, 243, 250)',
+  };
+
   return (
     <nav
       className={`navbar navbar-expand-lg navbar-light px-3 text-capitalize ${styles.Navbar}`}
@@ -47,180 +52,92 @@ const Navbar: FC<NavbarProps> = () => {
       >
         <span className='navbar-toggler-icon'></span>
       </button>
-      <div
-        className='collapse navbar-collapse justify-content-start'
-        id='navbarSupportedContent'
-      ></div>
-      <div
-        className='collapse navbar-collapse justify-content-center'
-        id='navbarSupportedContent'
-      >
-        <ul className='navbar-nav'>
-          <li className='nav-item'>
-            <span className='nav-link mx-3'>
-              <Link to={PATH_MY_GAMES} className='linkStyle'>
-                {t('navbar.myGames')}
-              </Link>
-            </span>
-          </li>
-          <li className='nav-item'>
-            <span className='nav-link mx-3'>
-              <Link to={PATH_GAME_MODE} className='linkStyle'>
-                {t('navbar.play')}
-              </Link>
-            </span>
-          </li>
-          <li className='nav-item'>
-            <span className='nav-link mx-3'>
-              <Link to={PATH_RANKING} className='linkStyle'>
-                {t('navbar.ranking')}
-              </Link>
-            </span>
-          </li>
-        </ul>
-        <hr />
-      </div>
-      <div
-        className='collapse navbar-collapse justify-content-end'
-        id='navbarSupportedContent'
-      >
-        <ul className='navbar-nav'>
-          {user && (
-            <>
-              <li
-                className={`d-flex align-items-center nav-item me-2 ${styles.Name}`}
-              >
-                <span className={`me-2 ${styles.Name}`}>{user.points}</span>
-                <GiLaurelsTrophy />
-                <span className='ms-3 me-2'>{`${user.nickname}`}</span>
-              </li>
-            </>
-          )}
-          <li className='d-flex align-items-center nav-item mx-2 my-3'>
-            <img
-              alt={t('language.altes')!}
-              width={20}
-              className='lngButton me-3'
-              src={spanish}
-              onClick={() => changeLanguage('es')}
-            />
-            <img
-              alt={t('language.alten')!}
-              width={20}
-              className='lngButton me-2'
-              src={english}
-              onClick={() => changeLanguage('en')}
-            />
-          </li>
-          <li className='nav-item ms-2'>
-            <span className='nav-link' role='button'>
-              <ImUser /> <span className='ms-2 d-lg-none d-inline'>mi perfil</span>
-            </span>
-          </li>
-          <li className='nav-item ms-2'>
-            <span onClick={signout} className='nav-link' role='button'>
-              <MdLogout /> <span className='ms-2 d-lg-none d-inline'>cerrar sesión</span>
-            </span>
-          </li>
-        </ul>
+      <div className={styles.NavbarGrid}>
+        <div
+          style={background}
+          className='collapse navbar-collapse justify-content-start'
+          id='navbarSupportedContent'
+        ></div>
+        <div
+          style={background}
+          className='collapse navbar-collapse justify-content-center'
+          id='navbarSupportedContent'
+        >
+          <ul className='navbar-nav'>
+            <li className='nav-item'>
+              <span className='nav-link mx-3'>
+                <Link to={PATH_MY_GAMES} className='linkStyle'>
+                  {t('navbar.myGames')}
+                </Link>
+              </span>
+            </li>
+            <li className='nav-item'>
+              <span className='nav-link mx-3'>
+                <Link to={PATH_GAME_MODE} className='linkStyle'>
+                  {t('navbar.play')}
+                </Link>
+              </span>
+            </li>
+            <li className='nav-item'>
+              <span className='nav-link mx-3'>
+                <Link to={PATH_RANKING} className='linkStyle'>
+                  {t('navbar.ranking')}
+                </Link>
+              </span>
+            </li>
+          </ul>
+          <hr />
+        </div>
+        <div
+          style={background}
+          className='collapse navbar-collapse justify-content-end'
+          id='navbarSupportedContent'
+        >
+          <ul className='navbar-nav'>
+            {user && (
+              <>
+                <li
+                  className={`d-flex align-items-center nav-item me-2 ${styles.Name}`}
+                >
+                  <span className={`me-2 ${styles.Name}`}>{user.points}</span>
+                  <GiLaurelsTrophy />
+                  <span className='ms-3 me-2'>{`${user.nickname}`}</span>
+                </li>
+              </>
+            )}
+            <li className='d-flex align-items-center nav-item mx-2 my-3'>
+              <img
+                alt={t('language.altes')!}
+                width={20}
+                className='lngButton me-3'
+                src={spanish}
+                onClick={() => changeLanguage('es')}
+              />
+              <img
+                alt={t('language.alten')!}
+                width={20}
+                className='lngButton me-2'
+                src={english}
+                onClick={() => changeLanguage('en')}
+              />
+            </li>
+            <li className='nav-item ms-2'>
+              <span className='nav-link' role='button'>
+                <ImUser />{' '}
+                <span className='ms-2 d-lg-none d-inline'>mi perfil</span>
+              </span>
+            </li>
+            <li className='nav-item ms-2'>
+              <span onClick={signout} className='nav-link' role='button'>
+                <MdLogout />{' '}
+                <span className='ms-2 d-lg-none d-inline'>cerrar sesión</span>
+              </span>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-
-/* <nav className='navbar navbar-expand-lg bg-light'>
-      <div className='container-fluid'>
-        <button
-          className='navbar-toggler'
-          type='button'
-          data-bs-toggle='collapse'
-          data-bs-target='#navbarSupportedContent'
-          aria-controls='navbarSupportedContent'
-          aria-expanded='false'
-          aria-label='Toggle navigation'
-        >
-          <span className='navbar-toggler-icon'></span>
-        </button>
-        <Link to={PATH_HOME}>
-          <span className={`${styles.title}`}>battleship</span>
-          <img className={`${styles.logo}`} src={logo} alt='Logo Battleship' />
-        </Link>
-        <div
-          className={`collapse navbar-collapse ${styles.ListNav}`}
-          id='navbarSupportedContent'
-        >
-          <div className={styles.ListNav}>
-            <div>
-              <ul className='navbar-nav me-auto mb-2 mb-lg-0'>
-                <li className='nav-item'>
-                  <span className='nav-link mx-3'>
-                    <Link to={PATH_MY_GAMES} className='linkStyle'>
-                      {t('navbar.myGames')}
-                    </Link>
-                  </span>
-                </li>
-                <li className='nav-item'>
-                  <span className='nav-link mx-3'>
-                    <Link to={PATH_GAME_MODE} className='linkStyle'>
-                      {t('navbar.play')}
-                    </Link>
-                  </span>
-                </li>
-                <li className='nav-item'>
-                  <span className='nav-link mx-3'>
-                    <Link to={PATH_RANKING} className='linkStyle'>
-                      {t('navbar.ranking')}
-                    </Link>
-                  </span>
-                </li>
-              </ul>
-            </div>
-            <div className=''>
-              <ul className='navbar-nav'>
-                {user && (
-                  <>
-                    <li className='nav-item d-flex justify-content-center align-items-center me-3'>
-                      <span className={`me-2 ${styles.Name}`}>
-                        {user.points}
-                      </span>
-                      <GiLaurelsTrophy />
-                    </li>
-                    <li
-                      className={`nav-item d-flex justify-content-center align-items-center me-2 ${styles.Name}`}
-                    >{`${user.nickname}`}</li>
-                  </>
-                )}
-                <li className={`nav-item ${styles.languages} mx-2`}>
-                  <img
-                    alt={t('language.altes')!}
-                    width={20}
-                    className='lngButton'
-                    src={spanish}
-                    onClick={() => changeLanguage('es')}
-                  />
-                  <img
-                    alt={t('language.alten')!}
-                    width={20}
-                    className='lngButton'
-                    src={english}
-                    onClick={() => changeLanguage('en')}
-                  />
-                </li>
-                <li className='nav-item'>
-                  <span className='nav-link' role='button'>
-                    <ImUser />
-                  </span>
-                </li>
-                <li className='nav-item ms-2'>
-                  <span onClick={signout} className='nav-link' role='button'>
-                    <MdLogout />
-                  </span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav> */

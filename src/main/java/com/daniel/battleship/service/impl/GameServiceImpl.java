@@ -3,7 +3,6 @@ package com.daniel.battleship.service.impl;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 
@@ -18,6 +17,7 @@ import com.daniel.battleship.enums.BoardState;
 import com.daniel.battleship.enums.GameState;
 import com.daniel.battleship.repository.GameRepository;
 import com.daniel.battleship.service.GameService;
+import com.daniel.battleship.service.InvitationService;
 import com.daniel.battleship.service.PlayerService;
 import com.daniel.battleship.util.Utils;
 import com.daniel.battleship.validators.GameValidator;
@@ -28,11 +28,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GameServiceImpl implements GameService {
 
-	private final Integer DEFAULT_SIZE = 10;
+	private static final int DEFAULT_CARRIERS = 1;
+	private static final int DEFAULT_BATTLESHIPS = 2;
+	private static final int DEFAULT_SUBMARINES = 3;
+	private static final int DEFAULT_DESTROYERS = 4;
+
+	private static final Integer DEFAULT_SIZE = 10;
 
 	private final GameRepository gameRepository;
 	private final GameValidator gameValidator;
 	private final PlayerService playerService;
+	private final InvitationService invitationService;
 
 	@Override
 	public Game save(Game game) {
@@ -85,7 +91,8 @@ public class GameServiceImpl implements GameService {
 		AppUser player1 = playerService.getByEmail(namePlayers.getFirst());
 		AppUser player2 = playerService.getByEmail(namePlayers.getSecond());
 
-		Game game = Game.builder().code(Utils.generateCode())
+		Game game = Game.builder().code(Utils.generateCode()).carriers(DEFAULT_CARRIERS)
+				.battleships(DEFAULT_BATTLESHIPS).submarines(DEFAULT_SUBMARINES).destroyers(DEFAULT_DESTROYERS)
 				.board1(Board.builder().code(Utils.generateCode()).width(DEFAULT_SIZE).height(DEFAULT_SIZE)
 						.state(BoardState.CREATED).owner(player1).build())
 				.board2(Board.builder().code(Utils.generateCode()).width(DEFAULT_SIZE).height(DEFAULT_SIZE)
@@ -136,13 +143,9 @@ public class GameServiceImpl implements GameService {
 	}
 
 	@Override
-	public Optional<Game> getGameByBoard1Code(String code) {
-		return gameRepository.findGameByBoard1Code(code);
-	}
-
-	@Override
-	public Optional<Game> getGameByBoard2Code(String code) {
-		return gameRepository.findGameByBoard2Code(code);
+	public Game getGameByBoardCode(String code) {
+		return gameRepository.findGameByBoard1Code(code)
+				.orElseGet(() -> gameRepository.findGameByBoard2Code(code).orElse(null));
 	}
 
 	@Override
@@ -203,7 +206,8 @@ public class GameServiceImpl implements GameService {
 
 	@Override
 	public Game joinGame(String code) {
-		Game game = this.getGameByCode(code);
+		var invitation = this.invitationService.getByCode(code);
+		Game game = invitation.getGame();
 		this.gameValidator.validateJoinGame(game);
 
 		game.setBoard2(Board.builder().code(Utils.generateCode()).width(game.getBoard1().getWidth())

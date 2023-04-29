@@ -6,7 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -99,14 +99,9 @@ public class PrepareGameServiceImpl implements SseService {
 	}
 
 	private void registerEmitter(SseEmitter emitter, String username, String boardCode) {
-		Game game = gameService.getGameByBoard1Code(boardCode).orElse(null);
-		if (Objects.isNull(game)) {
-			game = gameService.getGameByBoard2Code(boardCode).orElse(null);
-			if (Objects.isNull(game)) {
-				emitter.completeWithError(new IllegalArgumentException("No tienes esta partida registrada"));
-				return;
-			}
-		}
+		Game game = Optional.of(gameService.getGameByBoardCode(boardCode))
+				.orElseThrow(() -> new IllegalArgumentException("El tablero no tiene partida vinculada"));
+		
 		emitters.put(username, Map.entry(game, emitter));
 	}
 

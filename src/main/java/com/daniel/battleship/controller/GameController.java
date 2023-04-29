@@ -138,9 +138,9 @@ public class GameController {
 	
 	@GetMapping("joinGame")
 	@Operation(description = "Unirse a partida en preparacion")
-	@ApiResponse(description = "Partida preparada")
-	public ResponseEntity<GameDTO> joinGame(@RequestParam String code) {
+	@ApiResponse(description = "Codigo de partida preparada")
+	public ResponseEntity<String> joinGame(@RequestParam String code) {
 		Game game = this.gameService.joinGame(code);
-		return ResponseEntity.ok(mapper.toDTO(game));
+		return ResponseEntity.ok(game.getBoard2().getCode());
 	}
 }

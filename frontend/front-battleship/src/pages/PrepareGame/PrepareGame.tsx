@@ -11,8 +11,6 @@ import { BoardDomain, BoardState } from '../../api/domain/BoardDomain';
 import { PATH_GAME, PATH_HOME, passParameters } from '../../Routes';
 import carrier from '../../assets/carrier.png';
 import Ship from '../../components/Ship/Ship';
-import Board from '../../components/Board/Board';
-import { ShipData } from '../../api/data/ShipData';
 import FleetGenerator from '../../services/FleetGenerator';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';

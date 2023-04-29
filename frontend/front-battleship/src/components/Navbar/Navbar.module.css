@@ -1,17 +1,32 @@
+
+
 .Navbar {
   background-color: rgb(240, 243, 250);
   border-bottom: 1px solid #cdcdcd;
   z-index: 50;
+  height: 7.5vh;
+  min-height: 70px;
 }
 
 .Navbar * {
   user-select: none;
 }
 
-.ListNav {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(autofill, minmax(100px, 1fr));
+
+
+@media (max-width: 992px) {
+  .NavbarGrid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}@media (min-width: 992px) {
+  .NavbarGrid {
+    margin-left: auto;
+    width: 85%;
+    display: grid;
+    grid-template-columns: 0.55fr 1fr 1fr;
+  }
 }
 
 .title {

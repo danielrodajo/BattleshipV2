@@ -41,6 +41,18 @@ public class Game {
 	private Board board2;
 	
 	@Column
+	private int carriers;
+	
+	@Column
+	private int battleships;
+	
+	@Column
+	private int submarines;
+	
+	@Column
+	private int destroyers;
+	
+	@Column
 	private Long turn;
 	
 	@Enumerated(EnumType.STRING)

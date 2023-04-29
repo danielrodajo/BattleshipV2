@@ -5,14 +5,12 @@ import { EventSourcePolyfill } from 'event-source-polyfill';
 import { useAppDispatch, useAppSelector } from '../../../hooks/reduxHooks';
 import {
   refreshToken,
-  renewRefreshToken,
   selectAuthRefreshToken,
   selectAuthToken,
 } from '../../../store/slices/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import {
   PATH_CUSTOMIZE_GAME,
-  PATH_CUSTOMIZE_GAME_CODE,
   PATH_PREPARE_GAME,
   passParameters,
 } from '../../../Routes';

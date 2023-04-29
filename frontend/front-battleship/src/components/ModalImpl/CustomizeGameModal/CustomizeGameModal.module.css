@@ -1,0 +1,116 @@
+.heading {
+  margin: 0;
+  padding: 10px;
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 18px;
+  text-align: center;
+}
+
+.deleteBtn {
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 11px 28px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  border: none;
+  color: #fff;
+  background: #ff3e4e;
+  transition: all 0.25s ease;
+}
+
+.deleteBtn:hover {
+  box-shadow: 0 10px 20px -10px rgba(255, 62, 78, 0.6);
+  transform: translateY(-5px);
+  background: #ff3e4e;
+}
+
+.cancelBtn {
+  margin-top: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  padding: 11px 28px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  border: none;
+  color: #2c3e50;
+  background: #fcfcfc;
+  transition: all 0.25s ease;
+}
+
+.cancelBtn:hover {
+  box-shadow: none;
+  transform: none;
+  background: whitesmoke;
+}
+
+.urlBlock {
+    padding: 0;
+    border: 1px solid gray;
+    border-radius: 5px;
+    width: 90%;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 85% 1fr;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.url {
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.url::-webkit-scrollbar {
+    display: none;
+}
+
+.icon {
+    color: black;
+    padding: 0.8rem 0;
+    border-left: 1px solid gray;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+.icon:hover {
+    cursor: pointer;
+    background-color: rgb(220, 220, 220);
+}
+
+
+.tooltip:before {
+    z-index: 10;
+	content: "Copied";
+	position: absolute;
+	top: -47px;
+	right: -5px;
+	background: #5c81dc;
+	padding: 8px 10px;
+	border-radius: 20px;
+	font-size: 15px;
+	display: block;
+}
+
+.tooltip:after {
+	content: "";
+	position: absolute;
+	top: -15.5px;
+	right: 22px;
+	width: 10px;
+	height: 10px;
+	background: #5c81dc;
+	transform: rotate(45deg);
+	display: block;
+}

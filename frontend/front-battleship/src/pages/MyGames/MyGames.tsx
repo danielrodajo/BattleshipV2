@@ -9,7 +9,7 @@ import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';
 import { formatDate } from '../../utils/Utils';
 import { Link } from 'react-router-dom';
 import {
-  PATH_CUSTOMIZE_GAME_CODE,
+  PATH_CUSTOMIZE_GAME,
   PATH_GAME,
   PATH_PREPARE_GAME,
   passParameters,
@@ -118,7 +118,7 @@ const MyGames: FC<MyGamesProps> = () => {
                       +GameState[game.state] === GameState.CREATED
                         ? passParameters(PATH_PREPARE_GAME, game.board1.code)
                         : +GameState[game.state] === GameState.PREPARING
-                        ? passParameters(PATH_CUSTOMIZE_GAME_CODE, game.code)
+                        ? PATH_CUSTOMIZE_GAME
                         : passParameters(PATH_GAME, game.code)
                     }
                   >
