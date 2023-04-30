@@ -4,10 +4,9 @@ import { useTranslation } from 'react-i18next';
 import PreviewBoard from './PreviewBoard/PreviewBoard';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { PrepareGameRequest } from '../../api/domain/requests/PrepareGameRequest';
-import { fetchGame, prepareGame } from '../../api/requests/gameAPI';
-import { GameDomain } from '../../api/domain/GameDomain';
+import { prepareGame } from '../../api/requests/gameAPI';
 import { useNavigate, useParams } from 'react-router-dom';
-import { PATH_HOME, PATH_JOIN_GAME, passParameters } from '../../Routes';
+import { PATH_JOIN_GAME, passParameters } from '../../Routes';
 import Modal from '../../components/ModalImpl/CustomizeGameModal/CustomizeGameModal';
 import { InvitationDomain } from '../../api/domain/InvitationDomain';
 

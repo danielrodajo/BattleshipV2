@@ -11,7 +11,6 @@ import { BoardDomain, BoardState } from '../../api/domain/BoardDomain';
 import { PATH_GAME, PATH_HOME, passParameters } from '../../Routes';
 import carrier from '../../assets/carrier.png';
 import Ship from '../../components/Ship/Ship';
-import FleetGenerator from '../../services/FleetGenerator';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { hideSpinner, showSpinner } from '../../store/slices/SpinnerSlice';
 import { toast } from 'react-toastify';
@@ -36,10 +35,12 @@ import {
   moveDirection,
 } from '../../store/slices/PrepareGameSlice';
 import { GrRotateLeft, GrRotateRight } from 'react-icons/gr';
+import useFleetHandler from '../../hooks/useFleetHandler';
 
 interface PrepareBoardProps {}
 
 const PrepareGame: FC<PrepareBoardProps> = () => {
+  const {generateFleet} = useFleetHandler();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { code } = useParams();
@@ -149,7 +150,7 @@ const PrepareGame: FC<PrepareBoardProps> = () => {
   const generateRandomFleet = () => {
     dispatch(showSpinner());
     setTimeout(function () {
-      const result = FleetGenerator(board!.width);
+      const result = generateFleet(board!.width);
       if (result.length > 0) {
         dispatch(replaceFleet(result));
       } else {

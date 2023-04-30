@@ -4,8 +4,8 @@ import Box from '../Box/Box';
 import { letters } from '../../utils/Constants';
 import { EmptyBoxDomain } from '../../api/domain/EmptyBoxDomain';
 import { FleetData } from '../../pages/GameSection/Game/Game';
-import { Coordinates } from '../../services/FleetGenerator';
 import { hasShip } from '../../utils/Utils';
+import { Coordinates } from '../../hooks/useFleetHandler';
 
 interface BoardProps {
   isOpponent: boolean;

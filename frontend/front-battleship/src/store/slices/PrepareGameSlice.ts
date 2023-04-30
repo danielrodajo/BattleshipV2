@@ -2,8 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 import { ShipData } from '../../api/data/ShipData';
 import { RootState } from '../store';
 
-const directions = ['N', 'E', 'S', 'W'];
-
 export interface PrepareGameState {
   fleet: ShipData[];
   draggingShip: ShipData | null;

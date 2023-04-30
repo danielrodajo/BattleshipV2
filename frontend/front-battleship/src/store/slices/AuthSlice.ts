@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import client from '../../api/client';
 import {
-  ENDPOINT_SIGNIN,
   ENDPOINT_SIGNUP,
   ENDPOINT_USER_DATA,
 } from '../../utils/Endpoints';

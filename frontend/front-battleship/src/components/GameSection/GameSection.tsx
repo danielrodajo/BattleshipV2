@@ -3,7 +3,7 @@ import styles from './GameSection.module.css';
 import Board from '../Board/Board';
 import { FleetData } from '../../pages/GameSection/Game/Game';
 import { MdOutlineSignalWifiConnectedNoInternet4 } from 'react-icons/md';
-import { Coordinates } from '../../services/FleetGenerator';
+import { Coordinates } from '../../hooks/useFleetHandler';
 
 interface GameSectionProps {
   playerName: string;

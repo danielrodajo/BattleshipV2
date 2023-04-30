@@ -4,8 +4,8 @@ import { RecordData } from '../../api/data/RecordData';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { selectUserData } from '../../store/slices/AuthSlice';
 import { useTranslation } from 'react-i18next';
-import { Coordinates } from '../../services/FleetGenerator';
 import { letters } from '../../utils/Constants';
+import { Coordinates } from '../../hooks/useFleetHandler';
 
 interface RecordProps {
   records: RecordData[];

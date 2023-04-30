@@ -10,7 +10,6 @@ import {
   refreshToken,
   selectAuthRefreshToken,
   selectAuthToken,
-  updateUserPoints,
 } from '../../../store/slices/AuthSlice';
 import { EmptyBoxDomain } from '../../../api/domain/EmptyBoxDomain';
 import { toast } from 'react-toastify';
@@ -44,10 +43,10 @@ import { useTranslation } from 'react-i18next';
 import { hideSpinner, showSpinner } from '../../../store/slices/SpinnerSlice';
 import { formatError, parseJwt } from '../../../utils/Utils';
 import { PATH_HOME } from '../../../Routes';
-import { Coordinates } from '../../../services/FleetGenerator';
 import FinishGameMessage from '../../../components/FinishGameMessage/FinishGameMessage';
 import useWebSocketResponse from '../../../hooks/useWebSocketResponse';
 import { fetchRefreshToken } from '../../../api/requests/authAPI';
+import { Coordinates } from '../../../hooks/useFleetHandler';
 
 interface GameProps {}
 
