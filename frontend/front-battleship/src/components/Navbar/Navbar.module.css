@@ -57,7 +57,7 @@
   vertical-align: middle !important;
 }
 
-svg {
+.Navbar svg {
     width: 30px;
     height: 30px;
 }

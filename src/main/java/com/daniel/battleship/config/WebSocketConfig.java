@@ -38,7 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint(Constants.SECURED_GAME_ROOM, Constants.SECURED_GAME_OPPONENT_ALIVE).setAllowedOrigins("http://localhost:3000").withSockJS()
+		registry.addEndpoint(Constants.SECURED_GAME_ROOM, Constants.SECURED_GAME_OPPONENT_ALIVE).setAllowedOrigins("http://localhost:3000", "http://192.168.1.24:3000").withSockJS()
 				.setWebSocketEnabled(false).setSessionCookieNeeded(false);
 	}
 
