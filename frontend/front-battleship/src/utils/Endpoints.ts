@@ -1,3 +1,4 @@
+export const ENDPOINT_GOOGLE_SIGNIN = '/auth/google/authenticate';
 export const ENDPOINT_SIGNIN = '/auth/authenticate';
 export const ENDPOINT_SIGNUP = '/auth/register';
 export const ENDPOINT_REFRESH_TOKEN = '/auth/refresh';

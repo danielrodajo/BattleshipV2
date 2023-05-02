@@ -10,6 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 import { injectStore } from './api/client';
 import './i18n/i18n';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 injectStore(appReduxStore);
 const container = document.getElementById('root')!;
@@ -17,13 +18,15 @@ const root = createRoot(container);
 const persistor = persistStore(appReduxStore);
 
 root.render(
-  <PersistGate persistor={persistor}>
-    <Provider store={appReduxStore}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </PersistGate>
+  <GoogleOAuthProvider clientId='118701604002-ouhpmteo4spo0sgo85h7c3l3qp0r7ujv.apps.googleusercontent.com'>
+    <PersistGate persistor={persistor}>
+      <Provider store={appReduxStore}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </Provider>
+    </PersistGate>
+  </GoogleOAuthProvider>
 );
 
 reportWebVitals();

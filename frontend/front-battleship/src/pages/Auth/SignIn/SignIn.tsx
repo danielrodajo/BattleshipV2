@@ -22,6 +22,9 @@ import { useTranslation } from 'react-i18next';
 import spanish from '../../../assets/spanish.png';
 import english from '../../../assets/english.png';
 import useLanguageHandler from '../../../hooks/useLanguageHandler';
+import { useGoogleLogin } from '@react-oauth/google';
+import axios from 'axios';
+import { googleSignIn } from '../../../api/requests/authAPI';
 
 interface SignInProps {}
 
@@ -64,6 +67,23 @@ const SignIn: FC<SignInProps> = () => {
       });
     }
   }, [status, dispatch, signInError]);
+  
+
+const googleLogin = useGoogleLogin({
+    onSuccess: async (codeResponse: any) => {
+        console.log(codeResponse); 
+        const token = await googleSignIn(codeResponse.code);
+        /* const userInfo = await axios
+        .get('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: { Authorization: `Bearer ${codeResponse.access_token}` },
+        })
+        .then(res => res.data); */
+
+      console.log(token);
+    },
+    onError: errorResponse => console.log(errorResponse),
+    flow: 'auth-code'
+});
 
   return (
     <div className='vh-100 d-flex'>
@@ -147,6 +167,7 @@ const SignIn: FC<SignInProps> = () => {
               height={43}
               className={`${styles.imgOauth} ms-1`}
               src={Google}
+              onClick={() => googleLogin()}
               alt='google'
             ></img>
           </div>

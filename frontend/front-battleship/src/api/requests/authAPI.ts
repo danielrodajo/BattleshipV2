@@ -1,23 +1,39 @@
-import { ENDPOINT_REFRESH_TOKEN, ENDPOINT_SIGNIN } from '../../utils/Endpoints';
+import {
+  ENDPOINT_GOOGLE_SIGNIN,
+  ENDPOINT_REFRESH_TOKEN,
+  ENDPOINT_SIGNIN,
+} from '../../utils/Endpoints';
 import client from '../client';
 import { AuthenticationResponse } from '../domain/responses/AuthenticationResponse';
 
-export const fetchSignIn = async (
-  user: string, password: string
-): Promise<any> => {
-  let response;
-    try {
-      response = await client.post(ENDPOINT_SIGNIN, {
-        email: user,
-        password: password,
-      });
-      return response.data;
-    } catch (error: any) {
-      if (error.response.status === 401) return error.response;
+export const googleSignIn = async (code: string): Promise<any> => {
+  const response = await client.post<AuthenticationResponse>(
+    ENDPOINT_GOOGLE_SIGNIN,
+    {
+      code,
     }
-    return response;
+  );
+  return response.data;
 };
 
+export const fetchSignIn = async (
+  user: string,
+  password: string
+): Promise<any> => {
+  try {
+    const response = await client.post<AuthenticationResponse>(
+      ENDPOINT_SIGNIN,
+      {
+        email: user,
+        password: password,
+      }
+    );
+    return response.data;
+  } catch (error: any) {
+    if (error.response.status === 401) return error.response;
+    throw new Error(error);
+  }
+};
 
 export const fetchRefreshToken = async (
   rToken: string
